@@ -18,7 +18,6 @@ You may contact the author of Grader by e-mail at:
 shashankkumar.me@gmail.com
 
 ****************************************************************************/
-using namespace std;
 #include "includes.h"
 
 

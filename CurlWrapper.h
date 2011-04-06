@@ -1,4 +1,3 @@
-
 size_t ContentInVar(void* ptr, size_t size, size_t nmemb, string *stream){
 	stream -> append((char *)ptr, size * nmemb);
 	return size*nmemb;

@@ -22,7 +22,8 @@
 #include <curl/types.h>
 #include <curl/easy.h>
 
+using namespace std;
 #include "config.h"
 #include "CurlWrapper.h"
-#include "FileHandle.h"
-#include "FileWrapper.h"
+//#include "FileHandle.h"
+//#include "FileWrapper.h"
