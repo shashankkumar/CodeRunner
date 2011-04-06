@@ -98,41 +98,42 @@ int FileHandle::pipeNoOfInputFiles(){
 }
 
 int FileHandle::PrepareToExecute(){
-		sprintf(systemString, "cp %s%s/Input/* %s%d/", TESTCASESPATH, ProblemId, FILEPATH, FileId);
-		system(systemString);
-		
-		NoOfInputFiles = pipeNoOfInputFiles();
-		if(NoOfInputFiles==0){
-			ToLogs("IE ERROR No Input File Specified. Please rectify the problem\n");
-			return -1;
-		}
-		sprintf(systemString, "Number of Test Cases = %d",NoOfInputFiles);
-		ToLogs(systemString);
-		return 0;
+	sprintf(systemString, "cp %s%s/Input/* %s%d/", TESTCASESPATH, ProblemId, FILEPATH, FileId);
+	system(systemString);
+	
+	NoOfInputFiles = pipeNoOfInputFiles();
+	if(NoOfInputFiles==0){
+		ToLogs("IE ERROR No Input File Specified. Please rectify the problem\n");
+		return -1;
 	}
+	sprintf(systemString, "Number of Test Cases = %d",NoOfInputFiles);
+	ToLogs(systemString);
+	return 0;
+}
 	
 void FileHandle::PipeExecute(){
-		FILE *fpipe;
-	    if(strcmp(lang,"cpp")==0 || strcmp(lang,"c")==0){
-	    	sprintf(command, "./Execution %d %d %d %d %s", FileId, TestCaseId, TimeLimit, MemoryLimit, lang);
-	    }
-	    else if(strcmp(lang, "java")==0){
-	    	sprintf(command, "./java_Execution %d %d %d %d %s", FileId, TestCaseId, TimeLimit, MemoryLimit, lang);
-	    }
-    	ToLogs(command);
-		char line[1024];
-	
-		if ( !(fpipe = (FILE*)popen(command,"r")) ){  
-		// If fpipe is NULL
-			perror("Problems with pipe");
-			ToLogs("Problems with pipe");
+	FILE *fpipe;
+    if(strcmp(lang,"cpp")==0 || strcmp(lang,"c")==0){
+    	sprintf(command, "./Execution %d %d %d %d %s", FileId, TestCaseId, TimeLimit, MemoryLimit, lang);
+    }
+    else if(strcmp(lang, "java")==0){
+    	sprintf(command, "./java_Execution %d %d %d %d %s", FileId, TestCaseId, TimeLimit, MemoryLimit, lang);
+    }
+    
+   	ToLogs(command);
+	char line[1024];
+
+	if ( !(fpipe = (FILE*)popen(command,"r")) ){  
+	// If fpipe is NULL
+		perror("Problems with pipe");
+		ToLogs("Problems with pipe");
+	}
+	else{
+		while ( fgets( line, sizeof line, fpipe)){
+			ExecutionStr.append(line, strlen(line));
 		}
-		else{
-			while ( fgets( line, sizeof line, fpipe)){
-				ExecutionStr.append(line, strlen(line));
-			}
-		}
-		pclose(fpipe);
+	}
+	pclose(fpipe);
 }
 	
 void FileHandle::Execution(){
@@ -193,15 +194,15 @@ void FileHandle::SendResults(){
 }
 	
 void FileHandle::MatchOutput(){
-		char FromFileStr[100], ToFileStr[100];
-		sprintf(FromFileStr, "%s%s/Output/%d.txt", TESTCASESPATH, ProblemId, TestCaseId);
-		sprintf(ToFileStr, "%s%d/%do.txt", FILEPATH, FileId, TestCaseId);
-		char cmd[100];
-		sprintf(command, "diff %s %s --ignore-all-space --ignore-blank-lines --ignore-tab-expansion --ignore-space-change --brief 2>&1", FromFileStr, ToFileStr);
-		pipeMatch();
+	char FromFileStr[100], ToFileStr[100];
+	sprintf(FromFileStr, "%s%s/Output/%d.txt", TESTCASESPATH, ProblemId, TestCaseId);
+	sprintf(ToFileStr, "%s%d/%do.txt", FILEPATH, FileId, TestCaseId);
+	char cmd[100];
+	sprintf(command, "diff %s %s --ignore-all-space --ignore-blank-lines --ignore-tab-expansion --ignore-space-change --brief 2>&1", FromFileStr, ToFileStr);
+	pipeMatch();
 }
 	
 void FileHandle::CleanUp(){
-		sprintf(systemString, "rm -rf %s%d", FILEPATH, FileId);
-		system(systemString);
+	sprintf(systemString, "rm -rf %s%d", FILEPATH, FileId);
+	system(systemString);
 }

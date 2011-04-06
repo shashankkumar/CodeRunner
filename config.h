@@ -14,8 +14,12 @@
 #define URLToSendResults "http://192.168.208.208/codevillage/update_result2.php"
 #define FetchFileFromFTP true
 
+FILE * logFile;
+
 void ToLogs(const char* log){
 	printf("%s\n",log);
+	logFile = fopen("logs.txt", "a");
+	fputs(log, logFile);
 	return;
 }
 #endif
