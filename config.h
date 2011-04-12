@@ -1,10 +1,10 @@
 #ifndef CONFIG
 #define CONFIG
-#define USERNAME "shashank"
-#define PASSWORD "shashank"
-#define FTPUSERNAME "sdscodevillage"
-#define FTPPASSWORD "work1nghardandfast"
-#define FTPADDRESS "ftp://192.168.208.208/Upload/"
+#define USERNAME ""
+#define PASSWORD ""
+#define FTPUSERNAME ""
+#define FTPPASSWORD ""
+#define FTPADDRESS "/Upload/"
 #define URLToGetFileIds "http://192.168.208.208/codevillage/return_id_new.php"
 #define FTPON false
 #define HTTPON true
