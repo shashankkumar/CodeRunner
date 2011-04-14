@@ -1,4 +1,4 @@
-#include "classProb.h"
+#include "FileHandle.h"
 FileHandle::FileHandle(int fid, const char* pid, const char* language){
 	FileId = fid;
 	TimeUsed=0.0;
@@ -187,9 +187,7 @@ void FileHandle::SendResults(){
 	sprintf(timeused, "%0.3f", TimeUsed);
 	sprintf(memoryused, "%d", MemoryUsed);
 	sprintf(fileid, "%d", FileId);
-	//sprintf(logs, "%d %s %s %s %s", FileId, status, detailStatus, timeused, memoryused); ToLogs(logs);
-	sprintf(logs, "%s %s %s %s", fileid, status, timeused, memoryused); ToLogs(logs);
-	printf("%s\n",detailStatus);
+	sprintf(logs, "%s %s %s %s %s", fileid, status, detailstatus, timeused, memoryused); ToLogs(logs);
 	FileCurl.SendResultsToWebpage(fileid, status, detailStatus, timeused, memoryused);
 }
 	
