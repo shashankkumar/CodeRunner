@@ -1,4 +1,5 @@
 #include "FileHandle.h"
+
 FileHandle::FileHandle(int fid, const char* pid, const char* language){
 	FileId = fid;
 	TimeUsed=0.0;
@@ -6,7 +7,7 @@ FileHandle::FileHandle(int fid, const char* pid, const char* language){
 	ProblemId = pid;
 	lang = language;
 	result=true;
-	sprintf(detailStatus,"\0");
+	sprintf(detailstatus,"\0");
 }
 
 int FileHandle::FetchFile(){
@@ -39,7 +40,7 @@ int FileHandle::MakeDir(){
 		ToLogs(systemString);	
 		if(system(systemString)==-1){
 			ToLogs("Error in copying dowloaded file.");
-			return -1
+			return -1;
 		}
 		return 0;
 }
@@ -50,7 +51,7 @@ void FileHandle::Compile(){
 		ToLogs("Compilation unsuccessful"); //ToLogs(CompileOutput.c_str());
 		result = false;
 		strcpy(status, "CE");
-		strcpy(detailStatus, CompileOutput.c_str());
+		strcpy(detailstatus, CompileOutput.c_str());
 	}
 	else ToLogs("Compilation successful\n");
 }
@@ -145,14 +146,14 @@ void FileHandle::Execution(){
 			if(strcmp(token, "AC")!=0) result=false;
 			if(strcmp(token, "RE")==0 || strcmp(token, "IE")==0 ){
 				token = strtok(NULL, "\n");
-				strcpy(detailStatus, token);
+				strcpy(detailstatus, token);
 			}
 			token = strtok(NULL, " \n"); sprintf(tmp, "%s", token);
 			TimeUsed+=(float)atof(tmp);
 			if(TimeUsed>(float)TimeLimit){
 				result = false;
 				sprintf(status, "TLE");
-				sprintf(detailStatus, "\0");
+				sprintf(detailstatus, "\0");
 			}
 			if(result==false) break;
 		}
@@ -188,7 +189,7 @@ void FileHandle::SendResults(){
 	sprintf(memoryused, "%d", MemoryUsed);
 	sprintf(fileid, "%d", FileId);
 	sprintf(logs, "%s %s %s %s %s", fileid, status, detailstatus, timeused, memoryused); ToLogs(logs);
-	FileCurl.SendResultsToWebpage(fileid, status, detailStatus, timeused, memoryused);
+	FileCurl.SendResultsToWebpage(fileid, status, detailstatus, timeused, memoryused);
 }
 	
 void FileHandle::MatchOutput(){

@@ -24,6 +24,3 @@
 
 using namespace std;
 #include "config.h"
-#include "CurlWrapper.h"
-//#include "FileHandle.h"
-//#include "FileWrapper.h"
