@@ -1,5 +1,6 @@
+#ifndef CURLWRAPPER
+#define CURLWRAPPER
 #include "includes.h"
-
 class CurlWrapper{
 public:
 	CURL *curl;
@@ -30,4 +31,4 @@ public:
 	
 };
 
-
+#endif
