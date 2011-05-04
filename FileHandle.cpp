@@ -23,7 +23,7 @@ int FileHandle::FetchFile(){
 	}
 	else {
 		strcpy(status, "IE");
-		strcpy(detailstatus, "Cannot download file. No method specified for downloading!!!");
+		strcpy(detailstatus, "Cannot download source file. No method specified for downloading!!!");
 		res = -1;
 		return -1;
 	}
@@ -46,13 +46,14 @@ int FileHandle::CheckMime(){
 			if(strncmp(line, "text", 4) != 0){
 				result = false;
 				strcpy(status, "CE");
-				strcpy(detailstatus, "Not a text file.");
+				strcpy(detailstatus, "The source file is not a text file. Failed MIME check test.");
 			}
 			return 0;
 		}
 	}
 	pclose(fpipe);
 }
+
 int FileHandle::MakeDir(){
 	int ErrNo;
 	char dirString[100];
@@ -62,8 +63,8 @@ int FileHandle::MakeDir(){
 		ErrNo=errno;
 		if(ErrNo==17) ToLogs("Directory already created.. Continuing");
 		else {
-			sprintf(dirString, "IE ERROR Failure to create directory. Error Number: %d", errno);
-			ToLogs(dirString);
+			strcpy(status, "IE");
+			sprintf(detailstatus, "Failure to create directory for file operations. Error Number: %d", errno);
 			return -1;
 		}
 	}
@@ -136,8 +137,8 @@ int FileHandle::PrepareToExecute(){
 	NoOfTestCases = pipeNoOfTestCases();
 	if(NoOfTestCases==0){
 		ToLogs("IE ERROR No Input File Specified. Please rectify the problem\n");
-		strcpy(status, "IE No Input File Specified.");
-		strcpy(detailstatus, "
+		strcpy(status, "IE");
+		strcpy(detailstatus, "No Test Case file specified.");
 		return -1;
 	}
 	sprintf(systemString, "Number of Test Cases = %d",NoOfTestCases);
@@ -245,10 +246,13 @@ void FileHandle::FileOperations(){
 	if(CheckMIME() == -1) return;
 	if(result==false) return;
 	if(MakeDir()==-1) return;
-	
+
 	Compile();
-	
-	if(result==false) return;
+
+	if(result==false){
+		CleanUp();
+		return;
+	}
 
 	if(PrepareToExecute()==-1){
 		CleanUp();
@@ -256,7 +260,7 @@ void FileHandle::FileOperations(){
 	}
 
 	Execution(TimeLimit, MemoryLimit);
-	
+
 }
 
 void FileHandle::Action(){
