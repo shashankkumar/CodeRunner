@@ -24,13 +24,12 @@ int FileHandle::FetchFile(){
 	else {
 		strcpy(status, "IE");
 		strcpy(detailstatus, "Cannot download source file. No method specified for downloading!!!");
-		res = -1;
 		return -1;
 	}
 	return 0;
 }
 
-int FileHandle::CheckMime(){
+int FileHandle::CheckMIME(){
 	FILE *fpipe;
     char line[256];
     sprintf(command, "file -b --mime-type %s%d.%s", FILEPATH, FileId, lang);
@@ -192,7 +191,7 @@ void FileHandle::Execution(){
 		if(result==false) break;
 	}
 	
-	for(TestCaseId=1; (result==true && TestCaseId<=NoOfInputFiles); TestCaseId++){
+	for(TestCaseId=1; (result==true && TestCaseId<=NoOfTestCases); TestCaseId++){
 		MatchOutput();
 		if(result==false) strcpy(status,"WA");
 	}
@@ -259,11 +258,11 @@ void FileHandle::FileOperations(){
 		return;
 	}
 
-	Execution(TimeLimit, MemoryLimit);
+	Execution();
 
 }
 
-void FileHandle::getResult(){
+bool FileHandle::getResult(){
 	return result;
 }
 void FileHandle::Action(){
