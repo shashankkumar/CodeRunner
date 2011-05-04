@@ -170,7 +170,7 @@ void FileHandle::PipeExecute(){
 	pclose(fpipe);
 }
 	
-void FileHandle::Execution(){
+void FileHandle::Execute(){
 	for(TestCaseId=1; TestCaseId<=NoOfTestCases; TestCaseId++){
 		PipeExecute();
 		strcpy(str, ExecutionStr.c_str()); ToLogs(str);
@@ -258,7 +258,7 @@ void FileHandle::FileOperations(){
 		return;
 	}
 
-	Execution();
+	Execute();
 
 }
 

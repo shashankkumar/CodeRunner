@@ -24,7 +24,7 @@ class FileHandle{
 	int pipeNoOfTestCases();
 	int PrepareToExecute();
 	void PipeExecute();
-	void Execution();
+	void Execute();
 	void MatchOutput();
 	void pipeMatch();
 	void SendResults();

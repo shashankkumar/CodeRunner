@@ -36,7 +36,7 @@ void FileThread(int FileId, const char* ProblemId, int TimeLimit, int MemoryLimi
 			F->CleanUp();
 			return;
 		}
-		F->Execution();
+		F->Execute();
 	}
 	F->SendResults();
 	//F->CleanUp();
