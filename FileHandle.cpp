@@ -110,7 +110,7 @@ void FileHandle::pipeCompile(){
 	pclose(fpipe);
 }
 
-int FileHandle::pipeNoOfInputFiles(){
+int FileHandle::pipeNoOfTestCases(){
     FILE *fpipe;
     char line[256];
     sprintf(command, "ls %s%s/Input/ -l | egrep -c '^-'", TESTCASESPATH, ProblemId);
@@ -133,12 +133,14 @@ int FileHandle::PrepareToExecute(){
 	sprintf(systemString, "cp %s%s/Input/* %s%d/", TESTCASESPATH, ProblemId, FILEPATH, FileId);
 	system(systemString);
 	
-	NoOfInputFiles = pipeNoOfInputFiles();
-	if(NoOfInputFiles==0){
+	NoOfTestCases = pipeNoOfTestCases();
+	if(NoOfTestCases==0){
 		ToLogs("IE ERROR No Input File Specified. Please rectify the problem\n");
+		strcpy(status, "IE No Input File Specified.");
+		strcpy(detailstatus, "
 		return -1;
 	}
-	sprintf(systemString, "Number of Test Cases = %d",NoOfInputFiles);
+	sprintf(systemString, "Number of Test Cases = %d",NoOfTestCases);
 	ToLogs(systemString);
 	return 0;
 }
@@ -169,7 +171,7 @@ void FileHandle::PipeExecute(){
 }
 	
 void FileHandle::Execution(){
-	for(TestCaseId=1; TestCaseId<=NoOfInputFiles; TestCaseId++){
+	for(TestCaseId=1; TestCaseId<=NoOfTestCases; TestCaseId++){
 		PipeExecute();
 		strcpy(str, ExecutionStr.c_str()); ToLogs(str);
 		token = strtok(str, " \n");
@@ -237,7 +239,7 @@ void FileHandle::CleanUp(){
 	system(systemString);
 }
 
-void FileHandle::Action(){
+void FileHandle::FileOperations(){
 
 	if(FetchFile() == -1) return;
 	if(CheckMIME() == -1) return;
@@ -255,11 +257,13 @@ void FileHandle::Action(){
 
 	Execution(TimeLimit, MemoryLimit);
 	
-	F->SendResults();
-	//CleanUp();
-	
+}
+
+void FileHandle::Action(){
+	FileOperations();
+	SendResults();
 }
 
 FileHandle::~FileHandle(){
-	//CleanUp();
+	;//CleanUp();
 }
