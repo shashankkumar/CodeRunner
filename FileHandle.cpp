@@ -263,6 +263,9 @@ void FileHandle::FileOperations(){
 
 }
 
+void FileHandle::getResult(){
+	return result;
+}
 void FileHandle::Action(){
 	FileOperations();
 	SendResults();

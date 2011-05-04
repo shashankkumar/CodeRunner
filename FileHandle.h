@@ -30,6 +30,7 @@ class FileHandle{
 	void SendResults();
 	void CleanUp();
 	
+	bool getResult();
 	void FileOperations();
 	void Action();
 

@@ -1,8 +1,8 @@
 /**************************************************************************
 CodeRunner - the online judge
-Author: Shashank Kumar <supershashank2@gmail.com>
+Author: Shashank Kumar <shashankkumar.me@gmail.com>
 Copyright (c): 2010 All rights reserved
-Version: 0.6.2
+Version: 1.5
 
  * This is a free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -14,7 +14,7 @@ Version: 0.6.2
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
   
-You may contact the author of Grader by e-mail at:
+You may contact the author of CodeRunner by e-mail at:
 shashankkumar.me@gmail.com
 
 ****************************************************************************/
@@ -24,15 +24,14 @@ shashankkumar.me@gmail.com
 
 void FileThread(int FileId, const char* ProblemId, int TimeLimit, int MemoryLimit, const char* lang){
 	
-	FileHandle *F = new FileHandle(FileId, ProblemId, lang);
-	int TestCaseId; int ErrNo;
+	FileHandle *F = new FileHandle(FileId, ProblemId, TimeLimit, MemoryLimit, lang);
 	
 	if(F->FetchFile()==-1) return;
 	if(F->MakeDir()==-1) return;
 	
 	F->Compile();
 	
-	if(F->result==true){
+	if(F->getResult()==true){
 		if(F->PrepareToExecute()==-1){
 			F->CleanUp();
 			return;
