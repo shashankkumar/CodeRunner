@@ -1,7 +1,6 @@
 void FileThread(int FileId, const char* ProblemId, int TimeLimit, int MemoryLimit, const char* lang){
 	
 	FileHandle *F = new FileHandle(FileId, ProblemId, lang);
-	int TestCaseId; int ErrNo;
 	
 	if(F->FetchFile()==-1) return;
 	if(F->MakeDir()==-1) return;

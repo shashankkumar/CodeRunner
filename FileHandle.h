@@ -1,5 +1,5 @@
-#ifndef FILEHANDLE
-#define FILEHANDLE
+#ifndef FILEHANDLE_H
+#define FILEHANDLE_H
 #include "includes.h"
 #include "CurlWrapper.h"
 class FileHandle{
@@ -12,9 +12,12 @@ class FileHandle{
 	string CompileOutput;
 	CurlWrapper FileCurl;
 	string ExecutionStr;
+	bool result;
   public:
-	FileHandle(int fileid, const char* pid, const char* l);
+	FileHandle(int fileid, const char* pid, int tl, int ml, const char* l);
+	~FileHandle();
 	int FetchFile();
+	int CheckMIME();
 	int MakeDir();
 	void Compile();
 	void pipeCompile();
@@ -26,7 +29,8 @@ class FileHandle{
 	void pipeMatch();
 	void SendResults();
 	void CleanUp();
-		bool result;
+	
+	void Action();
 
 };
 #endif

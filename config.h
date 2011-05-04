@@ -1,5 +1,5 @@
-#ifndef CONFIG
-#define CONFIG
+#ifndef CONFIG_H
+#define CONFIG_H
 #define USERNAME ""
 #define PASSWORD ""
 #define FTPUSERNAME ""
@@ -13,6 +13,7 @@
 #define TESTCASESPATH "./TestCases/"
 #define URLToSendResults "http://192.168.208.208/codevillage/update_result2.php"
 #define FetchFileFromFTP true
+#define LOGFILEPATH "./Logs/logs.txt"
 
 FILE * logFile;
 

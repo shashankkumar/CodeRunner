@@ -90,8 +90,10 @@ int main(){
 		printf("FileId: %d  ProblemId: %s  TimeLimit: %d  MemoryLimit: %d  lang: %s\n", FileId, ProblemId, TimeLimit, MemoryLimit, lang);
 		
 		// FileThread to carry out grading of the file
-		FileThread(FileId, ProblemId, TimeLimit, MemoryLimit, lang);
-		
+		//FileThread(FileId, ProblemId, TimeLimit, MemoryLimit, lang);
+		FileHandle *F = new FileHandle(FileId, ProblemId, TimeLimit, MemoryLimit, lang);
+		F->Action();
+		delete F;
 	}
 	delete C;	//Clean up
 	ToLogs("Going to sleep for 5 seconds");
