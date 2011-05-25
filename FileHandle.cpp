@@ -1,7 +1,7 @@
 #include "FileHandle.h"
 
-FileHandle::FileHandle(int fid, const char* pid, int tl, int ml, const char* language){
-	FileId = fid;
+FileHandle::FileHandle(int FileId, const char* pid, int tl, int ml, const char* language){
+	this->FileId = FileId;
 	TimeLimit = tl;
 	MemoryLimit = ml;
 	TimeUsed=0.0;
