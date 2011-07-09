@@ -57,12 +57,12 @@ int CurlWrapper::GetFileFromFTP(int FileId){
 	    curl_easy_cleanup(curl);
 	    if(CURLE_OK != res) {
 	       	sprintf(logs, "Failure to fetch file using FTP request. Curl Error code: %d\n", res);
-   			ToLogs(logs);
+   			Logs::WriteLine(logs);
 	    	return -1;
 	    }
 	}
-	sprintf(logs, "File successfully downloaded");
-	ToLogs(logs);
+	sprintf(logs, "File fetched successfully through FTP request.");
+	Logs::WriteLine(logs);
 	return 0;
 }
 	
@@ -100,11 +100,11 @@ int CurlWrapper::GetFileFromHTTP(int FileId){
    		fclose(fp);
    		
    		if(CURLE_OK!=res){
-   			ToLogs("Failure to fetch file through HTTP request...");
+   			Logs::WriteLine("Failure to fetch file through HTTP request...");
    			return -1;
    		}
    		else{
-   			ToLogs("File fetched successfully through HTTP request...");
+   			Logs::WriteLine("File fetched successfully through HTTP request...");
    			return 0;
    		}
    	}
@@ -145,13 +145,13 @@ int CurlWrapper::FetchContentFromWebpage(string *content){
     	curl_slist_free_all (headerlist);
    		if(CURLE_OK!=res){
    			sprintf(logs, "Failure to fetch File Ids. Curl Error code: %d", res);
-   			ToLogs(logs);
+   			Logs::WriteLine(logs, true);
    			return -1;
    			
    		}
    		else{
    			sprintf(logs, "File Ids fetched succesfully.");
-   			ToLogs(logs);
+   			Logs::WriteLine(logs, true);
    			return 0;
    		}
    		
@@ -197,12 +197,12 @@ void CurlWrapper::SendResultsToWebpage(const char* fileid, const char* status, c
     	curl_slist_free_all (headerlist);
    		if(CURLE_OK!=res){
    			sprintf(logs, "Could not send results. Curl Error code: %d\n", res);
-   			ToLogs(logs);
+   			Logs::WriteLine(logs);
    			
    		}
    		else{
    			sprintf(logs, "Results sent succesfully.\n");
-   			ToLogs(logs);
+   			Logs::WriteLine(logs);
    		}
    		
   	}

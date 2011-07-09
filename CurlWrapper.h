@@ -1,6 +1,8 @@
 #ifndef CURLWRAPPER
 #define CURLWRAPPER
 #include "includes.h"
+#include "Logs.h"
+
 class CurlWrapper{
 public:
 	CURL *curl;
@@ -9,6 +11,7 @@ public:
   	
   	CurlWrapper(){
   		curl_global_init(CURL_GLOBAL_DEFAULT);
+  		Logs::OpenLogFile();
   		}
   		
   	~CurlWrapper(){

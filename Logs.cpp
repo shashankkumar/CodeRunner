@@ -1,17 +1,27 @@
 #include "Logs.h"
 
-Logs::Logs(){
-	pLogFile = fopen(LOGFILEPATH, "a");
+FILE * Logs::pLogFile = fopen(LOGFILEPATH, "a");
+time_t Logs::rawtime;
+char Logs::curtime[100];
+
+void Logs::OpenLogFile(){
+	if(pLogFile==NULL)
+		pLogFile = fopen(LOGFILEPATH, "a");
 }
 
-static void Logs::SetTime(){
+void Logs::CloseLogFile(){
+	if(pLogFile!=NULL)
+		fclose(pLogFile);
+}
+
+void Logs::SetTime(){
 	time( &rawtime );
 	strcpy(curtime, ctime(&rawtime));
 	int l = strlen(curtime);
 	//curtime[l-5]='\0';
 }
 
-static void Logs::SetAndPrintTime(){
+void Logs::SetAndPrintTime(){
 	time( &rawtime );
 	strcpy(curtime, ctime(&rawtime));
 	int l = strlen(curtime);
@@ -19,16 +29,25 @@ static void Logs::SetAndPrintTime(){
 	fwrite(curtime, 1, sizeof(curtime), pLogFile);
 }
 
-static void Logs::ToLogs(const char* logs, bool PrintTime = false){
+void Logs::Write(const char* logs, bool PrintTime){
 	if(PrintTime) SetAndPrintTime();
 	fwrite(logs, 1, sizeof(logs), pLogFile);
 }
 
-static void Logs::ToLogs(char* logs, bool PrintTime = false){
+void Logs::Write(char* logs, bool PrintTime){
 	if(PrintTime) SetAndPrintTime();
 	fwrite(logs, 1, sizeof(logs), pLogFile);
 }
 
-Logs::~Logs(){
-	fclose(pLogFile);
+void Logs::WriteLine(const char* logs, bool PrintTime){
+	if(PrintTime) SetAndPrintTime();
+	fwrite(logs, 1, sizeof(logs), pLogFile);
+	fwrite("\n", 1, 1, pLogFile);
 }
+
+void Logs::WriteLine(char* logs, bool PrintTime){
+	if(PrintTime) SetAndPrintTime();
+	fwrite(logs, 1, sizeof(logs), pLogFile);
+	fwrite("\n", 1, 1, pLogFile);
+}
+

@@ -15,12 +15,11 @@
 #define FetchFileFromFTP true
 #define LOGFILEPATH "./Logs/logs.txt"
 
-FILE * logFile;
 
 void ToLogs(const char* log){
 	printf("%s\n",log);
-	logFile = fopen("logs.txt", "a");
-	fputs(log, logFile);
+//	logFile = fopen("logs.txt", "a");
+	//fputs(log, logFile);
 	return;
 }
 #endif

@@ -10,6 +10,9 @@ FileHandle::FileHandle(int FileId, const char* pid, int tl, int ml, const char* 
 	lang = language;
 	result=true;
 	sprintf(detailstatus,"\0");
+	Logs::OpenLogFile();
+	sprintf(logs, "Beginning operations on File Id ==> %d\n", FileId);
+	Logs::WriteLine(logs, true);
 }
 
 int FileHandle::FetchFile(){
@@ -37,7 +40,7 @@ int FileHandle::CheckMIME(){
 	if ( !(fpipe = (FILE*)popen(command,"r")) ){  
 	// If fpipe is NULL
 		perror("Problems with pipe");
-		ToLogs("Problems with pipe");
+		Logs::WriteLine("Problems with pipe");
 		return -1;
 	}
 	else{
@@ -57,10 +60,10 @@ int FileHandle::MakeDir(){
 	int ErrNo;
 	char dirString[100];
 	sprintf(dirString, "%s%d",FILEPATH, FileId);
-	ToLogs("Creating directory with File Id");
+	Logs::WriteLine("Creating directory.");
 	if( mkdir(dirString, S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH | S_IWOTH)==-1){
 		ErrNo=errno;
-		if(ErrNo==17) ToLogs("Directory already created.. Continuing");
+		if(ErrNo==17) Logs::WriteLine("Directory already created.. Continuing");
 		else {
 			strcpy(status, "IE");
 			sprintf(detailstatus, "Failure to create directory for file operations. Error Number: %d", errno);
@@ -68,9 +71,9 @@ int FileHandle::MakeDir(){
 		}
 	}
 	sprintf(systemString, "cp %s%d.txt %s%d/main.%s", FILEPATH, FileId, FILEPATH, FileId, lang);
-	ToLogs(systemString);	
 	if(system(systemString)==-1){
-		ToLogs("Error in copying dowloaded file.");
+		strcpy(status, "IE");
+		strcpy(detailstatus, "Error in copying dowloaded file.");
 		return -1;
 	}
 	return 0;
@@ -79,12 +82,12 @@ int FileHandle::MakeDir(){
 void FileHandle::Compile(){
 	pipeCompile();
 	if(CompileOutput.length()!=0){
-		ToLogs("Compilation unsuccessful"); //ToLogs(CompileOutput.c_str());
+		Logs::WriteLine("Unsuccessful"); 
 		result = false;
 		strcpy(status, "CE");
 		strcpy(detailstatus, CompileOutput.c_str());
 	}
-	else ToLogs("Compilation successful\n");
+	else Logs::WriteLine("Successful\n");
 }
 
 void FileHandle::pipeCompile(){
@@ -95,12 +98,12 @@ void FileHandle::pipeCompile(){
     	sprintf(command, "g++ -w -static %s%d/main.c -o %s%d/main 2>&1", FILEPATH, FileId, FILEPATH, FileId);
     else if(strcmp(lang, "java")==0)
 		sprintf(command, "javac -nowarn -deprecation %s%d/main.java  2>&1", FILEPATH, FileId);    	
-    ToLogs("Compiling file...");
+    Logs::Write("Compiling file ==>  ");
 	char line[256];
 	
 	if ( !(fpipe = (FILE*)popen(command,"r")) ){  
 		perror("Problems with pipe");
-		ToLogs("Problems with pipe");
+		Logs::WriteLine("Problems with pipe");
 	}
 	else{
 		while ( fgets( line, sizeof line, fpipe)){
@@ -118,7 +121,7 @@ int FileHandle::pipeNoOfTestCases(){
 	if ( !(fpipe = (FILE*)popen(command,"r")) ){  
 	// If fpipe is NULL
 		perror("Problems with pipe");
-		ToLogs("Problems with pipe");
+		Logs::WriteLine("Problems with pipe");
 		return -1;
 	}
 	else{
@@ -135,13 +138,12 @@ int FileHandle::PrepareToExecute(){
 	
 	NoOfTestCases = pipeNoOfTestCases();
 	if(NoOfTestCases==0){
-		ToLogs("IE ERROR No Input File Specified. Please rectify the problem\n");
 		strcpy(status, "IE");
 		strcpy(detailstatus, "No Test Case file specified.");
 		return -1;
 	}
 	sprintf(systemString, "Number of Test Cases = %d",NoOfTestCases);
-	ToLogs(systemString);
+	Logs::WriteLine(systemString);
 	return 0;
 }
 	
@@ -154,13 +156,12 @@ void FileHandle::PipeExecute(){
     	sprintf(command, "./java_Execution %d %d %d %d %s", FileId, TestCaseId, TimeLimit, MemoryLimit, lang);
     }
     
-   	ToLogs(command);
-	char line[1024];
+   	char line[1024];
 
 	if ( !(fpipe = (FILE*)popen(command,"r")) ){  
 	// If fpipe is NULL
 		perror("Problems with pipe");
-		ToLogs("Problems with pipe");
+		Logs::WriteLine("Problems with pipe");
 	}
 	else{
 		while ( fgets( line, sizeof line, fpipe)){
@@ -171,9 +172,13 @@ void FileHandle::PipeExecute(){
 }
 	
 void FileHandle::Execute(){
-	for(TestCaseId=1; TestCaseId<=NoOfTestCases; TestCaseId++){
+	
+	Logs::WriteLine("Beginning Execution...");
+	
+	for( TestCaseId = 1; TestCaseId <= NoOfTestCases; TestCaseId++ ){
+
 		PipeExecute();
-		strcpy(str, ExecutionStr.c_str()); ToLogs(str);
+		strcpy(str, ExecutionStr.c_str());
 		token = strtok(str, " \n");
 		strcpy(status, token);
 		if(strcmp(token, "AC")!=0) result=false;
@@ -181,19 +186,31 @@ void FileHandle::Execute(){
 			token = strtok(NULL, "\n");
 			strcpy(detailstatus, token);
 		}
-		token = strtok(NULL, " \n"); sprintf(tmp, "%s", token);
-		TimeUsed+=(float)atof(tmp);
-		if(TimeUsed>(float)TimeLimit){
+		token = strtok(NULL, " \n"); sprintf(TestCaseExecutionTime, "%s", token);
+		TimeUsed += (float) atof( TestCaseExecutionTime );
+		if( TimeUsed > (float) TimeLimit){
 			result = false;
 			sprintf(status, "TLE");
 			sprintf(detailstatus, "\0");
 		}
-		if(result==false) break;
+		
+		sprintf(logs, "%d ==> %s %s %s", TestCaseId, status, detailstatus, TestCaseExecutionTime);
+		Logs::Write(logs);
+		if(result==false){
+			break;
+		}
 	}
 	
+	if(result==true) Logs::WriteLine("Execution ==> Successful");
+	else Logs::WriteLine("Execution ==> Failed");
+	Logs::WriteLine("Matching Output... ");
 	for(TestCaseId=1; (result==true && TestCaseId<=NoOfTestCases); TestCaseId++){
 		MatchOutput();
-		if(result==false) strcpy(status,"WA");
+		if(result==false){
+			sprintf(logs, "Failed on test case %d", TestCaseId);
+			Logs::WriteLine(logs);	
+			strcpy(status,"WA");
+		}
 	}
 }
 	
@@ -204,27 +221,16 @@ void FileHandle::pipeMatch(){
 	if ( !(fpipe = (FILE*)popen(command,"r")) ){  
 	// If fpipe is NULL
 		perror("Problems with pipe");
-		ToLogs("Problems with pipe");
+		Logs::WriteLine("Problems with pipe");
 	}
 	else{
 		while ( fgets( line, sizeof line, fpipe)){
-			char tmp[90];
-			sprintf(tmp, "%s", line);
-			ToLogs(tmp);
 			result = false;
 		}
 	}
 	pclose(fpipe);
 }
 
-void FileHandle::SendResults(){
-	sprintf(timeused, "%0.3f", TimeUsed);
-	sprintf(memoryused, "%d", MemoryUsed);
-	sprintf(fileid, "%d", FileId);
-	sprintf(logs, "%s %s %s %s %s", fileid, status, detailstatus, timeused, memoryused); ToLogs(logs);
-	FileCurl.SendResultsToWebpage(fileid, status, detailstatus, timeused, memoryused);
-}
-	
 void FileHandle::MatchOutput(){
 	char FromFileStr[100], ToFileStr[100];
 	sprintf(FromFileStr, "%s%s/Output/%d.txt", TESTCASESPATH, ProblemId, TestCaseId);
@@ -232,6 +238,17 @@ void FileHandle::MatchOutput(){
 	char cmd[100];
 	sprintf(command, "diff %s %s --ignore-all-space --ignore-blank-lines --ignore-tab-expansion --ignore-space-change --brief 2>&1", FromFileStr, ToFileStr);
 	pipeMatch();
+}
+
+void FileHandle::SendResults(){
+	sprintf(timeused, "%0.3f", TimeUsed);
+	sprintf(memoryused, "%d", MemoryUsed);
+	sprintf(fileid, "%d", FileId);
+	sprintf(logs, "FileId ==> %s\n Status==>%s DetailStatus==>%s TimeUsed==>%s MemoryUsed==>%s", fileid, status, detailstatus, timeused, memoryused); 
+	Logs::WriteLine(logs, true);
+	FileCurl.SendResultsToWebpage(fileid, status, detailstatus, timeused, memoryused);
+
+	Logs::WriteLine("\n================================================================================\n");
 }
 	
 void FileHandle::CleanUp(){
@@ -247,7 +264,7 @@ void FileHandle::FileOperations(){
 	if(MakeDir()==-1) return;
 
 	Compile();
-
+	
 	if(result==false){
 		CleanUp();
 		return;
@@ -265,6 +282,7 @@ void FileHandle::FileOperations(){
 bool FileHandle::getResult(){
 	return result;
 }
+
 void FileHandle::Action(){
 	FileOperations();
 	SendResults();
