@@ -4,11 +4,18 @@
 
 class Logs{
   private:
+  int FileId;
+  static File * pLogFile;
+  static time_t rawtime;
+  static char curtime[100];
   public:
 	Logs();
-	Logs(int FileId);
-	ToLogs(const char* logs);
-	ToLogs(char* logs);
+	static void ToLogs(const char* logs);
+	static void ToLogs(char* logs);
+	static void SetTime();
+	static void SetAndPrintTime();
+	static void SetFileId(int FileId);
 	~Logs();
+	
 };
 #endif
