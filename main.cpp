@@ -19,10 +19,11 @@ shashankkumar.me@gmail.com
 
 ****************************************************************************/
 #include "includes.h"
+#include "ContentParser.h"
 #include "CurlWrapper.h"
 #include "FileHandle.h"
 #include "Logs.h"
-
+s
 int main()
 {
 
@@ -40,7 +41,7 @@ int main()
 
 	// Processing begins
 	if (CurlVar->FetchContentFromWebpage(&strContent) == -1) {
-	    delete C;		//Clean up
+	    delete CurlVar;		//Clean up
 	    Logs::WriteLine("Going to sleep for 5 seconds");
 	    sleep(5);
 	    continue;
@@ -59,7 +60,7 @@ int main()
 	    
 	    if (content[ixE] == '\0')
 			break;
-	   
+	    
 	   	memcpy(FileInfo, content + ixS, ixE - ixS);
 	    FileInfo[ixE - ixS] = '\0';
 	    while (content[ixE] == '\n')
@@ -85,7 +86,7 @@ int main()
 	    F->Action();
 	    delete F;
 	}
-	delete C;		//Clean up
+	delete CurlVar;		//Clean up
 	Logs::WriteLine("Going to sleep for 5 seconds", true);
 	sleep(5);
     }
