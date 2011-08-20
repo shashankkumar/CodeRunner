@@ -112,7 +112,7 @@ int CurlWrapper::GetFileFromHTTP(int FileId){
 }
 
 	
-int CurlWrapper::FetchContentFromWebpage(string *content){
+int CurlWrapper::FetchContentFromWebPage(string *content){
 		
 	struct curl_httppost *formpost = NULL;
 	struct curl_httppost *lastptr = NULL;
