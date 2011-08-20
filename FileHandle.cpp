@@ -13,6 +13,8 @@ FileHandle::FileHandle(int FileId, const char* pid, int tl, int ml, const char* 
 	Logs::OpenLogFile();
 	sprintf(logs, "Beginning operations on File Id ==> %d\n", FileId);
 	Logs::WriteLine(logs, true);
+	sprintf(logs, "File Id ==> %d, Problem Id ==> %s, TimeLimit ==> %d, MemoryLimit ==> %d, Lang ==> %s", FileId, ProblemId, TimeLimit, MemoryLimit, lang);
+	Logs::WriteLine(logs);
 }
 
 int FileHandle::FetchFile(){
@@ -35,7 +37,7 @@ int FileHandle::FetchFile(){
 int FileHandle::CheckMIME(){
 	FILE *fpipe;
     char line[256];
-    sprintf(command, "file -b --mime-type %s%d.%s", FILEPATH, FileId, lang);
+    sprintf(command, "file -b --mime-type %s%d.txt", FILEPATH, FileId);
 	
 	if ( !(fpipe = (FILE*)popen(command,"r")) ){  
 	// If fpipe is NULL
@@ -45,6 +47,7 @@ int FileHandle::CheckMIME(){
 	}
 	else{
 		if ( fgets( line, sizeof line, fpipe)){
+			printf("\n%s\n", line);
 			if(strncmp(line, "text", 4) != 0){
 				result = false;
 				strcpy(status, "CE");
