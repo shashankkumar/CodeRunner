@@ -14,9 +14,11 @@ class Logs{
 	static void Write(char* logs, bool PrintTime = false);
 	static void WriteLine(const char* logs, bool PrintTime = false);
 	static void WriteLine(char* logs, bool PrintTime = false);
+	static void LeaveLine();
 	static void SetTime();
 	static void SetAndPrintTime();
 	static void SetFileId(int FileId);
-	
+	static void GoToSleep();
+	static void CodeRunnerStarted();
 };
 #endif

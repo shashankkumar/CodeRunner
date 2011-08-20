@@ -1,17 +1,16 @@
 #include "Logs.h"
 
-FILE * Logs::pLogFile = fopen(LOGFILEPATH, "a");
+FILE * Logs::pLogFile;
 time_t Logs::rawtime;
 char Logs::curtime[100];
 
 void Logs::OpenLogFile(){
-	if(pLogFile==NULL)
-		pLogFile = fopen(LOGFILEPATH, "a");
+	pLogFile = fopen(LOGFILEPATH, "a");
+	if(pLogFile==NULL)printf("Cannot open log file for logging.");
 }
 
 void Logs::CloseLogFile(){
-	if(pLogFile!=NULL)
-		fclose(pLogFile);
+	fclose(pLogFile);
 }
 
 void Logs::SetTime(){
@@ -27,27 +26,49 @@ void Logs::SetAndPrintTime(){
 	int l = strlen(curtime);
 	//curtime[l-5]='\0';
 	fwrite(curtime, 1, sizeof(curtime), pLogFile);
+	printf("%s", curtime);
 }
 
 void Logs::Write(const char* logs, bool PrintTime){
 	if(PrintTime) SetAndPrintTime();
-	fwrite(logs, 1, sizeof(logs), pLogFile);
+	fputs(logs, pLogFile);
+	printf("%s", logs);
 }
 
 void Logs::Write(char* logs, bool PrintTime){
 	if(PrintTime) SetAndPrintTime();
-	fwrite(logs, 1, sizeof(logs), pLogFile);
+	fputs(logs, pLogFile);
+	printf("%s", logs);
 }
 
 void Logs::WriteLine(const char* logs, bool PrintTime){
 	if(PrintTime) SetAndPrintTime();
-	fwrite(logs, 1, sizeof(logs), pLogFile);
-	fwrite("\n", 1, 1, pLogFile);
+	fputs(logs, pLogFile);
+	fputs("\n", pLogFile);
+	printf("%s\n", logs);
 }
 
 void Logs::WriteLine(char* logs, bool PrintTime){
 	if(PrintTime) SetAndPrintTime();
-	fwrite(logs, 1, sizeof(logs), pLogFile);
-	fwrite("\n", 1, 1, pLogFile);
+	//printf("\n%lu\n" , sizeof((*logs)));
+	fputs(logs, pLogFile);
+	fputs("\n", pLogFile);
+	printf("%s\n", logs);
 }
 
+void Logs::GoToSleep(){
+	char SleepText[50];;
+	sprintf(SleepText, "Going to sleep for %d seconds.\n", SLEEPINTERVAL);
+	Logs::WriteLine(SleepText);
+	Logs::WriteLine("============================================================================\n");
+}
+
+void Logs::CodeRunnerStarted(){
+	Logs::WriteLine("============================================================================\n");
+	Logs::WriteLine("CodeRunner Started", false);
+	Logs::LeaveLine();
+}
+
+void Logs::LeaveLine(){
+	Logs::WriteLine("");
+}
