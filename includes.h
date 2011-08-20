@@ -5,6 +5,8 @@
 #include <cstdlib>
 #include <cmath>
 #include <cstring>
+#include <cctype>
+#include <ctime>
 
 #include <unistd.h>
 #include <sys/times.h>
