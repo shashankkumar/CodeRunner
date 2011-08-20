@@ -2,6 +2,7 @@
 #define CONTENTPARSER_H
 #include "includes.h"
 #include "CurlWrapper.h"
+#include "Logs.h"
 
 struct FileInfoStruct{
 	int FileId;
@@ -13,12 +14,17 @@ struct FileInfoStruct{
 
 class ContentParser{
   private:
-	static char* FileInfoListStr;
-	static int Ix;
+	char* FileInfoListStr;
+	int Ix;
 	FileInfoStruct FileInfo;
 	
   public:
-	static int FetchFileIdList()
-	static void GetNextFileInfo();
+	
+	int FetchFileInfoList();
+	char read_char();
+	int read_int();
+	void read_char_str(char *);
+	bool EndOfContent();
+	FileInfoStruct GetNextFileInfo();
 };
 #endif
