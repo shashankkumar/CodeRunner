@@ -1,8 +1,8 @@
 #include "includes.h"
 #include "ContentParser.h"
 
-int ContentParser::FetchFileIdList(){
-	CurlWrapper *CurlVar = new CurWrapper();
+int ContentParser::FetchFileInfoList(){
+	CurlWrapper *CurlVar = new CurlWrapper();
 	string strContent;
 		
 	if(CurlVar->FetchContentFromWebPage(&strContent) == -1) {
@@ -12,16 +12,19 @@ int ContentParser::FetchFileIdList(){
 	    
 	FileInfoListStr = new char[strContent.size() + 1];
 	strcpy(FileInfoListStr, strContent.c_str());
+	
+	Logs::WriteLine(FileInfoListStr);
+	
 	Ix = 0;
 	delete CurlVar;
 	return 0;
 }
 
-char read_char() {
+char ContentParser::read_char() {
 	return FileInfoListStr[ Ix++ ];
 }
 
-int read_int(){
+int ContentParser::read_int(){
 	char c; int ret;
           
     while( !isdigit( c = read_char() ) );
@@ -29,21 +32,34 @@ int read_int(){
 
     while(  isdigit( c = read_char() ) )
 	    ret = ( ret * 10 + c - '0' );
+	
+	return ret;
 }
 
-void read_char_str(char * ret)
-
-	for(int i=0;i<10 && isalnum(FileInfoListStr[Ix]) ;Ix++, i++){
+void ContentParser::read_char_str(char * ret){
+	int i;
+	for(i=0;i<10 && isalnum(FileInfoListStr[Ix]) ;Ix++, i++){
 		ret[i] = FileInfoListStr[Ix];
 	}
 	ret[i]='\0';
 }
 
-void GetNextFileInfo(){
+bool ContentParser::EndOfContent(){
+	while(true){
+		if(isdigit(FileInfoListStr[Ix])) return false;
+		else if(FileInfoListStr[Ix] == '\0') return true;
+		Ix++;
+	}
+}
+
+FileInfoStruct ContentParser::GetNextFileInfo(){
 	FileInfo.FileId = read_int();
 	read_char_str(FileInfo.ProblemId);
 	FileInfo.TimeLimit = read_int();
 	FileInfo.MemoryLimit = read_int();
 	read_char_str(FileInfo.lang);
+	
+	return FileInfo;
+	;
 }
 
