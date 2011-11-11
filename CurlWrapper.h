@@ -30,7 +30,7 @@ public:
  	int GetFileFromFTP(int FileId);
 	int GetFileFromHTTP(int FileId);
 	int FetchContentFromWebPage(string *content);
-	void SendResultsToWebpage(const char* fileid, const char* status, char* detailstatus, const char* time, const char* memory);
+	void SendResultsToWebpage(const char* fileid, const char* status, const char* detailstatus, const char* time, const char* memory);
 	
 };
 

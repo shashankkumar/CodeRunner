@@ -48,7 +48,12 @@ int FileHandle::CheckMIME(){
 	else{
 		if ( fgets( line, sizeof line, fpipe)){
 			printf("\n%s\n", line);
-			if(strncmp(line, "text", 4) != 0){
+			if(strncmp(line+12, "x-empty", 7)==0){
+				result = false;
+				strcpy(status, "CE");
+				strcpy(detailstatus, "You have submitted an empty file!");
+			}
+			else if(strncmp(line, "text", 4) != 0){
 				result = false;
 				strcpy(status, "CE");
 				strcpy(detailstatus, "The source file is not a text file. Failed MIME check test.");
@@ -88,7 +93,9 @@ void FileHandle::Compile(){
 		Logs::WriteLine("Unsuccessful"); 
 		result = false;
 		strcpy(status, "CE");
-		strcpy(detailstatus, CompileOutput.c_str());
+		
+		if(strlen(CompileOutput.c_str())<=500) strcpy(detailstatus, CompileOutput.c_str());
+		printf("%d %d\n", (int)strlen(CompileOutput.c_str()), (int)strlen(detailstatus));
 	}
 	else Logs::WriteLine("Successful\n");
 }

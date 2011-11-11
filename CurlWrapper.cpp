@@ -110,7 +110,6 @@ int CurlWrapper::GetFileFromHTTP(int FileId){
    	}
    	return -1;
 }
-
 	
 int CurlWrapper::FetchContentFromWebPage(string *content){
 		
@@ -159,7 +158,7 @@ int CurlWrapper::FetchContentFromWebPage(string *content){
   	return -1;		// Control should not reach here in normal circumstances
 }
 
-void CurlWrapper::SendResultsToWebpage(const char* fileid, const char* status, char* detailstatus, const char* time, const char* memory){
+void CurlWrapper::SendResultsToWebpage(const char* fileid, const char* status, const char* detailstatus, const char* time, const char* memory){
 		
 	struct curl_httppost *formpost = NULL;
 	struct curl_httppost *lastptr = NULL;
@@ -173,7 +172,7 @@ void CurlWrapper::SendResultsToWebpage(const char* fileid, const char* status, c
 	curl_formadd( &formpost, &lastptr, CURLFORM_COPYNAME, "password", CURLFORM_COPYCONTENTS, PASSWORD, CURLFORM_END);
 	curl_formadd( &formpost, &lastptr, CURLFORM_COPYNAME, "fileid", CURLFORM_COPYCONTENTS, fileid, CURLFORM_END);
 	curl_formadd( &formpost, &lastptr, CURLFORM_COPYNAME, "status", CURLFORM_COPYCONTENTS, status, CURLFORM_END);
-	printf("%s\n", detailstatus);
+	//printf("%s\n", detailstatus);
 	curl_formadd( &formpost, &lastptr, CURLFORM_COPYNAME, "detailstatus", CURLFORM_COPYCONTENTS, detailstatus, CURLFORM_END);
 	curl_formadd( &formpost, &lastptr, CURLFORM_COPYNAME, "time", CURLFORM_COPYCONTENTS, time, CURLFORM_END);
 	curl_formadd( &formpost, &lastptr, CURLFORM_COPYNAME, "memory", CURLFORM_COPYCONTENTS, memory, CURLFORM_END);

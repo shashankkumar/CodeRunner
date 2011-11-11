@@ -49,7 +49,7 @@ int main()
 		Logs::OpenLogFile();
 		bool CurrentIteration = true;
 		ContentParser *ContentVar = new ContentParser();
-		if(ContentVar->FetchFileInfoList()!=0){
+		if(ContentVar->FetchFileInfoList()==-1){
 			CurrentIteration = false;
 		}
 		
@@ -57,11 +57,13 @@ int main()
 			Logs::WriteLine("File Queue Empty. Nothing to evaluate.");
 			CurrentIteration = false;
 		}
+		
 		while(CurrentIteration && !ContentVar->EndOfContent()){
 			FileInfoStruct FileInfo = ContentVar->GetNextFileInfo();
 			FileHandle F(FileInfo.FileId, FileInfo.ProblemId, FileInfo.TimeLimit, FileInfo.MemoryLimit, FileInfo.lang);
 			F.Action();
 		} 
+		
 		if(CurrentIteration) Logs::WriteLine("Current batch of files evaluated.");
 		
 		delete ContentVar;

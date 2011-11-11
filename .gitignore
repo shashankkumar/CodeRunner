@@ -4,3 +4,4 @@ TestCases/*
 Files/*
 Logs/*
 main
+config.h
