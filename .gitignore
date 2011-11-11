@@ -1,7 +1,11 @@
 *.[oa]
 *~
 TestCases/*
+<<<<<<< HEAD
 Files/*
 Logs/*
 main
 config.h
+=======
+TestCases2/*
+>>>>>>> master
