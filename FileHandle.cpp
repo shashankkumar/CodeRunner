@@ -183,12 +183,13 @@ void FileHandle::PipeExecute(){
 	
 void FileHandle::Execute(){
 	
-	Logs::WriteLine("Beginning Execution...");
+	Logs::WriteLine("Beginning Execution... ");
 	
 	for( TestCaseId = 1; TestCaseId <= NoOfTestCases; TestCaseId++ ){
 
 		PipeExecute();
 		strcpy(str, ExecutionStr.c_str());
+		printf("\n%s\n", str);
 		token = strtok(str, " \n");
 		strcpy(status, token);
 		if(strcmp(token, "AC")!=0) result=false;
@@ -198,13 +199,14 @@ void FileHandle::Execute(){
 		}
 		token = strtok(NULL, " \n"); sprintf(TestCaseExecutionTime, "%s", token);
 		TimeUsed += (float) atof( TestCaseExecutionTime );
+		printf("time - %f %d\n", TimeUsed, TimeLimit);
 		if( TimeUsed > (float) TimeLimit){
 			result = false;
 			sprintf(status, "TLE");
 			sprintf(detailstatus, "\0");
 		}
 		
-		sprintf(logs, "%d ==> %s %s %s", TestCaseId, status, detailstatus, TestCaseExecutionTime);
+		sprintf(logs, "%d ==> %s %s %s\n", TestCaseId, status, detailstatus, TestCaseExecutionTime);
 		Logs::Write(logs);
 		if(result==false){
 			break;
@@ -213,7 +215,8 @@ void FileHandle::Execute(){
 	
 	if(result==true) Logs::WriteLine("Execution ==> Successful");
 	else Logs::WriteLine("Execution ==> Failed");
-	Logs::WriteLine("Matching Output... ");
+	
+	if(result==true) Logs::WriteLine("Matching Output... ");
 	for(TestCaseId=1; (result==true && TestCaseId<=NoOfTestCases); TestCaseId++){
 		MatchOutput();
 		if(result==false){
