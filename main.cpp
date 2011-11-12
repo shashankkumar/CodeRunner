@@ -25,23 +25,14 @@ shashankkumar.me@gmail.com
 
 int main()
 {
-	char cCurrentPath[FILENAME_MAX];
-	if (!getcwd(cCurrentPath, sizeof(cCurrentPath)))
-    {
-		return errno;
-    }
-
+	
 	if(chdir(PATH)==-1)
 	{
 		printf("%d\n", errno);
-		printf("IE ERROR Cannot change directory to that of file");
+		printf("IE ERROR Cannot change directory to the one specified in config.h");
 		return 1;
 	}
-	if (!getcwd(cCurrentPath, sizeof(cCurrentPath)))
-    {
-		return errno;
-    }
-
+	
 	Logs::OpenLogFile();
 	Logs::CodeRunnerStarted();
 	Logs::CloseLogFile();
