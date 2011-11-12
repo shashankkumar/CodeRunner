@@ -24,9 +24,6 @@
 #include <curl/types.h>
 #include <curl/easy.h>
 
-#ifndef CONFIG_H
-#define CONFIG_H
 #include "config.h"
 
 using namespace std;
-#endif
