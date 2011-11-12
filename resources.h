@@ -20,12 +20,12 @@ void setResourceLimitWrapper(int TimeLimit, int MemoryLimit){
     setResourceLimit(RLIMIT_RSS, 4294967295, 4294967295);
     //setResourceLimit(RLIMIT_RTPRIO, 0, 0);
     //setResourceLimit(RLIMIT_SIGPENDING, 6144, 6144);
-    setResourceLimit(RLIMIT_STACK, 8192, 8192);
+    //setResourceLimit(RLIMIT_STACK, 8192, 8192);
     //setResourceLimit(RLIMIT_OFILE, 1, 1);						// Dont know what it is??
 }
 
 void Java_setResourceLimitWrapper(int TimeLimit, int MemoryLimit){
-    setResourceLimit(RLIMIT_CPU,TimeLimit, TimeLimit);			// Time Limit specified by the problem setter
+    setResourceLimit(RLIMIT_CPU, TimeLimit, TimeLimit);			// Time Limit specified by the problem setter
     setResourceLimit(RLIMIT_NICE,0, 0);
     // Memory Limit specified by the problem setter
     setResourceLimit(RLIMIT_AS, MemoryLimit * 1024 * 1024 * 100, MemoryLimit * 1024 * 1024 * 100);
@@ -40,7 +40,7 @@ void Java_setResourceLimitWrapper(int TimeLimit, int MemoryLimit){
     setResourceLimit(RLIMIT_RSS, 4294967295, 4294967295);
     //setResourceLimit(RLIMIT_RTPRIO, 0, 0);
     //setResourceLimit(RLIMIT_SIGPENDING, 6144, 6144);
-    setResourceLimit(RLIMIT_STACK, 8192, 8192);
+    //setResourceLimit(RLIMIT_STACK, 8192, 8192);
     //setResourceLimit(RLIMIT_OFILE, 1, 1);						// Dont know what it is??
 }
 
