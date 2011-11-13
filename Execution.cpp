@@ -135,9 +135,16 @@ int main(int args, char *argv[]){
 				ToPipe("AC");
 			}
 		}
-		else if( WIFSIGNALED(status) == true ){
-			if (WTERMSIG (status) == SIGKILL || WTERMSIG(status) == SIGALRM)
+		bool sigkill = false, sigalrm = false;
+		if( WIFSIGNALED(status) == true ){
+			if (WTERMSIG (status) == SIGKILL ){
 				ToPipe("TLE");
+				sigkill = true;
+			}
+			else if (WTERMSIG(status) == SIGALRM){
+				ToPipe("TLE");
+				sigalrm = true;
+			}
 		    else if (WTERMSIG (status) == SIGXFSZ)
 				ToPipe("RE SIGXFSZ");
 			else if (WTERMSIG (status) == SIGSEGV)
@@ -159,6 +166,8 @@ int main(int args, char *argv[]){
 		sprintf(tmp, "%0.4f", TimeUsed);
 		ToPipe(tmp);
 		printf("%d %d\n", (int)tv.tv_sec, (int)tv.tv_usec);
+		if(sigkill) printf("SIGKILL");
+		else if(sigalrm) printf("SIGALRM");
 	}
 }
 

@@ -15,3 +15,7 @@ ContentParser.o : ContentParser.cpp ContentParser.h CurlWrapper.h includes.h con
 
 Logs.o : Logs.cpp Logs.h includes.h config.h
 	g++ -c Logs.cpp
+
+.PHONY: clean
+clean:
+	rm *.o main
