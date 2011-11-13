@@ -19,11 +19,12 @@ shashankkumar.me@gmail.com
 
 ****************************************************************************/
 #include "includes.h"
+#include "FileInfo.h"
 #include "ContentParser.h"
 #include "FileHandle.h"
 #include "Logs.h"
 
-int main()
+int main(int argc, char* argv[])
 {
 	
 	if(chdir(PATH)==-1)
@@ -31,6 +32,22 @@ int main()
 		printf("%d\n", errno);
 		printf("IE ERROR Cannot change directory to the one specified in config.h");
 		return 1;
+	}
+	
+	int opt;
+	while((opt = getopt(argc, argv, "bf:p:l:")) != -1){
+		switch(opt){
+			case 'f':
+			break;
+			case 'p':
+			break;
+			case 'l':
+			break;
+			case 'b':
+			break;
+			default:
+				fprintf(stderr, "Usage: %s [-f fileid | [-p problemcode] [-l language]] [-b]", argv[0]); 
+		}
 	}
 	
 	Logs::OpenLogFile();
@@ -50,9 +67,10 @@ int main()
 		}
 		
 		while(CurrentIteration && !ContentVar->EndOfContent()){
-			FileInfoStruct FileInfo = ContentVar->GetNextFileInfo();
-			FileHandle F(FileInfo.FileId, FileInfo.ProblemId, FileInfo.TimeLimit, FileInfo.MemoryLimit, FileInfo.lang);
+			FileInfoStruct* FileInfo = ContentVar->GetNextFileInfo();
+			FileHandle F(FileInfo);
 			F.Action();
+			//delete FileInfo;
 		} 
 		
 		if(CurrentIteration) Logs::WriteLine("Current batch of files evaluated.");

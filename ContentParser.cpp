@@ -11,6 +11,7 @@ int ContentParser::FetchFileInfoList(){
 	}
 	    
 	FileInfoListStr = new char[strContent.size() + 1];
+	FileInfo = new FileInfoStruct();
 	strcpy(FileInfoListStr, strContent.c_str());
 	
 	Logs::WriteLine(FileInfoListStr);
@@ -52,12 +53,12 @@ bool ContentParser::EndOfContent(){
 	}
 }
 
-FileInfoStruct ContentParser::GetNextFileInfo(){
-	FileInfo.FileId = read_int();
-	read_char_str(FileInfo.ProblemId);
-	FileInfo.TimeLimit = read_int();
-	FileInfo.MemoryLimit = read_int();
-	read_char_str(FileInfo.lang);
+FileInfoStruct* ContentParser::GetNextFileInfo(){
+	FileInfo->FileId = read_int();
+	read_char_str(FileInfo->ProblemId);
+	FileInfo->TimeLimit = read_int();
+	FileInfo->MemoryLimit = read_int();
+	read_char_str(FileInfo->lang);
 	//printf("%d %s %d %d %s\n", FileInfo.FileId, FileInfo.ProblemId, FileInfo.TimeLimit, FileInfo.MemoryLimit, FileInfo.lang);
 	return FileInfo;
 	

@@ -3,20 +3,13 @@
 #include "includes.h"
 #include "CurlWrapper.h"
 #include "Logs.h"
-
-struct FileInfoStruct{
-	int FileId;
-	int TimeLimit;
-	int MemoryLimit;
-	char ProblemId[11];
-	char lang[11];
-};
+#include "FileInfo.h"
 
 class ContentParser{
   private:
 	char* FileInfoListStr;
 	int Ix;
-	FileInfoStruct FileInfo;
+	FileInfoStruct* FileInfo;
 	
   public:
 	
@@ -25,6 +18,6 @@ class ContentParser{
 	int read_int();
 	void read_char_str(char *);
 	bool EndOfContent();
-	FileInfoStruct GetNextFileInfo();
+	FileInfoStruct* GetNextFileInfo();
 };
 #endif

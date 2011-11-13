@@ -1,7 +1,7 @@
-main : main.o FileHandle.o CurlWrapper.o Logs.o ContentParser.o includes.h config.h
+main : main.o FileHandle.o CurlWrapper.o Logs.o ContentParser.o includes.h config.h -lcurl
 	g++ -o main main.o FileHandle.o CurlWrapper.o ContentParser.o Logs.o -lcurl
 
-main.o : main.cpp includes.h ContentParser.h FileHandle.h Logs.h includes.h config.h
+main.o : main.cpp includes.h ContentParser.h FileHandle.h Logs.h config.h
 	g++ -c main.cpp
 
 FileHandle.o : FileHandle.cpp FileHandle.h CurlWrapper.h Logs.h includes.h config.h
@@ -10,7 +10,7 @@ FileHandle.o : FileHandle.cpp FileHandle.h CurlWrapper.h Logs.h includes.h confi
 CurlWrapper.o : CurlWrapper.cpp CurlWrapper.h Logs.h includes.h config.h
 	g++ -c CurlWrapper.cpp
 	
-ContentParser.o : ContentParser.cpp ContentParser.h CurlWrapper.h includes.h config.h
+ContentParser.o : ContentParser.cpp ContentParser.h CurlWrapper.h includes.h config.h Logs.h
 	g++ -c ContentParser.cpp
 
 Logs.o : Logs.cpp Logs.h includes.h config.h
