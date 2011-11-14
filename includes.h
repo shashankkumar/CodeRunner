@@ -20,10 +20,4 @@
 #include <signal.h>
 #include <limits.h>
 
-#include <curl/curl.h>
-#include <curl/types.h>
-#include <curl/easy.h>
-
-#include "config.h"
-
 using namespace std;

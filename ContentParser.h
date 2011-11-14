@@ -1,8 +1,7 @@
 #ifndef CONTENTPARSER_H
 #define CONTENTPARSER_H
-#include "includes.h"
+#include "includeh.h"
 #include "CurlWrapper.h"
-#include "Logs.h"
 #include "FileInfo.h"
 
 class ContentParser{
@@ -10,7 +9,6 @@ class ContentParser{
 	char* FileInfoListStr;
 	int Ix;
 	FileInfoStruct* FileInfo;
-	FileInfoFetchOptionsStruct* FileInfoFetchOptions;
   public:
 	
 	int FetchFileInfoList(FileInfoFetchOptionsStruct* FileInfoFetchOptions);

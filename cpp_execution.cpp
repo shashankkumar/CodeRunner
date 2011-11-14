@@ -1,4 +1,4 @@
-#include "includex.h"
+#include "includes.h"
 #include "resources.h"
 
 pid_t cpid;
@@ -6,11 +6,13 @@ void ToPipe(const char* str){
 	printf("%s\n", str);
 	return;
 }
+
 void signalHandler(int signum){
 	if(cpid!=0){
 		killpg(cpid,SIGKILL);
 	}
 }
+
 int main(int args, char *argv[]){
 
 	if(args<4){
@@ -112,7 +114,7 @@ int main(int args, char *argv[]){
 	else {                    /* Code executed by parent */
 
 		struct rusage resourceUsage;
-		w = wait4 (cpid, &status, NULL, &resourceUsage);
+		w = wait4 (cpid, &status, 0, &resourceUsage);
 		
 		gettimeofday(&finish,NULL);
 		t_sec = finish.tv_sec-start.tv_sec;
@@ -170,4 +172,3 @@ int main(int args, char *argv[]){
 		else if(sigalrm) printf("SIGALRM");
 	}
 }
-

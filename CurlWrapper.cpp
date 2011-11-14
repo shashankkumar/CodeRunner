@@ -124,17 +124,17 @@ int CurlWrapper::FetchContentFromWebPage(FileInfoFetchOptionsStruct* FileInfoFet
 	
 	char optstr[11];
 	if(FileInfoFetchOptions->f){
-		sprintf(optstr, "%s", FileInfoFetchOptionsS->FileInfo.FileId);
+		sprintf(optstr, "%d", FileInfoFetchOptions->FileInfo.FileId);
 		curl_formadd( &formpost, &lastptr, CURLFORM_COPYNAME, "fileid", CURLFORM_COPYCONTENTS, optstr, CURLFORM_END);
 	}
 	
 	if(FileInfoFetchOptions->p){
-		sprintf(optstr, "%s", FileInfoFetchOptionsS->FileInfo.ProblemId);
+		sprintf(optstr, "%s", FileInfoFetchOptions->FileInfo.ProblemId);
 		curl_formadd( &formpost, &lastptr, CURLFORM_COPYNAME, "problemid", CURLFORM_COPYCONTENTS, optstr, CURLFORM_END);
 	}
 	
 	if(FileInfoFetchOptions->l){
-		sprintf(optstr, "%s", FileInfoFetchOptionsS->FileInfo.lang);
+		sprintf(optstr, "%s", FileInfoFetchOptions->FileInfo.lang);
 		curl_formadd( &formpost, &lastptr, CURLFORM_COPYNAME, "lang", CURLFORM_COPYCONTENTS, optstr, CURLFORM_END);
 	}
 		
@@ -163,14 +163,13 @@ int CurlWrapper::FetchContentFromWebPage(FileInfoFetchOptionsStruct* FileInfoFet
    			sprintf(logs, "Failure to fetch File Ids. Curl Error code: %d", res);
    			Logs::WriteLine(logs, true);
    			return -1;
-   			
    		}
    		else{
    			sprintf(logs, "File Ids fetched succesfully.");
    			Logs::WriteLine(logs, true);
+			Logs::WriteLine(buffer.c_str());
    			return 0;
    		}
-   		
   	}
   	return -1;		// Control should not reach here in normal circumstances
 }
@@ -193,6 +192,9 @@ void CurlWrapper::SendResultsToWebpage(const char* fileid, const char* status, c
 	curl_formadd( &formpost, &lastptr, CURLFORM_COPYNAME, "detailstatus", CURLFORM_COPYCONTENTS, detailstatus, CURLFORM_END);
 	curl_formadd( &formpost, &lastptr, CURLFORM_COPYNAME, "time", CURLFORM_COPYCONTENTS, time, CURLFORM_END);
 	curl_formadd( &formpost, &lastptr, CURLFORM_COPYNAME, "memory", CURLFORM_COPYCONTENTS, memory, CURLFORM_END);
+	if(ForcePushResult) 
+		curl_formadd( &formpost, &lastptr, CURLFORM_COPYNAME, "force", CURLFORM_COPYCONTENTS, "true", CURLFORM_END);
+	
 	curl = curl_easy_init();
 	/* initalize custom header list (stating that Expect: 100-continue is not wanted */ 
 	headerlist = curl_slist_append(headerlist, buf);
@@ -223,3 +225,5 @@ void CurlWrapper::SendResultsToWebpage(const char* fileid, const char* status, c
    		
   	}
 }
+
+bool CurlWrapper::ForcePushResult=true;

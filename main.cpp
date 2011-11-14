@@ -18,11 +18,10 @@ You may contact the author of CodeRunner by e-mail at:
 shashankkumar.me@gmail.com
 
 ****************************************************************************/
-#include "includes.h"
+#include "includeh.h"
 #include "FileInfo.h"
 #include "ContentParser.h"
 #include "FileHandle.h"
-#include "Logs.h"
 
 int main(int argc, char* argv[])
 {
@@ -37,22 +36,25 @@ int main(int argc, char* argv[])
 	int opt;
 	FileInfoFetchOptionsStruct* FileInfoFetchOptions = new FileInfoFetchOptionsStruct();
 	FileInfoFetchOptions->Init();
-	while((opt = getopt(argc, argv, "bf:p:l:")) != -1){
+	while((opt = getopt(argc, argv, "cbf:p:l:")) != -1){
 		switch(opt){
 			case 'f':
 				FileInfoFetchOptions->f=true;
 				FileInfoFetchOptions->FileInfo.FileId = atoi(optarg);
 			break;
 			case 'p':
-				FileInfoFetchOptions->p=true
+				FileInfoFetchOptions->p=true;
 				strcpy(FileInfoFetchOptions->FileInfo.ProblemId, optarg);
 			break;
 			case 'l':
-				FileInfoFetchOptions->l=true
+				FileInfoFetchOptions->l=true;
 				strcpy(FileInfoFetchOptions->FileInfo.lang, optarg);
 			break;
 			case 'b':
-				FileInfoFetchOptions->b=true
+				CurlWrapper::ForcePushResult=true;
+			break;
+			case 'c':
+				FileHandle::Clean=true;
 			break;
 			default: /* '?' */
 				fprintf(stderr, "Usage: %s [-f fileid | [-p problemcode] [-l language]] [-b]", argv[0]); 
@@ -71,8 +73,8 @@ int main(int argc, char* argv[])
 	do{
 		Logs::OpenLogFile();
 		bool CurrentIteration = true;
-		ContentParser *ContentVar = new ContentParser(FileInfoFetchOptions);
-		if(ContentVar->FetchFileInfoList()==-1){
+		ContentParser *ContentVar = new ContentParser();
+		if(ContentVar->FetchFileInfoList(FileInfoFetchOptions)==-1){
 			CurrentIteration = false;
 		}
 		

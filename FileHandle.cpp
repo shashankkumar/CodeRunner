@@ -158,10 +158,10 @@ int FileHandle::PrepareToExecute(){
 void FileHandle::PipeExecute(){
 	FILE *fpipe;
     if(strcmp(FileInfo->lang,"cpp")==0 || strcmp(FileInfo->lang,"c")==0){
-    	sprintf(command, "./Execution %d %d %d %d %s", FileInfo->FileId, TestCaseId, FileInfo->TimeLimit, MemoryLimit, FileInfo->lang);
+    	sprintf(command, "./cpp_execution %d %d %d %d %s", FileInfo->FileId, TestCaseId, FileInfo->TimeLimit, MemoryLimit, FileInfo->lang);
     }
     else if(strcmp(FileInfo->lang, "java")==0){
-    	sprintf(command, "./java_Execution %d %d %d %d %s", FileInfo->FileId, TestCaseId, FileInfo->TimeLimit, FileInfo->MemoryLimit, FileInfo->lang);
+    	sprintf(command, "./java_execution %d %d %d %d %s", FileInfo->FileId, TestCaseId, FileInfo->TimeLimit, FileInfo->MemoryLimit, FileInfo->lang);
     }
     
    	char line[1024];
@@ -300,5 +300,7 @@ void FileHandle::Action(){
 }
 
 FileHandle::~FileHandle(){
-	;//CleanUp();
+	if(Clean) CleanUp();
 }
+
+bool FileHandle::Clean=true;

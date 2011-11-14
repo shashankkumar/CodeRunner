@@ -1,4 +1,4 @@
-#include "includes.h"
+#include "includeh.h"
 #include "ContentParser.h"
 
 int ContentParser::FetchFileInfoList(FileInfoFetchOptionsStruct* FileInfoFetchOptions){
@@ -9,15 +9,12 @@ int ContentParser::FetchFileInfoList(FileInfoFetchOptionsStruct* FileInfoFetchOp
 		delete CurlVar;		//Clean up
 	   	return -1;
 	}
+	delete CurlVar;
 	    
 	FileInfoListStr = new char[strContent.size() + 1];
 	FileInfo = new FileInfoStruct();
 	strcpy(FileInfoListStr, strContent.c_str());
-	
-	Logs::WriteLine(FileInfoListStr);
-	
 	Ix = 0;
-	delete CurlVar;
 	return 0;
 }
 

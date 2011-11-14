@@ -10,8 +10,8 @@ struct FileInfoStruct{
 };
 
 struct FileInfoFetchOptionsStruct{
-	bool f=false, p=false, l=false, b=false;
-	FileInfoSturct FileInfo;
+	bool f, p, l, b;
+	FileInfoStruct FileInfo;
 	void Init(){
 		f=p=l=b=false;
 	}
