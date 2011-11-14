@@ -257,7 +257,7 @@ void FileHandle::SendResults(){
 	sprintf(fileid, "%d", FileInfo->FileId);
 	sprintf(logs, "FileId ==> %s\n Status==>%s DetailStatus==>%s TimeUsed==>%s MemoryUsed==>%s", fileid, status, detailstatus, timeused, memoryused); 
 	Logs::WriteLine(logs, true);
-	FileCurl.SendResultsToWebpage(fileid, status, detailstatus, timeused, memoryused);
+	if(SendResultsVar) FileCurl.SendResultsToWebpage(fileid, status, detailstatus, timeused, memoryused);
 
 	Logs::WriteLine("\n================================================================================\n");
 }
@@ -296,7 +296,7 @@ bool FileHandle::getResult(){
 
 void FileHandle::Action(){
 	FileOperations();
-	if(SendResultsVar) SendResults();
+	SendResults();
 }
 
 FileHandle::~FileHandle(){

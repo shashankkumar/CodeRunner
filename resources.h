@@ -8,16 +8,16 @@ void setResourceLimitWrapper(int TimeLimit, int MemoryLimit){
 	setResourceLimit(RLIMIT_CPU,TimeLimit, TimeLimit);			// Time Limit specified by the problem setter
     setResourceLimit(RLIMIT_NICE,0, 0);
     // Memory Limit specified by the problem setter
-    setResourceLimit(RLIMIT_AS, MemoryLimit * 1024 * 1024, MemoryLimit * 1024 * 1024);
+    //setResourceLimit(RLIMIT_AS, MemoryLimit * 64 * 1024 * 1024, MemoryLimit * 64 * 1024 * 1024);
     setResourceLimit(RLIMIT_CORE, 0, 0);
     setResourceLimit(RLIMIT_DATA, 67108864, 67108864);
     setResourceLimit(RLIMIT_FSIZE, 26214400, 26214400);			// Max printing allowed to the tune of 256 MB
     setResourceLimit(RLIMIT_LOCKS, 1024, 1024);
-    //setResourceLimit(RLIMIT_MEMLOCK, 32768);
-    //setResourceLimit(RLIMIT_MSGQUEUE, 8192, 81928);
     setResourceLimit(RLIMIT_NOFILE, 10, 10);
     setResourceLimit(RLIMIT_NPROC, 0, 0);
     setResourceLimit(RLIMIT_RSS, 4294967295, 4294967295);
+    //setResourceLimit(RLIMIT_MEMLOCK, 32768);
+    //setResourceLimit(RLIMIT_MSGQUEUE, 8192, 81928);
     //setResourceLimit(RLIMIT_RTPRIO, 0, 0);
     //setResourceLimit(RLIMIT_SIGPENDING, 6144, 6144);
     //setResourceLimit(RLIMIT_STACK, 8192, 8192);

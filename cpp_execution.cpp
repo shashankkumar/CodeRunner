@@ -113,7 +113,6 @@ int main(int args, char *argv[]){
 		
 	}
 	else {                    /* Code executed by parent */
-
 		struct rusage resourceUsage;
 		w = wait4 (cpid, &status, WUNTRACED | WCONTINUED, &resourceUsage);
 		
