@@ -60,13 +60,13 @@ int main(int argc, char* argv[])
 				FileHandle::SendResultsVar=false;
 			break;
 			default: /* '?' */
-				fprintf(stderr, "Usage: %s [-f fileid | [-p problemcode] [-l language]] [-b] [-n] [-c]", argv[0]); 
+				fprintf(stderr, "Usage: %s [-f fileid | [-p problemcode] [-l language]] [-b] [-n] [-c]\n", argv[0]); 
 				exit(EXIT_FAILURE);
 		}
 	}
 	
 	if(FileInfoFetchOptions->f && (FileInfoFetchOptions->p || FileInfoFetchOptions->l)){
-		fprintf(stderr, "Usage: %s [-f fileid | [-p problemcode] [-l language]] [-b]", argv[0]); 
+		fprintf(stderr, "Usage: %s [-f fileid | [-p problemcode] [-l language]] [-b]\n", argv[0]); 
 		exit(EXIT_FAILURE);
 	}
 	
