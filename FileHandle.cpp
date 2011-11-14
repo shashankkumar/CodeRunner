@@ -296,11 +296,12 @@ bool FileHandle::getResult(){
 
 void FileHandle::Action(){
 	FileOperations();
-	SendResults();
+	if(SendResultsVar) SendResults();
 }
 
 FileHandle::~FileHandle(){
 	if(Clean) CleanUp();
 }
 
-bool FileHandle::Clean=true;
+bool FileHandle::Clean=false;
+bool FileHandle::SendResultsVar=true;

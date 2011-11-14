@@ -36,7 +36,7 @@ int main(int argc, char* argv[])
 	int opt;
 	FileInfoFetchOptionsStruct* FileInfoFetchOptions = new FileInfoFetchOptionsStruct();
 	FileInfoFetchOptions->Init();
-	while((opt = getopt(argc, argv, "cbf:p:l:")) != -1){
+	while((opt = getopt(argc, argv, "ncbf:p:l:")) != -1){
 		switch(opt){
 			case 'f':
 				FileInfoFetchOptions->f=true;
@@ -56,8 +56,11 @@ int main(int argc, char* argv[])
 			case 'c':
 				FileHandle::Clean=true;
 			break;
+			case 'n':
+				FileHandle::SendResultsVar=false;
+			break;
 			default: /* '?' */
-				fprintf(stderr, "Usage: %s [-f fileid | [-p problemcode] [-l language]] [-b]", argv[0]); 
+				fprintf(stderr, "Usage: %s [-f fileid | [-p problemcode] [-l language]] [-b] [-n] [-c]", argv[0]); 
 				exit(EXIT_FAILURE);
 		}
 	}

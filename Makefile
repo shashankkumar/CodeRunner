@@ -21,6 +21,6 @@ Logs.o : Logs.cpp $(VAR)
 clean:
 	rm *.o main *_execution
 
-*_execution : cpp_execution.cpp java_execution.cpp
+*_execution : cpp_execution.cpp java_execution.cpp resources.h
 	g++ cpp_execution.cpp -o cpp_execution
 	g++ java_execution.cpp -o java_execution

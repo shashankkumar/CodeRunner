@@ -40,7 +40,7 @@ void Java_setResourceLimitWrapper(int TimeLimit, int MemoryLimit){
     setResourceLimit(RLIMIT_RSS, 4294967295, 4294967295);
     //setResourceLimit(RLIMIT_RTPRIO, 0, 0);
     //setResourceLimit(RLIMIT_SIGPENDING, 6144, 6144);
-    //setResourceLimit(RLIMIT_STACK, 8192, 8192);
+    setResourceLimit(RLIMIT_STACK, 8192, 8192);
     //setResourceLimit(RLIMIT_OFILE, 1, 1);						// Dont know what it is??
 }
 

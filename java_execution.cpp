@@ -1,5 +1,6 @@
 #include "includes.h"
 #include "resources.h"
+#include "config.h"
 
 pid_t cpid;
 void ToPipe(const char* str){

@@ -1,5 +1,6 @@
 #include "includes.h"
 #include "resources.h"
+#include "config.h"
 
 pid_t cpid;
 void ToPipe(const char* str){
@@ -49,7 +50,7 @@ int main(int args, char *argv[]){
 		pid_t ChildProcessId = getpid();
 		passwd* UserDetails = getpwnam("nobody");
 		char dir[10];
-		sprintf(dir, "%s%d/",FILEPATH,FileId);
+		sprintf(dir, "%s%d/", FILEPATH, FileId);
 		//ToPipe(dir);
 		if( chdir(dir) == -1){
 			printf("%d", errno);
@@ -114,7 +115,7 @@ int main(int args, char *argv[]){
 	else {                    /* Code executed by parent */
 
 		struct rusage resourceUsage;
-		w = wait4 (cpid, &status, 0, &resourceUsage);
+		w = wait4 (cpid, &status, WUNTRACED | WCONTINUED, &resourceUsage);
 		
 		gettimeofday(&finish,NULL);
 		t_sec = finish.tv_sec-start.tv_sec;
