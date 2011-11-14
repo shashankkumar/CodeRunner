@@ -8,4 +8,13 @@ struct FileInfoStruct{
 	char ProblemId[11];
 	char lang[11];
 };
+
+struct FileInfoFetchOptionsStruct{
+	bool f=false, p=false, l=false, b=false;
+	FileInfoSturct FileInfo;
+	void Init(){
+		f=p=l=b=false;
+	}
+};
+
 #endif

@@ -35,19 +35,34 @@ int main(int argc, char* argv[])
 	}
 	
 	int opt;
+	FileInfoFetchOptionsStruct* FileInfoFetchOptions = new FileInfoFetchOptionsStruct();
+	FileInfoFetchOptions->Init();
 	while((opt = getopt(argc, argv, "bf:p:l:")) != -1){
 		switch(opt){
 			case 'f':
+				FileInfoFetchOptions->f=true;
+				FileInfoFetchOptions->FileInfo.FileId = atoi(optarg);
 			break;
 			case 'p':
+				FileInfoFetchOptions->p=true
+				strcpy(FileInfoFetchOptions->FileInfo.ProblemId, optarg);
 			break;
 			case 'l':
+				FileInfoFetchOptions->l=true
+				strcpy(FileInfoFetchOptions->FileInfo.lang, optarg);
 			break;
 			case 'b':
+				FileInfoFetchOptions->b=true
 			break;
-			default:
+			default: /* '?' */
 				fprintf(stderr, "Usage: %s [-f fileid | [-p problemcode] [-l language]] [-b]", argv[0]); 
+				exit(EXIT_FAILURE);
 		}
+	}
+	
+	if(FileInfoFetchOptions->f && (FileInfoFetchOptions->p || FileInfoFetchOptions->l)){
+		fprintf(stderr, "Usage: %s [-f fileid | [-p problemcode] [-l language]] [-b]", argv[0]); 
+		exit(EXIT_FAILURE);
 	}
 	
 	Logs::OpenLogFile();
@@ -56,7 +71,7 @@ int main(int argc, char* argv[])
 	do{
 		Logs::OpenLogFile();
 		bool CurrentIteration = true;
-		ContentParser *ContentVar = new ContentParser();
+		ContentParser *ContentVar = new ContentParser(FileInfoFetchOptions);
 		if(ContentVar->FetchFileInfoList()==-1){
 			CurrentIteration = false;
 		}
@@ -71,7 +86,7 @@ int main(int argc, char* argv[])
 			FileHandle F(FileInfo);
 			F.Action();
 			//delete FileInfo;
-		} 
+		}
 		
 		if(CurrentIteration) Logs::WriteLine("Current batch of files evaluated.");
 		

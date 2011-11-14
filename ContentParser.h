@@ -10,10 +10,10 @@ class ContentParser{
 	char* FileInfoListStr;
 	int Ix;
 	FileInfoStruct* FileInfo;
-	
+	FileInfoFetchOptionsStruct* FileInfoFetchOptions;
   public:
 	
-	int FetchFileInfoList();
+	int FetchFileInfoList(FileInfoFetchOptionsStruct* FileInfoFetchOptions);
 	char read_char();
 	int read_int();
 	void read_char_str(char *);

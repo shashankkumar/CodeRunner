@@ -1,11 +1,11 @@
 #include "includes.h"
 #include "ContentParser.h"
 
-int ContentParser::FetchFileInfoList(){
+int ContentParser::FetchFileInfoList(FileInfoFetchOptionsStruct* FileInfoFetchOptions){
 	CurlWrapper *CurlVar = new CurlWrapper();
 	string strContent;
 		
-	if(CurlVar->FetchContentFromWebPage(&strContent) == -1) {
+	if(CurlVar->FetchContentFromWebPage(FileInfoFetchOptions, &strContent) == -1) {
 		delete CurlVar;		//Clean up
 	   	return -1;
 	}

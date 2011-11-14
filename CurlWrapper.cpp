@@ -111,7 +111,7 @@ int CurlWrapper::GetFileFromHTTP(int FileId){
    	return -1;
 }
 	
-int CurlWrapper::FetchContentFromWebPage(string *content){
+int CurlWrapper::FetchContentFromWebPage(FileInfoFetchOptionsStruct* FileInfoFetchOptions, string *content){
 		
 	struct curl_httppost *formpost = NULL;
 	struct curl_httppost *lastptr = NULL;
@@ -121,6 +121,23 @@ int CurlWrapper::FetchContentFromWebPage(string *content){
 	/* Fill in the POST fields */ 
 	curl_formadd( &formpost, &lastptr, CURLFORM_COPYNAME, "username", CURLFORM_COPYCONTENTS, USERNAME, CURLFORM_END);
 	curl_formadd( &formpost, &lastptr, CURLFORM_COPYNAME, "password", CURLFORM_COPYCONTENTS, PASSWORD, CURLFORM_END);
+	
+	char optstr[11];
+	if(FileInfoFetchOptions->f){
+		sprintf(optstr, "%s", FileInfoFetchOptionsS->FileInfo.FileId);
+		curl_formadd( &formpost, &lastptr, CURLFORM_COPYNAME, "fileid", CURLFORM_COPYCONTENTS, optstr, CURLFORM_END);
+	}
+	
+	if(FileInfoFetchOptions->p){
+		sprintf(optstr, "%s", FileInfoFetchOptionsS->FileInfo.ProblemId);
+		curl_formadd( &formpost, &lastptr, CURLFORM_COPYNAME, "problemid", CURLFORM_COPYCONTENTS, optstr, CURLFORM_END);
+	}
+	
+	if(FileInfoFetchOptions->l){
+		sprintf(optstr, "%s", FileInfoFetchOptionsS->FileInfo.lang);
+		curl_formadd( &formpost, &lastptr, CURLFORM_COPYNAME, "lang", CURLFORM_COPYCONTENTS, optstr, CURLFORM_END);
+	}
+		
 	curl = curl_easy_init();
 	/* initalize custom header list (stating that Expect: 100-continue is not wanted */ 
 	headerlist = curl_slist_append(headerlist, buf);
