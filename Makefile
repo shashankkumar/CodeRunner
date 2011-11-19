@@ -1,5 +1,7 @@
 VAR=includeh.h includes.h config.h Logs.h
-main : main.o FileHandle.o CurlWrapper.o Logs.o ContentParser.o *_execution -lcurl
+complete: main *_execution
+
+main : main.o FileHandle.o CurlWrapper.o Logs.o ContentParser.o -lcurl
 	g++ -o main main.o FileHandle.o CurlWrapper.o ContentParser.o Logs.o -lcurl
 
 main.o : main.cpp ContentParser.h FileHandle.h $(VAR)
