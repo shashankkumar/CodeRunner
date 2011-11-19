@@ -34,9 +34,10 @@ int main(int argc, char* argv[])
 	}
 	
 	int opt;
+	int SleepInterval = SLEEPINTERVAL;
 	FileInfoFetchOptionsStruct* FileInfoFetchOptions = new FileInfoFetchOptionsStruct();
 	FileInfoFetchOptions->Init();
-	while((opt = getopt(argc, argv, "ncbf:p:l:")) != -1){
+	while((opt = getopt(argc, argv, "ncbf:p:l:s:")) != -1){
 		switch(opt){
 			case 'f':
 				FileInfoFetchOptions->f=true;
@@ -59,8 +60,11 @@ int main(int argc, char* argv[])
 			case 'n':
 				FileHandle::SendResultsVar=false;
 			break;
+			case 's':
+				SleepInterval = atoi(optarg);
+			break;
 			default: /* '?' */
-				fprintf(stderr, "Usage: %s [-f fileid | [-p problemcode] [-l language]] [-b] [-n] [-c]", argv[0]); 
+				fprintf(stderr, "Usage: %s [-f fileid | [-p problemcode] [-l language]] [-s sleepinterval] [-b] [-n] [-c]", argv[0]); 
 				exit(EXIT_FAILURE);
 		}
 	}
@@ -98,7 +102,7 @@ int main(int argc, char* argv[])
 		delete ContentVar;
 		Logs::GoToSleep();
 		Logs::CloseLogFile();
-		sleep(SLEEPINTERVAL);
+		sleep(SleepInterval);
 		
 	}while(!RUNONCE);
 		
