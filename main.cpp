@@ -74,13 +74,13 @@ int main(int argc, char* argv[])
 			case 'v':
 			break;
 			default: /* '?' */
-				fprintf(stderr, "Usage: %s [-f fileid [-d -p problemcode -t timelimit -m memorylimit -l lang] | [-p problemcode] [-l language] ] [-s sleepinterval] [-b] [-n] [-c] [-r] [-d] [-v]", argv[0]); 
+				fprintf(stderr, "Usage: %s [-f fileid [-d -p problemcode -t timelimit -m memorylimit -l lang] | [-p problemcode] [-l language] ] [-s sleepinterval] [-b] [-n] [-c] [-r] [-d] [-v]\n", argv[0]); 
 				exit(EXIT_FAILURE);
 		}
 	}
 	
 	if(FileInfoFetchOptions->f && (FileInfoFetchOptions->p || FileInfoFetchOptions->l)){
-		fprintf(stderr, "Usage: %s [-f fileid | [-p problemcode] [-l language]] [-b]", argv[0]); 
+		fprintf(stderr, "Usage: %s [-f fileid | [-p problemcode] [-l language]] [-b]\n", argv[0]); 
 		exit(EXIT_FAILURE);
 	}
 	
