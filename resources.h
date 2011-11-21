@@ -1,9 +1,18 @@
-void setResourceLimit(int resource, int softLimit, int hardLimit){
+void SetResourceLimit(int resource, int softLimit, int hardLimit){
 	rlimit r;
 	r.rlim_cur = softLimit, r.rlim_max = hardLimit;
 	setrlimit(resource, &r);
 }
 
+void SetResourceLimitValues(int TimeLimit){
+	setResourceLimit(RLIMIT_CPU,TimeLimit, TimeLimit);			// Time Limit specified by the problem setter
+    setResourceLimit(RLIMIT_CORE, 0, 0);
+    setResourceLimit(RLIMIT_FSIZE, 26214400, 26214400);			// Max printing allowed to the tune of 256 MB
+    setResourceLimit(RLIMIT_STACK, 8192, 8192);
+    setResourceLimit(RLIMIT_NPROC, 0, 0);
+    
+}
+/*
 void setResourceLimitWrapper(int TimeLimit, int MemoryLimit){
 	setResourceLimit(RLIMIT_CPU,TimeLimit, TimeLimit);			// Time Limit specified by the problem setter
     setResourceLimit(RLIMIT_NICE,0, 0);
@@ -43,7 +52,7 @@ void Java_setResourceLimitWrapper(int TimeLimit, int MemoryLimit){
     setResourceLimit(RLIMIT_STACK, 8192, 8192);
     //setResourceLimit(RLIMIT_OFILE, 1, 1);						// Dont know what it is??
 }
-
+*/
 /*
 
  getrlimit()  and  setrlimit()  get  and  set resource limits respectively.  Each resource has an associated soft and hard limit, as defined by the
