@@ -3,7 +3,10 @@
  * Before running make command, define the options suitably and
  * change the name of the file from sample.config.h to config.h
  * without which the source code will not compile.
+ * All the options should be specified correctly for CodeRunner to work properly.
+ * After that, simply run make command from command line.
  */
+
 #define USERNAME "shashank"
 #define PASSWORD "shashank"
 #define FTPON false
