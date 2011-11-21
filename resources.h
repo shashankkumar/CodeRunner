@@ -1,4 +1,4 @@
-void SetResourceLimit(int resource, int softLimit, int hardLimit){
+void setResourceLimit(int resource, int softLimit, int hardLimit){
 	rlimit r;
 	r.rlim_cur = softLimit, r.rlim_max = hardLimit;
 	setrlimit(resource, &r);
