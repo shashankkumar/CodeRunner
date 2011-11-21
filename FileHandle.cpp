@@ -15,6 +15,10 @@ FileHandle::FileHandle(FileInfoStruct* FileInfo){
 }
 
 int FileHandle::FetchFile(){
+	if(!DownloadSourceFile) {
+		
+		return 0;
+	}
 	if(FTPON) {
 		int res = FileCurl.GetFileFromFTP(FileInfo->FileId);
 		if(res==-1)	return -1;
@@ -306,3 +310,4 @@ FileHandle::~FileHandle(){
 
 bool FileHandle::Clean=false;
 bool FileHandle::SendResultsVar=true;
+bool FileHandle::DownloadSourceFile = true;
