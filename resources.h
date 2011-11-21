@@ -12,7 +12,7 @@ void SetResourceLimitValues(int TimeLimit){
     setResourceLimit(RLIMIT_NPROC, 0, 0);
     
 }
-/*
+
 void setResourceLimitWrapper(int TimeLimit, int MemoryLimit){
 	setResourceLimit(RLIMIT_CPU,TimeLimit, TimeLimit);			// Time Limit specified by the problem setter
     setResourceLimit(RLIMIT_NICE,0, 0);
@@ -52,7 +52,6 @@ void Java_setResourceLimitWrapper(int TimeLimit, int MemoryLimit){
     setResourceLimit(RLIMIT_STACK, 8192, 8192);
     //setResourceLimit(RLIMIT_OFILE, 1, 1);						// Dont know what it is??
 }
-*/
 /*
 
  getrlimit()  and  setrlimit()  get  and  set resource limits respectively.  Each resource has an associated soft and hard limit, as defined by the
