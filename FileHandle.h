@@ -39,6 +39,7 @@ class FileHandle{
 	void CleanUp();
 	static bool Clean;
 	static bool SendResultsVar;
+	static bool DownloadSourceFile;
 	
 	bool getResult();
 	void FileOperations();

@@ -36,6 +36,7 @@ int main(int argc, char* argv[])
 	int opt;
 	int SleepInterval = SLEEPINTERVAL;
 	bool RunOnce = false;
+	bool DownloadSourceFile = true;
 	FileInfoFetchOptionsStruct* FileInfoFetchOptions = new FileInfoFetchOptionsStruct();
 	FileInfoFetchOptions->Init();
 	while((opt = getopt(argc, argv, "ncbfr:p:l:s:")) != -1){
@@ -67,8 +68,13 @@ int main(int argc, char* argv[])
 			case 'r':
 				RunOnce = true;
 			break;
+			case 'd':
+				FileHandle::DownloadSourceFile = false;
+			break;
+			case 'v':
+			break;
 			default: /* '?' */
-				fprintf(stderr, "Usage: %s [-f fileid | [-p problemcode] [-l language]] [-s sleepinterval] [-b] [-n] [-c] [-r]", argv[0]); 
+				fprintf(stderr, "Usage: %s [-f fileid [-d -p problemcode -t timelimit -m memorylimit -l lang] | [-p problemcode] [-l language] ] [-s sleepinterval] [-b] [-n] [-c] [-r] [-d] [-v]", argv[0]); 
 				exit(EXIT_FAILURE);
 		}
 	}
