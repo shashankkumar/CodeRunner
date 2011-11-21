@@ -172,6 +172,7 @@ void FileHandle::PipeExecute(){
 		Logs::WriteLine("Problems with pipe");
 	}
 	else{
+		ExecutionStr.clear();
 		while ( fgets( line, sizeof line, fpipe)){
 			ExecutionStr.append(line, strlen(line));
 		}
