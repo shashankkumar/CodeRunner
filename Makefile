@@ -1,5 +1,5 @@
 VAR=includeh.h includes.h config.h Logs.h
-complete: main *_execution
+complete: main Execution
 
 main : main.o FileHandle.o CurlWrapper.o Logs.o ContentParser.o -lcurl
 	g++ -o main main.o FileHandle.o CurlWrapper.o ContentParser.o Logs.o -lcurl
@@ -23,6 +23,5 @@ Logs.o : Logs.cpp $(VAR)
 clean:
 	rm *.o main *_execution
 
-*_execution : cpp_execution.cpp java_execution.cpp resources.h
-	g++ cpp_execution.cpp -o cpp_execution
-	g++ java_execution.cpp -o java_execution
+Execution : Execution.cpp
+	g++ Execution.cpp -o Execution
