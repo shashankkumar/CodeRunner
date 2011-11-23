@@ -216,7 +216,6 @@ void CurlWrapper::SendResultsToWebpage(const char* fileid, const char* status, c
    		if(CURLE_OK!=res){
    			sprintf(logs, "Could not send results. Curl Error code: %d\n", res);
    			Logs::WriteLine(logs);
-   			
    		}
    		else{
    			sprintf(logs, "Results sent succesfully.\n");
