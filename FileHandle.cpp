@@ -7,6 +7,12 @@ FileHandle::FileHandle(FileInfoStruct* FileInfo){
 	result=true;
 	sprintf(detailstatus,"\0");
 	sprintf(FileAddr, "%s%d", FILEPATH, FileInfo->FileId);
+	sprintf(FileDirAddr, "%s%d/", FILEPATH, FileInfo->FileId);
+	if(strcmp(FileInfo->lang, "java")){
+		strcpy(FileName, "Main");
+	}
+	else strcpy(FileName, "test");
+	sprintf(FullFileAddr, "%s%s", FileAddr, FullFileAddr);
 	Logs::OpenLogFile();
 	sprintf(logs, "Beginning operations on File Id ==> %d\n", FileInfo->FileId);
 	Logs::WriteLine(logs, true);
@@ -67,7 +73,7 @@ int FileHandle::MakeDir(){
 	int ErrNo;
 	char dirString[100];
 	Logs::WriteLine("Creating directory.");
-	if( mkdir(FileAddr, S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH | S_IWOTH)==-1){
+	if( mkdir(FileDirAddr, S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH | S_IWOTH)==-1){
 		ErrNo=errno;
 		if(ErrNo==17) Logs::WriteLine("Directory already created.. Continuing");
 		else {
@@ -76,7 +82,7 @@ int FileHandle::MakeDir(){
 			return -1;
 		}
 	}
-	sprintf(systemString, "cp %s.txt %s/main.%s", FileAddr, FileAddr, FileInfo->lang);
+	sprintf(systemString, "cp %s.txt %s.%s", FileAddr, FullFileAddr, FileInfo->lang);
 	if(system(systemString)==-1){
 		strcpy(status, "IE");
 		strcpy(detailstatus, "Error in copying dowloaded file.");
@@ -101,11 +107,11 @@ void FileHandle::Compile(){
 void FileHandle::pipeCompile(){
 	FILE *fpipe;
     if(strcmp(FileInfo->lang, "cpp")==0)
-    	sprintf(command, "g++ -w -static %s/main.cpp -o %s/main 2>&1", FileAddr, FileAddr);
+    	sprintf(command, "g++ -w -static %s.cpp -o %s 2>&1", FullFileAddr, FullFileAddr);
     else if(strcmp(FileInfo->lang, "c") == 0)
-    	sprintf(command, "g++ -w -static %s/main.c -o %s/main 2>&1", FileAddr, FileAddr);
+    	sprintf(command, "gcc -w -static %s.c -o %s 2>&1", FullFileAddr, FullFileAddr);
     else if(strcmp(FileInfo->lang, "java")==0)
-		sprintf(command, "javac -nowarn -deprecation %s/main.java  2>&1", FileAddr);    	
+		sprintf(command, "javac -nowarn -deprecation %s.java  2>&1", FullFileAddr);    	
     Logs::Write("Compiling file ==>  ");
 	char line[256];
 	
@@ -141,7 +147,7 @@ int FileHandle::pipeNoOfTestCases(){
 }
 
 int FileHandle::PrepareToExecute(){
-	sprintf(systemString, "cp %s%s/Input/* %s/", TESTCASESPATH, FileInfo->ProblemId, FileAddr);
+	sprintf(systemString, "cp %s%s/Input/* %s", TESTCASESPATH, FileInfo->ProblemId, FileDirAddr);
 	system(systemString);
 	
 	NoOfTestCases = pipeNoOfTestCases();
@@ -157,12 +163,8 @@ int FileHandle::PrepareToExecute(){
 	
 void FileHandle::PipeExecute(){
 	FILE *fpipe;
-    if(strcmp(FileInfo->lang,"cpp")==0 || strcmp(FileInfo->lang,"c")==0){
-    	sprintf(command, "./cpp_execution %d %d %d %d %s", FileInfo->FileId, TestCaseId, FileInfo->TimeLimit, MemoryLimit, FileInfo->lang);
-    }
-    else if(strcmp(FileInfo->lang, "java")==0){
-    	sprintf(command, "./java_execution %d %d %d %d %s", FileInfo->FileId, TestCaseId, FileInfo->TimeLimit, FileInfo->MemoryLimit, FileInfo->lang);
-    }
+	
+	sprintf(command, "./Execution %d %s %d %d %d %s", FileInfo->FileId, FileName, TestCaseId, FileInfo->TimeLimit, MemoryLimit, FileInfo->lang);
     
    	char line[1024];
 
@@ -187,7 +189,7 @@ void FileHandle::Execute(){
 
 		PipeExecute();
 		strcpy(str, ExecutionStr.c_str());
-		printf("\n%s\n", str);
+		//printf("\n%s\n", str);
 		token = strtok(str, " \n");
 		strcpy(status, token);
 		if(strcmp(token, "AC")!=0) result=false;
@@ -197,14 +199,16 @@ void FileHandle::Execute(){
 		}
 		token = strtok(NULL, " \n"); sprintf(TestCaseExecutionTime, "%s", token);
 		TimeUsed += (float) atof( TestCaseExecutionTime );
-		printf("time - %f %d\n", TimeUsed, FileInfo->TimeLimit);
+		token = strtok(NULL, " \n"); sprintf(TestCaseExecutionMemory, "%s", token);
+		MemoryUsed = max(MemoryUsed, atoi( TestCaseExecutionMemory));
+		printf("time - %f \n", TimeUsed);
 		if( TimeUsed > (float) FileInfo->TimeLimit){
 			result = false;
 			sprintf(status, "TLE");
 			sprintf(detailstatus, "\0");
 		}
 		
-		sprintf(logs, "%d ==> %s %s %s\n", TestCaseId, status, detailstatus, TestCaseExecutionTime);
+		sprintf(logs, "%d ==> %s %s %s %s\n", TestCaseId, status, detailstatus, TestCaseExecutionTime, TestCaseExecutionMemory);
 		Logs::Write(logs);
 		if(result==false){
 			break;
