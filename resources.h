@@ -9,7 +9,7 @@ void SetResourceLimitValues(int TimeLimit){
 	SetResourceLimit(RLIMIT_CPU,TimeLimit, TimeLimit);			// Time Limit specified by the problem setter
     SetResourceLimit(RLIMIT_CORE, 0, 0);
     SetResourceLimit(RLIMIT_FSIZE, 16777216, 16777216);			// Max printing allowed to the tune of 16 MB
-    SetResourceLimit(RLIMIT_STACK, 8192, 8192);
+    //SetResourceLimit(RLIMIT_STACK, 8192, 8192);
     SetResourceLimit(RLIMIT_NPROC, 0, 0);
 }
 
