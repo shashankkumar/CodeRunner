@@ -21,7 +21,7 @@ Logs.o : Logs.cpp $(VAR)
 
 .PHONY: clean
 clean:
-	rm *.o main *_execution
+	rm *.o main Execution
 
-Execution : Execution.cpp
+Execution : Execution.cpp resources.h
 	g++ Execution.cpp -o Execution
