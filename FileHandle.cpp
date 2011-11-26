@@ -12,7 +12,7 @@ FileHandle::FileHandle(FileInfoStruct* FileInfo){
 		strcpy(FileName, "Main");
 	}
 	else strcpy(FileName, "test");
-	sprintf(FullFileAddr, "%s%s", FileAddr, FullFileAddr);
+	sprintf(FullFileAddr, "%s%s", FileDirAddr, FileName);
 	Logs::OpenLogFile();
 	sprintf(logs, "Beginning operations on File Id ==> %d\n", FileInfo->FileId);
 	Logs::WriteLine(logs, true);
@@ -167,8 +167,8 @@ int FileHandle::PrepareToExecute(){
 	
 void FileHandle::PipeExecute(){
 	FILE *fpipe;
-	
-	sprintf(command, "./Execution %d %s %d %d %d %s", FileInfo->FileId, FileName, TestCaseId, FileInfo->TimeLimit, MemoryLimit, FileInfo->lang);
+	int MemoryLimitInKb = FileInfo->MemoryLimit * 1024;
+	sprintf(command, "./Execution %d %s %d %d %d %s", FileInfo->FileId, FileName, TestCaseId, FileInfo->TimeLimit, MemoryLimitInKb, FileInfo->lang);
     
    	char line[1024];
 
@@ -194,7 +194,30 @@ void FileHandle::Execute(){
 
 		PipeExecute();
 		strcpy(str, ExecutionStr.c_str());
-		//printf("\n%s\n", str);
+		printf("\n%s\n", str);
+		char* ptr = strstr(str, "status");
+		if(ptr!=NULL){
+			sscanf(ptr, "%*s %s", status);
+			if(strcmp(status, "AC")!=0) result=false;
+			if(strcmp(status, "RE")==0){
+				ptr = strstr(ptr, "detailstatus");
+				if(ptr!=NULL) sscanf(ptr, "%*s %s", detailstatus);
+			}
+			else if(strcmp(status, "IE")==0){
+				ptr = strstr(ptr, "detailstatus");
+				if(ptr!=NULL){
+					int ixspace = strchr(ptr, " ");
+					int ixnewline = strchr(ptr, "\n");
+					memcpy(detailstatus, ptr+ixspace, ptr+ixnewline);
+					detailstatus[ixnewline-ixspace+1]='\0';
+				}
+			}
+			ptr = strstr(str, "timeused");
+			if(ptr!=NULL) sscanf(ptr, "%*s %d", TestCaseExecutionTime);
+			ptr = strstr(str, "memoryused");
+			if(ptr!=NULL) sscanf(ptr, "%*s %d", TestCaseExecutionMemory);
+		}
+		
 		token = strtok(str, " \n");
 		strcpy(status, token);
 		if(strcmp(token, "AC")!=0) result=false;
@@ -203,8 +226,8 @@ void FileHandle::Execute(){
 			strcpy(detailstatus, token);
 		}
 		token = strtok(NULL, " \n"); sprintf(TestCaseExecutionTime, "%s", token);
-		TimeUsed += (float) atof( TestCaseExecutionTime );
 		token = strtok(NULL, " \n"); sprintf(TestCaseExecutionMemory, "%s", token);
+		TimeUsed += (float) atof( TestCaseExecutionTime );
 		MemoryUsed = max(MemoryUsed, atoi( TestCaseExecutionMemory));
 		printf("time - %f \n", TimeUsed);
 		if( TimeUsed > (float) FileInfo->TimeLimit){

@@ -5,7 +5,7 @@
 pid_t cpid;
 const int MicroSecSleepInterval = 71;
 void ToPipe(const char* str){
-	printf("%s\n", str);
+	printf("%s", str);
 	return;
 }
 
@@ -53,6 +53,7 @@ int MemoryUsage(pid_t cpid){
 
 	rss = data = stack = 0; 
 	q = strstr (p, "VmData:");
+	//printf("%s\n", p);
 	if (q != NULL)
 	{
 		sscanf (q, "%*s %d", &data);
@@ -184,6 +185,8 @@ int main(int args, char *argv[]){
 				kill(cpid, SIGKILL);
 			}
 			w = wait4 (cpid, &status, WUNTRACED | WCONTINUED, &resourceUsage);
+			//w = wait4 (cpid, &status, NULL, &resourceUsage);
+			
 		} while(w==0);
 		
 		gettimeofday(&finish,NULL);
@@ -201,48 +204,62 @@ int main(int args, char *argv[]){
 		
 		bool sigkill = false, sigalrm = false;
 		
+		char status[4], detailstatus[100];
 		if(MemoryUsed > MemoryLimit){
 			;
 		}
 		else if( WIFEXITED(status) == true ){
 			if( WEXITSTATUS(status) !=0 ){
-				ToPipe("RE NZEC");
+				strcpy(status, "RE");
+				strcpy(detailstatus, "NZEC");
 			}
 			else{
-				ToPipe("AC");
+				strcpy(status, "AC");
 			}
 		}
 		else if( WIFSIGNALED(status) == true ){
 			if (WTERMSIG (status) == SIGKILL ){
-				ToPipe("TLE");
+				strcpy(status, "TLE");
 				sigkill = true;
 			}
 			else if (WTERMSIG(status) == SIGALRM){
-				ToPipe("TLE");
+				strcpy(status, "TLE");
 				sigalrm = true;
 			}
-		    else if (WTERMSIG (status) == SIGXFSZ)
-				ToPipe("RE SIGXFSZ");
-			else if (WTERMSIG (status) == SIGSEGV)
-				ToPipe("RE SIGSEGV");
-			else if (WTERMSIG (status) == SIGFPE)
-				ToPipe("RE SIGFPE");
-			else if (WTERMSIG (status) == SIGABRT)
-				ToPipe("RE SIGABRT");
-		    else if (WTERMSIG (status) == SIGHUP)
-				ToPipe("IE SIGHUP");
-		    else if (WTERMSIG (status) == SIGPIPE)
-				ToPipe("IE SIGPIPE");
 		    else{
-				ToPipe("RE OTHER");
-				printf("%d\n", WTERMSIG(status));
+				strcpy(status, "RE");
+				if (WTERMSIG (status) == SIGXFSZ) 
+					strcpy(detailstatus, "SIGXFSZ");
+				else if (WTERMSIG (status) == SIGSEGV) 
+					strcpy(detailstatus, "SIGSEGV");
+				else if (WTERMSIG (status) == SIGFPE) 
+					strcpy(detailstatus, "SIGFPE");
+				else if (WTERMSIG (status) == SIGABRT) 
+					strcpy(detailstatus, "SIGABRT");
+				else if (WTERMSIG (status) == SIGHUP){
+					strcpy(status, "IE");
+					strcpy(detailstatus, "SIGHUP");
+				}
+				else if (WTERMSIG (status) == SIGPIPE){
+					strcpy(status, "IE");
+					strcpy(detailstatus, "SIGPIPE");
+				}
+				else{
+					strcpy(detailstatus, "OTHER");
+					//printf("%d\n", WTERMSIG(status));
+				}
 			}
 		}
-		char tmp[10];
-		sprintf(tmp, "%0.4f", TimeUsed);
-		ToPipe(tmp);
-		sprintf(tmp, "%d", MemoryUsed);
-		ToPipe(tmp);
+		
+		char ExecutionStat[20];
+		sprintf(ExecutionStat, "status: %s", status);
+		ToPipe(ExecutionStat);
+		sprintf(ExecutionStat, "detailstatus: %s", status);
+		ToPipe(ExecutionStat);
+		sprintf(ExecutionStat, "timeused: %0.4f", TimeUsed);
+		ToPipe(ExecutionStat);
+		sprintf(ExecutionStat, "memoryused: %d", MemoryUsed);
+		ToPipe(ExecutionStat);
 		//printf("%d %d\n", (int)tv.tv_sec, (int)tv.tv_usec);
 		if(sigkill) printf("SIGKILL");
 		else if(sigalrm) printf("SIGALRM");
