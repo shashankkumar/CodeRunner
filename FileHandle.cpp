@@ -206,18 +206,19 @@ void FileHandle::Execute(){
 			else if(strcmp(status, "IE")==0){
 				ptr = strstr(ptr, "detailstatus");
 				if(ptr!=NULL){
-					int ixspace = strchr(ptr, " ");
-					int ixnewline = strchr(ptr, "\n");
-					memcpy(detailstatus, ptr+ixspace, ptr+ixnewline);
+					char* ixspace = strchr(ptr, ' ');
+					char* ixnewline = strchr(ptr, '\n');
+					memcpy(detailstatus, ixspace, ixnewline-ixspace);
 					detailstatus[ixnewline-ixspace+1]='\0';
 				}
 			}
 			ptr = strstr(str, "timeused");
-			if(ptr!=NULL) sscanf(ptr, "%*s %d", TestCaseExecutionTime);
+			if(ptr!=NULL) sscanf(ptr, "%*s %f", &TestCaseExecutionTime);
 			ptr = strstr(str, "memoryused");
-			if(ptr!=NULL) sscanf(ptr, "%*s %d", TestCaseExecutionMemory);
+			if(ptr!=NULL) sscanf(ptr, "%*s %d", &TestCaseExecutionMemory);
 		}
 		
+		/*
 		token = strtok(str, " \n");
 		strcpy(status, token);
 		if(strcmp(token, "AC")!=0) result=false;
@@ -227,8 +228,9 @@ void FileHandle::Execute(){
 		}
 		token = strtok(NULL, " \n"); sprintf(TestCaseExecutionTime, "%s", token);
 		token = strtok(NULL, " \n"); sprintf(TestCaseExecutionMemory, "%s", token);
-		TimeUsed += (float) atof( TestCaseExecutionTime );
-		MemoryUsed = max(MemoryUsed, atoi( TestCaseExecutionMemory));
+		*/
+		TimeUsed += TestCaseExecutionTime;
+		MemoryUsed = max(MemoryUsed, TestCaseExecutionMemory);
 		printf("time - %f \n", TimeUsed);
 		if( TimeUsed > (float) FileInfo->TimeLimit){
 			result = false;
@@ -236,7 +238,7 @@ void FileHandle::Execute(){
 			sprintf(detailstatus, "\0");
 		}
 		
-		sprintf(logs, "%d ==> %s %s %s %s\n", TestCaseId, status, detailstatus, TestCaseExecutionTime, TestCaseExecutionMemory);
+		sprintf(logs, "%d ==> %s %s %f %d\n", TestCaseId, status, detailstatus, TestCaseExecutionTime, TestCaseExecutionMemory);
 		Logs::Write(logs);
 		if(result==false){
 			break;
