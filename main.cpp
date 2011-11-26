@@ -39,28 +39,28 @@ int main(int argc, char* argv[])
 	bool DownloadSourceFile = true;
 	FileInfoFetchOptionsStruct* FileInfoFetchOptions = new FileInfoFetchOptionsStruct();
 	FileInfoFetchOptions->Init();
-	while((opt = getopt(argc, argv, "ncbfr:p:l:s:")) != -1){
+	while((opt = getopt(argc, argv, "ancbfr:p:l:s:")) != -1){
 		switch(opt){
 			case 'f':
-				FileInfoFetchOptions->f=true;
+				FileInfoFetchOptions->f = true;
 				FileInfoFetchOptions->FileInfo.FileId = atoi(optarg);
 			break;
 			case 'p':
-				FileInfoFetchOptions->p=true;
+				FileInfoFetchOptions->p = true;
 				strcpy(FileInfoFetchOptions->FileInfo.ProblemId, optarg);
 			break;
 			case 'l':
-				FileInfoFetchOptions->l=true;
+				FileInfoFetchOptions->l = true;
 				strcpy(FileInfoFetchOptions->FileInfo.lang, optarg);
 			break;
 			case 'b':
-				CurlWrapper::ForcePushResult=true;
+				CurlWrapper::ForcePushResult = true;
 			break;
 			case 'c':
-				FileHandle::Clean=true;
+				FileHandle::Clean = true;
 			break;
 			case 'n':
-				FileHandle::SendResultsVar=false;
+				FileHandle::SendResultsVar = false;
 			break;
 			case 's':
 				SleepInterval = atoi(optarg);
@@ -73,6 +73,8 @@ int main(int argc, char* argv[])
 			break;
 			case 'v':
 			break;
+			case 'a':
+				CurlWrapper::ForceGetFileIds = true;
 			default: /* '?' */
 				fprintf(stderr, "Usage: %s [-f fileid [-d -p problemcode -t timelimit -m memorylimit -l lang] | [-p problemcode] [-l language] ] [-s sleepinterval] [-b] [-n] [-c] [-r] [-d] [-v]", argv[0]); 
 				exit(EXIT_FAILURE);
