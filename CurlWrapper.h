@@ -32,6 +32,7 @@ public:
 	static size_t ContentInVar(void* ptr, size_t size, size_t nmemb, string *stream);
 	static size_t ContentInFileHTTP(void *ptr, size_t size, size_t nmemb, FILE *stream);
 	static bool ForcePushResult;
+	static bool ForceGetFileIds;
  	int GetFileFromFTP(int FileId);
 	int GetFileFromHTTP(int FileId);
 	int FetchContentFromWebPage(FileInfoFetchOptionsStruct* FileInfoFetchOptions, string *content);

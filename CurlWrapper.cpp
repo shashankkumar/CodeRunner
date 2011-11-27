@@ -137,6 +137,10 @@ int CurlWrapper::FetchContentFromWebPage(FileInfoFetchOptionsStruct* FileInfoFet
 		sprintf(optstr, "%s", FileInfoFetchOptions->FileInfo.lang);
 		curl_formadd( &formpost, &lastptr, CURLFORM_COPYNAME, "lang", CURLFORM_COPYCONTENTS, optstr, CURLFORM_END);
 	}
+	
+	if(ForceGetFileIds){
+		curl_formadd( &formpost, &lastptr, CURLFORM_COPYNAME, "all", CURLFORM_COPYCONTENTS, "true", CURLFORM_END);
+	}
 		
 	curl = curl_easy_init();
 	/* initalize custom header list (stating that Expect: 100-continue is not wanted */ 
@@ -216,8 +220,7 @@ void CurlWrapper::SendResultsToWebpage(const char* fileid, const char* status, c
    		if(CURLE_OK!=res){
    			sprintf(logs, "Could not send results. Curl Error code: %d\n", res);
    			Logs::WriteLine(logs);
-   			
-   		}
+   		}	
    		else{
    			sprintf(logs, "Results sent succesfully.\n");
    			Logs::WriteLine(logs);
@@ -227,3 +230,4 @@ void CurlWrapper::SendResultsToWebpage(const char* fileid, const char* status, c
 }
 
 bool CurlWrapper::ForcePushResult=true;
+bool CurlWrapper::ForceGetFileIds=false;
