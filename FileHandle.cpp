@@ -54,7 +54,7 @@ int FileHandle::CheckMIME(){
 	}
 	else{
 		if ( fgets( line, sizeof line, fpipe)){
-			printf("\n%s\n", line);
+			printf("mime-type -> %s", line);
 			
 			if(strncmp(line+12, "x-empty", 7)==0){
 				result = false;
