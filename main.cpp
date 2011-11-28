@@ -39,7 +39,7 @@ int main(int argc, char* argv[])
 	bool DownloadSourceFile = true;
 	FileInfoFetchOptionsStruct* FileInfoFetchOptions = new FileInfoFetchOptionsStruct();
 	FileInfoFetchOptions->Init();
-	while((opt = getopt(argc, argv, "ancbfr:p:l:s:")) != -1){
+	while((opt = getopt(argc, argv, "ancdbfr:p:l:s:")) != -1){
 		switch(opt){
 			case 'f':
 				FileInfoFetchOptions->f = true;
