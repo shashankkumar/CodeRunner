@@ -11,6 +11,7 @@ class ContentParser{
 	FileInfoStruct* FileInfo;
   public:
 	
+	static bool OneFileExecution;
 	int FetchFileInfoList(FileInfoFetchOptionsStruct* FileInfoFetchOptions);
 	char read_char();
 	int read_int();

@@ -5,7 +5,7 @@
 pid_t cpid;
 const int MicroSecSleepInterval = 71;
 void ToPipe(const char* str){
-	printf("%s", str);
+	printf("%s\n", str);
 	return;
 }
 
@@ -53,7 +53,9 @@ int MemoryUsage(pid_t cpid){
 
 	rss = data = stack = 0; 
 	q = strstr (p, "VmData:");
-	//printf("%s\n", p);
+	char tmp[10000];
+	sprintf(tmp, "%s\n", p);
+	ToPipe(tmp);
 	if (q != NULL)
 	{
 		sscanf (q, "%*s %d", &data);

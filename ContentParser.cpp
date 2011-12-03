@@ -58,6 +58,6 @@ FileInfoStruct* ContentParser::GetNextFileInfo(){
 	read_char_str(FileInfo->lang);
 	//printf("%d %s %d %d %s\n", FileInfo.FileId, FileInfo.ProblemId, FileInfo.TimeLimit, FileInfo.MemoryLimit, FileInfo.lang);
 	return FileInfo;
-	
 }
 
+bool ContentParser::OneFileExecution = false;

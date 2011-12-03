@@ -10,7 +10,7 @@ class FileHandle{
 	float TimeUsed;
 	char systemString[100];
 	char status[10], logs[10000], detailstatus[10000];
-	char str[100], *token, tmp[10];
+	char str[10000], *token, tmp[10];
 	char logString[100];
 	float TestCaseExecutionTime;
 	int TestCaseExecutionMemory;

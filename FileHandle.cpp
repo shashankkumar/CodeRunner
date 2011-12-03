@@ -279,9 +279,10 @@ void FileHandle::pipeMatch(){
 void FileHandle::MatchOutput(){
 	char FromFileStr[100], ToFileStr[100];
 	sprintf(FromFileStr, "%s%s/Output/%d.txt", TESTCASESPATH, FileInfo->ProblemId, TestCaseId);
-	sprintf(ToFileStr, "%s/%do.txt", FileAddr, TestCaseId);
-	char cmd[100];
+	sprintf(ToFileStr, "%s%do.txt", FileDirAddr, TestCaseId);
+	char cmd[1000];
 	sprintf(command, "diff %s %s --ignore-all-space --ignore-blank-lines --ignore-tab-expansion --ignore-space-change --brief 2>&1", FromFileStr, ToFileStr);
+	printf("%s\n", command);
 	pipeMatch();
 }
 
@@ -289,7 +290,7 @@ void FileHandle::SendResults(){
 	sprintf(timeused, "%0.3f", TimeUsed);
 	sprintf(memoryused, "%d", MemoryUsed);
 	sprintf(fileid, "%d", FileInfo->FileId);
-	sprintf(logs, "FileId ==> %s\n Status==>%s DetailStatus==>%s TimeUsed==>%s MemoryUsed==>%s", fileid, status, detailstatus, timeused, memoryused); 
+	sprintf(logs, "FileId ==> %s Status==>%s DetailStatus==>%s TimeUsed==>%s MemoryUsed==>%s", fileid, status, detailstatus, timeused, memoryused); 
 	Logs::WriteLine(logs, true);
 	if(SendResultsVar) FileCurl.SendResultsToWebpage(fileid, status, detailstatus, timeused, memoryused);
 

@@ -35,10 +35,12 @@ int main(int argc, char* argv[])
 	
 	int opt;
 	int SleepInterval = SLEEPINTERVAL;
-	bool RunOnce = false;
-	bool DownloadSourceFile = true;
+	bool RunOnce = false, DownloadSourceFile = true;
 	FileInfoFetchOptionsStruct* FileInfoFetchOptions = new FileInfoFetchOptionsStruct();
+	bool UsageError = false;
+
 	FileInfoFetchOptions->Init();
+
 	while((opt = getopt(argc, argv, "ancdbfr:p:l:s:")) != -1){
 		switch(opt){
 			case 'f':
@@ -71,28 +73,51 @@ int main(int argc, char* argv[])
 			case 'd':
 				FileHandle::DownloadSourceFile = false;
 			break;
+			case 'i':
+				ContentParser::OneFileExecution = true;
+			break;
+			case 't':
+				FileInfoFetchOptions->tl = true;
+				FileInfoFetchOptions->FileInfo.TimeLimit = atoi(optarg);
+			break;
+			case 'm':
+				FileInfoFetchOptions->ml = true;
+				FileInfoFetchOptions->FileInfo.MemoryLimit = atoi(optarg);
 			case 'v':
 			break;
 			case 'a':
 				CurlWrapper::ForceGetFileIds = true;
+			break;
 			default: /* '?' */
-				fprintf(stderr, "Usage: %s [-f fileid [-d -p problemcode -t timelimit -m memorylimit -l lang] | [-p problemcode] [-l language] ] [-s sleepinterval] [-b] [-n] [-c] [-r] [-d] [-v]\n", argv[0]); 
-				exit(EXIT_FAILURE);
+				UsageError = true;
 		}
 	}
 	
-	if(FileInfoFetchOptions->f && (FileInfoFetchOptions->p || FileInfoFetchOptions->l)){
-		fprintf(stderr, "Usage: %s [-f fileid | [-p problemcode] [-l language]] [-b]\n", argv[0]); 
+	if(FileInfoFetchOptions->f){
+		if(ContentParser::OneFileExecution && (!FileInfoFetchOptions->ml || !FileInfoFetchOptions->tl || !FileInfoFetchOptions->p || !FileInfoFetchOptions->l)) UsageError = true;
+		else if(!ContentParser::OneFileExecution && (FileInfoFetchOptions->p || FileInfoFetchOptions->l)) UsageError = true;
+	}
+	if(UsageError){
+		fprintf(stderr, "Usage: %s [-f fileid [-i -p problemcode -t timelimit -m memorylimit -l lang] | [-p problemcode] [-l language] ] [-s sleepinterval] [-b] [-n] [-c] [-r] [-d] [-v]\n", argv[0]); 
 		exit(EXIT_FAILURE);
 	}
 	
 	Logs::OpenLogFile();
 	Logs::CodeRunnerStarted();
 	Logs::CloseLogFile();
+	
+	if(ContentParser::OneFileExecution){
+		FileInfoStruct* FileInfo = &(FileInfoFetchOptions->FileInfo);
+		FileHandle F(FileInfo);
+		F.Action();
+		return 0;
+	}
+	
 	do{
 		Logs::OpenLogFile();
 		bool CurrentIteration = true;
 		ContentParser *ContentVar = new ContentParser();
+		//if(ContentParser->OneFileExecution) OneFileInfoPrepare();
 		if(ContentVar->FetchFileInfoList(FileInfoFetchOptions)==-1){
 			CurrentIteration = false;
 		}
@@ -116,7 +141,7 @@ int main(int argc, char* argv[])
 		Logs::CloseLogFile();
 		sleep(SleepInterval);
 		
-	}while(!RUNONCE);
+	}while(!RunOnce);
 		
     return 0;
 }
