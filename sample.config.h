@@ -20,7 +20,8 @@
 #define USERNAME "shashank"
 #define PASSWORD "shashank"
 
-/** HTTPON and FTPON are two methods by which source code can be downloaded from internet.
+/** 
+ * HTTPON and FTPON are two methods by which source code can be downloaded from internet.
  * If the preferred method is HTTP, then specify HTTPON as true.
  * otherwise specify FTPON as true.
  */
@@ -44,8 +45,15 @@
 #define HTTPADDRESS "http://192.168.208.7/return_sourcecode.php"
 #define FILEPATH "./Files/"
 #define TESTCASESPATH "./TestCases/"
-#define URLToSendResults "http://192.168.208.203/push_result.php"
-#define FetchFileFromFTP true
-#define LOGFILEPATH "./Logs/logs2.txt"
-#define SLEEPINTERVAL 30
 
+/**
+ * Specify the URL where results will be sent here.
+ * Same username and password will be used as above.
+ */
+#define URLToSendResults "http://192.168.208.203/push_result.php"
+#define LOGFILEPATH "./Logs/logs2.txt"
+/**
+ * Specify the interval for which CodeRunner sleeps between two epochs.
+ * One epoch is downloading of pending file ids, their source files, their execution and finally sending their results.
+ */
+#define SLEEPINTERVAL 30
