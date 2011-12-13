@@ -55,7 +55,7 @@ int MemoryUsage(pid_t cpid){
 	q = strstr (p, "VmData:");
 	char tmp[10000];
 	sprintf(tmp, "%s\n", p);
-	ToPipe(tmp);
+	//ToPipe(tmp);
 	if (q != NULL)
 	{
 		sscanf (q, "%*s %d", &data);

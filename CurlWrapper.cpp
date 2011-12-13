@@ -1,5 +1,8 @@
 #include "CurlWrapper.h"
 
+bool CurlWrapper::ForcePushResult=true;
+bool CurlWrapper::ForceGetFileIds=false;
+
 size_t CurlWrapper::ContentInVar(void* ptr, size_t size, size_t nmemb, string *stream){
 	stream -> append((char *)ptr, size * nmemb);
 	return size*nmemb;
@@ -210,6 +213,9 @@ void CurlWrapper::SendResultsToWebpage(const char* fileid, const char* status, c
     	string buffer;
     	curl_easy_setopt(curl, CURLOPT_WRITEDATA, &buffer);
     	res = curl_easy_perform(curl);
+    	char tmp[1000];
+		strcpy(tmp, buffer.c_str());
+    	printf("%s\n", tmp);
     	
     	/* always cleanup */ 
     	curl_easy_cleanup(curl);
@@ -228,6 +234,3 @@ void CurlWrapper::SendResultsToWebpage(const char* fileid, const char* status, c
    		
   	}
 }
-
-bool CurlWrapper::ForcePushResult=true;
-bool CurlWrapper::ForceGetFileIds=false;

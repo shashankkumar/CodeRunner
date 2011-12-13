@@ -282,7 +282,7 @@ void FileHandle::MatchOutput(){
 	sprintf(ToFileStr, "%s%do.txt", FileDirAddr, TestCaseId);
 	char cmd[1000];
 	sprintf(command, "diff %s %s --ignore-all-space --ignore-blank-lines --ignore-tab-expansion --ignore-space-change --brief 2>&1", FromFileStr, ToFileStr);
-	printf("%s\n", command);
+	//printf("%s\n", command);
 	pipeMatch();
 }
 
