@@ -143,6 +143,7 @@ int CurlWrapper::FetchContentFromWebPage(FileInfoFetchOptionsStruct* FileInfoFet
 	
 	if(ForceGetFileIds){
 		curl_formadd( &formpost, &lastptr, CURLFORM_COPYNAME, "all", CURLFORM_COPYCONTENTS, "true", CURLFORM_END);
+		CurlWrapper::ForceGetFileIds = false;
 	}
 		
 	curl = curl_easy_init();
