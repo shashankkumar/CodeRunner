@@ -49,7 +49,7 @@ int main(int argc, char* argv[])
 
 	FileInfoFetchOptions->Init();
 
-	while((opt = getopt(argc, argv, "ancdbf:r:p:l:s:")) != -1){
+	while((opt = getopt(argc, argv, "ancdbf:r:p:l:s:w:")) != -1){
 		switch(opt){
 			case 'f':
 				FileInfoFetchOptions->f = true;
