@@ -69,8 +69,8 @@ int MemoryUsage(pid_t cpid){
 		else
 			rss = data + stack;
 	}
-
-	return min(data + stack, rss);
+	printf("Memory Usage: data - %d, stack - %d, rss - %d\n", data, stack, rss);
+	return data + stack;
 	/* return (data + stack); */
 }
 
@@ -82,7 +82,7 @@ int main(int args, char *argv[]){
 	}
 	
 	int TimeLimit, MemoryLimit, TestCaseFileId, FileId;
-	char InputFile[10];
+	char InputFile[10], lang[10];
 	struct timeval start,finish;
     struct sigaction SignalAction;
 	pid_t w;
@@ -91,7 +91,7 @@ int main(int args, char *argv[]){
     
     FileId = atoi(argv[1]), strcpy(InputFile, argv[2]);
     TestCaseFileId = atoi(argv[3]), TimeLimit = atoi(argv[4]), MemoryLimit = atoi(argv[5]);
-	
+	strcpy(lang, argv[6]);
 	SignalAction.sa_flags = SA_NOCLDSTOP | SA_NOCLDWAIT;
 	SignalAction.sa_handler = SignalHandler;
 	
@@ -161,14 +161,37 @@ int main(int args, char *argv[]){
 		if(freopen(TestCaseFile, "r", stdin)==NULL){
 			ToPipe("IE ERROR Could not open test case file\n");
 		}
+
 		if(freopen(OutputFile, "w", stdout)==NULL){
 			ToPipe("IE ERROR Could not open output file\n");
 		}
+
 		if(freopen("/dev/null", "w", stderr)==NULL){
 			ToPipe("IE ERROR Could not redirect error stream to null\n");
 		}
+		if(alarm(TimeLimit)!=0){
+			ToPipe("IE ERROR Could not set alarm.");
+		}
+		if(strcmp(lang,"java")==0){
+			SetResourceLimitValuesJava(TimeLimit);
+			if(execl("/usr/bin/java", "/usr/bin/java", "-Xmx4M", "-classpath", InputFile, (char *) NULL) == -1){
+				fclose(stdout);
+				ToPipe("IE ERROR File not present or some other error.");
+			}
+		}
 		SetResourceLimitValues(TimeLimit);
-		alarm(TimeLimit);
+		if(strcmp(lang, "python")==0){
+			if(execl("/usr/bin/perl", "/usr/bin/perl", "-Xmx4M", "-classpath", InputFile, (char *) NULL) == -1){
+				fclose(stdout);
+				ToPipe("IE ERROR File not present or some other error.");
+			}
+		}
+		if(strcmp(lang, "perl")==0){
+			if(execl("/usr/bin/perl", "/usr/bin/perl", "-classpath", InputFile, (char *) NULL) == -1){
+				fclose(stdout);
+				ToPipe("IE ERROR File not present or some other error.");
+			}
+		}
 		if(execl(InputFile,InputFile,(char *) NULL) == -1){
 			fclose(stdout);
 			ToPipe("IE ERROR File not present or some other error.");
@@ -178,7 +201,7 @@ int main(int args, char *argv[]){
 	else {                    /* Code executed by parent */
 		struct rusage resourceUsage;
 		
-		int MemoryUsed = 0;
+		int MemoryUsed = 64;
 		
 		do{
 			MicroSecSleep(MicroSecSleepInterval);
@@ -206,30 +229,32 @@ int main(int args, char *argv[]){
 		
 		bool sigkill = false, sigalrm = false;
 		
-		char status[4], detailstatus[100];
+		char executionstatus[4], detailstatus[100];
+		strcpy(detailstatus, "\0");
 		if(MemoryUsed > MemoryLimit){
-			;
+			printf("Memory Limit Exceeded.\n");
+			printf("%d %d\n", MemoryUsed, MemoryLimit);
 		}
-		else if( WIFEXITED(status) == true ){
+		if( WIFEXITED(status) == true ){
 			if( WEXITSTATUS(status) !=0 ){
-				strcpy(status, "RE");
+				strcpy(executionstatus, "RE");
 				strcpy(detailstatus, "NZEC");
 			}
 			else{
-				strcpy(status, "AC");
+				strcpy(executionstatus, "AC");
 			}
 		}
 		else if( WIFSIGNALED(status) == true ){
 			if (WTERMSIG (status) == SIGKILL ){
-				strcpy(status, "TLE");
+				strcpy(executionstatus, "TLE");
 				sigkill = true;
 			}
 			else if (WTERMSIG(status) == SIGALRM){
-				strcpy(status, "TLE");
+				strcpy(executionstatus, "TLE");
 				sigalrm = true;
 			}
 		    else{
-				strcpy(status, "RE");
+				strcpy(executionstatus, "RE");
 				if (WTERMSIG (status) == SIGXFSZ) 
 					strcpy(detailstatus, "SIGXFSZ");
 				else if (WTERMSIG (status) == SIGSEGV) 
@@ -239,24 +264,25 @@ int main(int args, char *argv[]){
 				else if (WTERMSIG (status) == SIGABRT) 
 					strcpy(detailstatus, "SIGABRT");
 				else if (WTERMSIG (status) == SIGHUP){
-					strcpy(status, "IE");
+					strcpy(executionstatus, "IE");
 					strcpy(detailstatus, "SIGHUP");
 				}
 				else if (WTERMSIG (status) == SIGPIPE){
-					strcpy(status, "IE");
+					strcpy(executionstatus, "IE");
 					strcpy(detailstatus, "SIGPIPE");
 				}
 				else{
 					strcpy(detailstatus, "OTHER");
-					//printf("%d\n", WTERMSIG(status));
+					printf("%d\n", WTERMSIG(status));
+					printf("%d\n", WTERMSIG(status));
 				}
 			}
 		}
 		
 		char ExecutionStat[20];
-		sprintf(ExecutionStat, "status: %s", status);
+		sprintf(ExecutionStat, "status: %s", executionstatus);
 		ToPipe(ExecutionStat);
-		sprintf(ExecutionStat, "detailstatus: %s", status);
+		sprintf(ExecutionStat, "detailstatus: %s", detailstatus);
 		ToPipe(ExecutionStat);
 		sprintf(ExecutionStat, "timeused: %0.4f", TimeUsed);
 		ToPipe(ExecutionStat);
