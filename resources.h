@@ -13,6 +13,10 @@ void SetResourceLimitValues(int TimeLimit){
     SetResourceLimit(RLIMIT_NPROC, 0, 0);
 }
 
+void SetResourceLimitValuesJava(int TimeLimit){
+	SetResourceLimit(RLIMIT_CPU,TimeLimit, TimeLimit);			// Time Limit specified by the problem setter    
+}
+
 /**
 void setResourceLimitWrapper(int TimeLimit, int MemoryLimit){
 	setResourceLimit(RLIMIT_CPU,TimeLimit, TimeLimit);			// Time Limit specified by the problem setter
