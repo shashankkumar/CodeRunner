@@ -8,7 +8,7 @@ FileHandle::FileHandle(FileInfoStruct* FileInfo){
 	sprintf(detailstatus,"\0");
 	sprintf(FileAddr, "%s%d", FILEPATH, FileInfo->FileId);
 	sprintf(FileDirAddr, "%s%d/", FILEPATH, FileInfo->FileId);
-	if(strcmp(FileInfo->lang, "java")){
+	if(strcmp(FileInfo->lang, "java")==0){
 		strcpy(FileName, "Main");
 	}
 	else strcpy(FileName, "test");
@@ -335,7 +335,7 @@ void FileHandle::Action(){
 }
 
 FileHandle::~FileHandle(){
-	if(Clean) CleanUp();
+	//if(Clean) CleanUp();
 }
 
 bool FileHandle::Clean=false;
