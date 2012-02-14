@@ -1,12 +1,18 @@
-VAR=includeh.h includes.h config.h Logs.h
+VAR= headers.h Logs.h CROptions.h 
 complete: main Execution
 
-main : main.o FileHandle.o CurlWrapper.o Logs.o ContentParser.o -lcurl
-	g++ -o main main.o FileHandle.o CurlWrapper.o ContentParser.o Logs.o -lcurl
+main : main.o CodeRunner.o CROptions.o FileHandle.o CurlWrapper.o Logs.o ContentParser.o CROptions.o -lcurl
+	g++ -o main main.o CodeRunner.o CROptions.o FileHandle.o CurlWrapper.o ContentParser.o Logs.o -lcurl
 
-main.o : main.cpp ContentParser.h FileHandle.h $(VAR)
+main.o : main.cpp CROptions.h CodeRunner.h $(VAR)
 	g++ -c main.cpp
 
+CodeRunner.o : CodeRunner.cpp CodeRunner.h $(VAR)
+	g++ -c CodeRunner.cpp
+
+CROptions.o : CROptions.cpp CROptions.h config.h $(VAR)
+	g++ -c CROptions.cpp
+	
 FileHandle.o : FileHandle.cpp FileHandle.h CurlWrapper.h $(VAR)
 	g++ -c FileHandle.cpp
 	
