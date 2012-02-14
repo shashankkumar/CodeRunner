@@ -3,10 +3,15 @@
 FILE * Logs::pLogFile;
 time_t Logs::rawtime;
 char Logs::curtime[100];
+char Logs::logfile[100];
+
+void Logs::SetLogFileName(const char* logfilepath, const char* logfilename){
+	sprintf(logfile, "%s%s", logfilepath, logfilename);
+}
 
 void Logs::OpenLogFile(){
-	pLogFile = fopen(LOGFILEPATH, "a");
-	if(pLogFile==NULL)printf("Cannot open log file for logging.");
+	pLogFile = fopen(logfile, "a");
+	if(pLogFile==NULL) printf("Cannot open log file for logging purposes.");
 }
 
 void Logs::CloseLogFile(){
@@ -54,13 +59,6 @@ void Logs::WriteLine(char* logs, bool PrintTime){
 	fputs(logs, pLogFile);
 	fputs("\n", pLogFile);
 	printf("%s\n", logs);
-}
-
-void Logs::GoToSleep(){
-	char SleepText[50];;
-	sprintf(SleepText, "Going to sleep for %d seconds.\n", SLEEPINTERVAL);
-	Logs::WriteLine(SleepText);
-	Logs::WriteLine("============================================================================\n");
 }
 
 void Logs::CodeRunnerStarted(){

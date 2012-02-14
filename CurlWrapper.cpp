@@ -1,8 +1,5 @@
 #include "CurlWrapper.h"
 
-bool CurlWrapper::ForcePushResult=true;
-bool CurlWrapper::ForceGetFileIds=false;
-
 size_t CurlWrapper::ContentInVar(void* ptr, size_t size, size_t nmemb, string *stream){
 	stream -> append((char *)ptr, size * nmemb);
 	return size*nmemb;
@@ -91,7 +88,7 @@ int CurlWrapper::GetFileFromHTTP(int FileId){
    	headerlist = curl_slist_append(headerlist, buf);
 	if (curl) {
        	fp = fopen(SavedFileName,"wb");
-   		curl_easy_setopt(curl, CURLOPT_URL, HTTPADDRESS);
+   		curl_easy_setopt(curl, CURLOPT_URL, CROptions::URLToGetSourceCode);
         curl_easy_setopt(curl, CURLOPT_HTTPPOST, formpost);
     	curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, ContentInFileHTTP);
    	    curl_easy_setopt(curl, CURLOPT_WRITEDATA, fp);
@@ -114,7 +111,7 @@ int CurlWrapper::GetFileFromHTTP(int FileId){
    	return -1;
 }
 	
-int CurlWrapper::FetchContentFromWebPage(FileInfoFetchOptionsStruct* FileInfoFetchOptions, string *content){
+int CurlWrapper::FetchContentFromWebPage(string *content){
 		
 	struct curl_httppost *formpost = NULL;
 	struct curl_httppost *lastptr = NULL;
@@ -126,24 +123,24 @@ int CurlWrapper::FetchContentFromWebPage(FileInfoFetchOptionsStruct* FileInfoFet
 	curl_formadd( &formpost, &lastptr, CURLFORM_COPYNAME, "password", CURLFORM_COPYCONTENTS, PASSWORD, CURLFORM_END);
 	
 	char optstr[11];
-	if(FileInfoFetchOptions->f){
-		sprintf(optstr, "%d", FileInfoFetchOptions->FileInfo.FileId);
+	if(CROptions::FileInfoFetchOptions->FileId_Predefined){
+		sprintf(optstr, "%d", CROptions::FileInfoFetchOptions->FileInfo.FileId);
 		curl_formadd( &formpost, &lastptr, CURLFORM_COPYNAME, "fileid", CURLFORM_COPYCONTENTS, optstr, CURLFORM_END);
 	}
 	
-	if(FileInfoFetchOptions->p){
-		sprintf(optstr, "%s", FileInfoFetchOptions->FileInfo.ProblemId);
+	if(CROptions::FileInfoFetchOptions->ProblemId_Predefined){
+		sprintf(optstr, "%s", CROptions::FileInfoFetchOptions->FileInfo.ProblemId);
 		curl_formadd( &formpost, &lastptr, CURLFORM_COPYNAME, "problemid", CURLFORM_COPYCONTENTS, optstr, CURLFORM_END);
 	}
 	
-	if(FileInfoFetchOptions->l){
-		sprintf(optstr, "%s", FileInfoFetchOptions->FileInfo.lang);
+	if(CROptions::FileInfoFetchOptions->Lang_Predefined){
+		sprintf(optstr, "%s", CROptions::FileInfoFetchOptions->FileInfo.lang);
 		curl_formadd( &formpost, &lastptr, CURLFORM_COPYNAME, "lang", CURLFORM_COPYCONTENTS, optstr, CURLFORM_END);
 	}
 	
-	if(ForceGetFileIds){
+	if(CROptions::GetAllFileIds){
 		curl_formadd( &formpost, &lastptr, CURLFORM_COPYNAME, "all", CURLFORM_COPYCONTENTS, "true", CURLFORM_END);
-		CurlWrapper::ForceGetFileIds = false;
+		CROptions::GetAllFileIds = false;
 	}
 		
 	curl = curl_easy_init();
@@ -151,7 +148,7 @@ int CurlWrapper::FetchContentFromWebPage(FileInfoFetchOptionsStruct* FileInfoFet
 	headerlist = curl_slist_append(headerlist, buf);
 	if(curl) {
     	/* what URL that receives this POST */ 
-    	curl_easy_setopt(curl, CURLOPT_URL, URLToGetFileIds);
+    	curl_easy_setopt(curl, CURLOPT_URL, CROptions::URLToGetFileIds);
     
     	curl_easy_setopt(curl, CURLOPT_HTTPPOST, formpost);
     	curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, ContentInVar);
@@ -200,7 +197,7 @@ void CurlWrapper::SendResultsToWebpage(const char* fileid, const char* status, c
 	curl_formadd( &formpost, &lastptr, CURLFORM_COPYNAME, "detailstatus", CURLFORM_COPYCONTENTS, detailstatus, CURLFORM_END);
 	curl_formadd( &formpost, &lastptr, CURLFORM_COPYNAME, "time", CURLFORM_COPYCONTENTS, time, CURLFORM_END);
 	curl_formadd( &formpost, &lastptr, CURLFORM_COPYNAME, "memory", CURLFORM_COPYCONTENTS, memory, CURLFORM_END);
-	if(ForcePushResult) 
+	if(CROptions::ForcePushResult) 
 		curl_formadd( &formpost, &lastptr, CURLFORM_COPYNAME, "force", CURLFORM_COPYCONTENTS, "true", CURLFORM_END);
 	
 	curl = curl_easy_init();
@@ -208,7 +205,7 @@ void CurlWrapper::SendResultsToWebpage(const char* fileid, const char* status, c
 	headerlist = curl_slist_append(headerlist, buf);
 	if(curl) {
     	/* what URL that receives this POST */ 
-    	curl_easy_setopt(curl, CURLOPT_URL, URLToSendResults);
+    	curl_easy_setopt(curl, CURLOPT_URL, CROptions::URLToSendResults);
     	curl_easy_setopt(curl, CURLOPT_HTTPPOST, formpost);
     	curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, ContentInVar);
     	string buffer;
