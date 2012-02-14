@@ -2,105 +2,125 @@
 CodeRunner - the online judge
 Author: Shashank Kumar <shashankkumar.me@gmail.com>
 Copyright (c): 2011 All rights reserved
-Version: 1.5
+Version: 3
 
- * This is a free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
- *
- * This software is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
-  
+Copyright Shashank Kumar. All rights reserved.
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to
+deal in the Software without restriction, including without limitation the
+rights to use, copy and/or distribute copies of the Software, 
+and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
+IN THE SOFTWARE.  
 You may contact the author of CodeRunner by e-mail at:
 shashankkumar.me@gmail.com
 
 ****************************************************************************/
-#include "includeh.h"
-#include "FileInfo.h"
-#include "ContentParser.h"
-#include "FileHandle.h"
+#include "headers.h"
+#include "CROptions.h"
+#include "CodeRunner.h"
+//#include "CodeRunner.h"
 
 int main(int argc, char* argv[])
 {
 	
-	if(chdir(PATH)==-1)
-	{
-		printf("%d\n", errno);
-		printf("IE ERROR Cannot change directory to the one specified in config.h");
-		return 1;
-	}
+	CodeRunner::ChDir(CROptions::PATH);
 	
 	int opt;
-	FileInfoFetchOptionsStruct* FileInfoFetchOptions = new FileInfoFetchOptionsStruct();
-	FileInfoFetchOptions->Init();
-	while((opt = getopt(argc, argv, "ncbf:p:l:")) != -1){
+	bool DownloadSourceFile = true;
+	bool UsageError = false;
+
+	//FileInfoFetchOptions->Init();
+
+	while((opt = getopt(argc, argv, "ancdbf:r:p:l:s:w:")) != -1){
 		switch(opt){
+			// For pre-defining FileId
 			case 'f':
-				FileInfoFetchOptions->f=true;
-				FileInfoFetchOptions->FileInfo.FileId = atoi(optarg);
+				CROptions::FileInfoFetchOptions->FileId_Predefined = true;
+				CROptions::FileInfoFetchOptions->FileInfo.FileId = atoi(optarg);
 			break;
+			// For pre-defining ProblemId
 			case 'p':
-				FileInfoFetchOptions->p=true;
-				strcpy(FileInfoFetchOptions->FileInfo.ProblemId, optarg);
+				CROptions::FileInfoFetchOptions->ProblemId_Predefined = true;
+				strcpy(CROptions::FileInfoFetchOptions->FileInfo.ProblemId, optarg);
 			break;
+			// For pre-defining Lang
 			case 'l':
-				FileInfoFetchOptions->l=true;
-				strcpy(FileInfoFetchOptions->FileInfo.lang, optarg);
+				CROptions::FileInfoFetchOptions->Lang_Predefined = true;
+				strcpy(CROptions::FileInfoFetchOptions->FileInfo.lang, optarg);
 			break;
+			// For sending results and forcing insertion of those results.
 			case 'b':
-				CurlWrapper::ForcePushResult=true;
+				CROptions::ForcePushResult = true;
 			break;
+			// For clearing Files directory after execution of source code.
 			case 'c':
-				FileHandle::Clean=true;
+				CROptions::Clean = true;
 			break;
+			// For not sending results after evaluation.
 			case 'n':
-				FileHandle::SendResultsVar=false;
+				CROptions::SendResults = false;
+			break;
+			// For specifying Sleep Interval after each epoch.
+			case 's':
+				CROptions::SleepInterval = atoi(optarg);
+			break;
+			// For setting CodeRunner to just run for one epoch.
+			case 'r':
+				CROptions::RunOnce = true;
+			break;
+			// For not downloading source codes.
+			case 'd':
+				CROptions::DownloadSourceFile = false;
+			break;
+			case 'i':
+				CROptions::OneFileExecution = true;
+			break;
+			// For specifying pre-defined time-limit.
+			case 't':
+				CROptions::FileInfoFetchOptions->TimeLimit_Predefined = true;
+				CROptions::FileInfoFetchOptions->FileInfo.TimeLimit = atoi(optarg);
+			break;
+			// For specifying pre-defined memory limit.
+			case 'm':
+				CROptions::FileInfoFetchOptions->MemoryLimit_Predefined = true;
+				CROptions::FileInfoFetchOptions->FileInfo.MemoryLimit = atoi(optarg);
+			break;
+			// For printing version related information.
+			case 'v':
+			break;
+			// For fetching all file-ids irrespective of evaluation status.
+			case 'a':
+				CROptions::GetAllFileIds = true;
+			break;
+			case 'w':
 			break;
 			default: /* '?' */
-				fprintf(stderr, "Usage: %s [-f fileid | [-p problemcode] [-l language]] [-b] [-n] [-c]\n", argv[0]); 
-				exit(EXIT_FAILURE);
+				UsageError = true;
 		}
 	}
 	
-	if(FileInfoFetchOptions->f && (FileInfoFetchOptions->p || FileInfoFetchOptions->l)){
-		fprintf(stderr, "Usage: %s [-f fileid | [-p problemcode] [-l language]] [-b]\n", argv[0]); 
+	if(CROptions::FileInfoFetchOptions->FileId_Predefined){
+		if(CROptions::OneFileExecution && (!CROptions::FileInfoFetchOptions->MemoryLimit_Predefined || !CROptions::FileInfoFetchOptions->TimeLimit_Predefined || 
+		!CROptions::FileInfoFetchOptions->ProblemId_Predefined || !CROptions::FileInfoFetchOptions->Lang_Predefined)) UsageError = true;
+		else if(!CROptions::OneFileExecution && (CROptions::FileInfoFetchOptions->ProblemId_Predefined || CROptions::FileInfoFetchOptions->Lang_Predefined)) UsageError = true;
+	}
+	if(UsageError){
+		fprintf(stderr, "Usage: %s [-f fileid [-i -p problemcode -t timelimit -m memorylimit -l lang] | [-p problemcode] [-l language] ] [-s sleepinterval] [-b] [-n] [-c] [-r] [-d] [-v]\n", argv[0]); 
 		exit(EXIT_FAILURE);
 	}
 	
-	Logs::OpenLogFile();
-	Logs::CodeRunnerStarted();
-	Logs::CloseLogFile();
-	do{
-		Logs::OpenLogFile();
-		bool CurrentIteration = true;
-		ContentParser *ContentVar = new ContentParser();
-		if(ContentVar->FetchFileInfoList(FileInfoFetchOptions)==-1){
-			CurrentIteration = false;
-		}
-		
-		if(CurrentIteration && ContentVar->EndOfContent()){
-			Logs::WriteLine("File Queue Empty. Nothing to evaluate.");
-			CurrentIteration = false;
-		}
-		
-		while(CurrentIteration && !ContentVar->EndOfContent()){
-			FileInfoStruct* FileInfo = ContentVar->GetNextFileInfo();
-			FileHandle F(FileInfo);
-			F.Action();
-			//delete FileInfo;
-		}
-		
-		if(CurrentIteration) Logs::WriteLine("Current batch of files evaluated.");
-		
-		delete ContentVar;
-		Logs::GoToSleep();
-		Logs::CloseLogFile();
-		sleep(SLEEPINTERVAL);
-		
-	}while(!RUNONCE);
-		
+	CodeRunner::CheckPrerequisites();
+	CodeRunner::Run();
     return 0;
 }

@@ -1,13 +1,15 @@
 #ifndef LOGS_H
 #define LOGS_H
-#include "includeh.h"
+#include "headers.h"
 
 class Logs{
   private:
   	static FILE * pLogFile;
   	static time_t rawtime;
   	static char curtime[100];
+  	static char logfile[100];
   public:
+	static void SetLogFileName(const char* logfilepath, const char* logfilename);
 	static void OpenLogFile();
 	static void CloseLogFile();
 	static void Write(const char* logs, bool PrintTime = false);
@@ -18,7 +20,6 @@ class Logs{
 	static void SetTime();
 	static void SetAndPrintTime();
 	static void SetFileId(int FileId);
-	static void GoToSleep();
 	static void CodeRunnerStarted();
 };
 #endif

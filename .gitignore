@@ -4,6 +4,7 @@ TestCases/*
 Files/*
 Logs/*
 main
-config.h
+*config.h
 TestCases2/*
+Execution
 *_execution

@@ -1,10 +1,18 @@
-VAR=includeh.h includes.h config.h Logs.h
-main : main.o FileHandle.o CurlWrapper.o Logs.o ContentParser.o *_execution -lcurl
-	g++ -o main main.o FileHandle.o CurlWrapper.o ContentParser.o Logs.o -lcurl
+VAR= headers.h Logs.h CROptions.h 
+complete: main Execution
 
-main.o : main.cpp ContentParser.h FileHandle.h $(VAR)
+main : main.o CodeRunner.o CROptions.o FileHandle.o CurlWrapper.o Logs.o ContentParser.o CROptions.o -lcurl
+	g++ -o main main.o CodeRunner.o CROptions.o FileHandle.o CurlWrapper.o ContentParser.o Logs.o -lcurl
+
+main.o : main.cpp CROptions.h CodeRunner.h $(VAR)
 	g++ -c main.cpp
 
+CodeRunner.o : CodeRunner.cpp CodeRunner.h $(VAR)
+	g++ -c CodeRunner.cpp
+
+CROptions.o : CROptions.cpp CROptions.h config.h $(VAR)
+	g++ -c CROptions.cpp
+	
 FileHandle.o : FileHandle.cpp FileHandle.h CurlWrapper.h $(VAR)
 	g++ -c FileHandle.cpp
 	
@@ -19,8 +27,7 @@ Logs.o : Logs.cpp $(VAR)
 
 .PHONY: clean
 clean:
-	rm *.o main *_execution
+	rm *.o main Execution
 
-*_execution : cpp_execution.cpp java_execution.cpp resources.h
-	g++ cpp_execution.cpp -o cpp_execution
-	g++ java_execution.cpp -o java_execution
+Execution : Execution.cpp resources.h
+	g++ Execution.cpp -o Execution
