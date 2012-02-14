@@ -1,8 +1,7 @@
 #ifndef FILEHANDLE_H
 #define FILEHANDLE_H
-#include "includeh.h"
+#include "headers.h"
 #include "CurlWrapper.h"
-#include "FileInfo.h"
 
 class FileHandle{
   private:
@@ -38,9 +37,6 @@ class FileHandle{
 	void pipeMatch();
 	void SendResults();
 	void CleanUp();
-	static bool Clean;
-	static bool SendResultsVar;
-	static bool DownloadSourceFile;
 	
 	bool getResult();
 	void FileOperations();

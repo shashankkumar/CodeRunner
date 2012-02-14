@@ -21,7 +21,7 @@ FileHandle::FileHandle(FileInfoStruct* FileInfo){
 }
 
 int FileHandle::FetchFile(){
-	if(!DownloadSourceFile) {
+	if(!CROptions::DownloadSourceFile) {
 		
 		return 0;
 	}
@@ -115,7 +115,7 @@ void FileHandle::pipeCompile(){
     else if(strcmp(FileInfo->lang, "c") == 0)
     	sprintf(command, "gcc -w -static %s.c -o %s 2>&1", FullFileAddr, FullFileAddr);
     else if(strcmp(FileInfo->lang, "java")==0)
-		sprintf(command, "javac -nowarn -deprecation %s.java  2>&1", FullFileAddr);    	
+		sprintf(command, "javac %s.java  2>&1", FullFileAddr);    	
     Logs::Write("Compiling file ==>  ");
 	char line[256];
 	
@@ -128,7 +128,8 @@ void FileHandle::pipeCompile(){
 			CompileOutput.append(line, strlen(line));
 		}
 	}
-	pclose(fpipe);
+	int closestatus = pclose(fpipe);
+	printf("compile status - %d\n", closestatus);
 }
 
 int FileHandle::pipeNoOfTestCases(){
@@ -292,7 +293,7 @@ void FileHandle::SendResults(){
 	sprintf(fileid, "%d", FileInfo->FileId);
 	sprintf(logs, "FileId ==> %s Status==>%s DetailStatus==>%s TimeUsed==>%s MemoryUsed==>%s", fileid, status, detailstatus, timeused, memoryused); 
 	Logs::WriteLine(logs, true);
-	if(SendResultsVar) FileCurl.SendResultsToWebpage(fileid, status, detailstatus, timeused, memoryused);
+	if(CROptions::SendResults) FileCurl.SendResultsToWebpage(fileid, status, detailstatus, timeused, memoryused);
 
 	Logs::WriteLine("\n================================================================================\n");
 }
@@ -337,7 +338,3 @@ void FileHandle::Action(){
 FileHandle::~FileHandle(){
 	//if(Clean) CleanUp();
 }
-
-bool FileHandle::Clean=false;
-bool FileHandle::SendResultsVar=true;
-bool FileHandle::DownloadSourceFile = true;

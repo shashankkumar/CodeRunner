@@ -1,11 +1,10 @@
-#include "includeh.h"
 #include "ContentParser.h"
 
-int ContentParser::FetchFileInfoList(FileInfoFetchOptionsStruct* FileInfoFetchOptions){
+int ContentParser::FetchFileInfoList(){
 	CurlWrapper *CurlVar = new CurlWrapper();
 	string strContent;
 		
-	if(CurlVar->FetchContentFromWebPage(FileInfoFetchOptions, &strContent) == -1) {
+	if(CurlVar->FetchContentFromWebPage(&strContent) == -1) {
 		delete CurlVar;		//Clean up
 	   	return -1;
 	}
@@ -59,5 +58,3 @@ FileInfoStruct* ContentParser::GetNextFileInfo(){
 	//printf("%d %s %d %d %s\n", FileInfo.FileId, FileInfo.ProblemId, FileInfo.TimeLimit, FileInfo.MemoryLimit, FileInfo.lang);
 	return FileInfo;
 }
-
-bool ContentParser::OneFileExecution = false;
