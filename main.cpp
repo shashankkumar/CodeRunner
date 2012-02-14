@@ -26,130 +26,101 @@ You may contact the author of CodeRunner by e-mail at:
 shashankkumar.me@gmail.com
 
 ****************************************************************************/
-#include "includeh.h"
-#include "FileInfo.h"
-#include "ContentParser.h"
-#include "FileHandle.h"
+#include "headers.h"
+#include "CROptions.h"
+#include "CodeRunner.h"
+//#include "CodeRunner.h"
 
 int main(int argc, char* argv[])
 {
 	
-	if(chdir(PATH)==-1)
-	{
-		printf("%d\n", errno);
-		printf("IE ERROR Cannot change directory to the one specified in config.h");
-		return 1;
-	}
+	CodeRunner::ChDir(CROptions::PATH);
 	
 	int opt;
-	int SleepInterval = SLEEPINTERVAL;
-	bool RunOnce = false, DownloadSourceFile = true;
-	FileInfoFetchOptionsStruct* FileInfoFetchOptions = new FileInfoFetchOptionsStruct();
+	bool DownloadSourceFile = true;
 	bool UsageError = false;
 
-	FileInfoFetchOptions->Init();
+	//FileInfoFetchOptions->Init();
 
 	while((opt = getopt(argc, argv, "ancdbf:r:p:l:s:w:")) != -1){
 		switch(opt){
+			// For pre-defining FileId
 			case 'f':
-				FileInfoFetchOptions->f = true;
-				FileInfoFetchOptions->FileInfo.FileId = atoi(optarg);
+				CROptions::FileInfoFetchOptions->FileId_Predefined = true;
+				CROptions::FileInfoFetchOptions->FileInfo.FileId = atoi(optarg);
 			break;
+			// For pre-defining ProblemId
 			case 'p':
-				FileInfoFetchOptions->p = true;
-				strcpy(FileInfoFetchOptions->FileInfo.ProblemId, optarg);
+				CROptions::FileInfoFetchOptions->ProblemId_Predefined = true;
+				strcpy(CROptions::FileInfoFetchOptions->FileInfo.ProblemId, optarg);
 			break;
+			// For pre-defining Lang
 			case 'l':
-				FileInfoFetchOptions->l = true;
-				strcpy(FileInfoFetchOptions->FileInfo.lang, optarg);
+				CROptions::FileInfoFetchOptions->Lang_Predefined = true;
+				strcpy(CROptions::FileInfoFetchOptions->FileInfo.lang, optarg);
 			break;
+			// For sending results and forcing insertion of those results.
 			case 'b':
-				CurlWrapper::ForcePushResult = true;
+				CROptions::ForcePushResult = true;
 			break;
+			// For clearing Files directory after execution of source code.
 			case 'c':
-				FileHandle::Clean = true;
+				CROptions::Clean = true;
 			break;
+			// For not sending results after evaluation.
 			case 'n':
-				FileHandle::SendResultsVar = false;
+				CROptions::SendResults = false;
 			break;
+			// For specifying Sleep Interval after each epoch.
 			case 's':
-				SleepInterval = atoi(optarg);
+				CROptions::SleepInterval = atoi(optarg);
 			break;
+			// For setting CodeRunner to just run for one epoch.
 			case 'r':
-				RunOnce = true;
+				CROptions::RunOnce = true;
 			break;
+			// For not downloading source codes.
 			case 'd':
-				FileHandle::DownloadSourceFile = false;
+				CROptions::DownloadSourceFile = false;
 			break;
 			case 'i':
-				ContentParser::OneFileExecution = true;
+				CROptions::OneFileExecution = true;
 			break;
+			// For specifying pre-defined time-limit.
 			case 't':
-				FileInfoFetchOptions->tl = true;
-				FileInfoFetchOptions->FileInfo.TimeLimit = atoi(optarg);
+				CROptions::FileInfoFetchOptions->TimeLimit_Predefined = true;
+				CROptions::FileInfoFetchOptions->FileInfo.TimeLimit = atoi(optarg);
 			break;
+			// For specifying pre-defined memory limit.
 			case 'm':
-				FileInfoFetchOptions->ml = true;
-				FileInfoFetchOptions->FileInfo.MemoryLimit = atoi(optarg);
+				CROptions::FileInfoFetchOptions->MemoryLimit_Predefined = true;
+				CROptions::FileInfoFetchOptions->FileInfo.MemoryLimit = atoi(optarg);
+			break;
+			// For printing version related information.
 			case 'v':
 			break;
+			// For fetching all file-ids irrespective of evaluation status.
 			case 'a':
-				CurlWrapper::ForceGetFileIds = true;
+				CROptions::GetAllFileIds = true;
+			break;
+			case 'w':
 			break;
 			default: /* '?' */
 				UsageError = true;
 		}
 	}
 	
-	if(FileInfoFetchOptions->f){
-		if(ContentParser::OneFileExecution && (!FileInfoFetchOptions->ml || !FileInfoFetchOptions->tl || !FileInfoFetchOptions->p || !FileInfoFetchOptions->l)) UsageError = true;
-		else if(!ContentParser::OneFileExecution && (FileInfoFetchOptions->p || FileInfoFetchOptions->l)) UsageError = true;
+	if(CROptions::FileInfoFetchOptions->FileId_Predefined){
+		if(CROptions::OneFileExecution && (!CROptions::FileInfoFetchOptions->MemoryLimit_Predefined || !CROptions::FileInfoFetchOptions->TimeLimit_Predefined || 
+		!CROptions::FileInfoFetchOptions->ProblemId_Predefined || !CROptions::FileInfoFetchOptions->Lang_Predefined)) UsageError = true;
+		else if(!CROptions::OneFileExecution && (CROptions::FileInfoFetchOptions->ProblemId_Predefined || CROptions::FileInfoFetchOptions->Lang_Predefined)) UsageError = true;
 	}
 	if(UsageError){
 		fprintf(stderr, "Usage: %s [-f fileid [-i -p problemcode -t timelimit -m memorylimit -l lang] | [-p problemcode] [-l language] ] [-s sleepinterval] [-b] [-n] [-c] [-r] [-d] [-v]\n", argv[0]); 
 		exit(EXIT_FAILURE);
 	}
 	
-	Logs::OpenLogFile();
-	Logs::CodeRunnerStarted();
-	Logs::CloseLogFile();
-	
-	if(ContentParser::OneFileExecution){
-		FileInfoStruct* FileInfo = &(FileInfoFetchOptions->FileInfo);
-		FileHandle F(FileInfo);
-		F.Action();
-		return 0;
-	}
-	
-	do{
-		Logs::OpenLogFile();
-		bool CurrentIteration = true;
-		ContentParser *ContentVar = new ContentParser();
-		//if(ContentParser->OneFileExecution) OneFileInfoPrepare();
-		if(ContentVar->FetchFileInfoList(FileInfoFetchOptions)==-1){
-			CurrentIteration = false;
-		}
-		
-		if(CurrentIteration && ContentVar->EndOfContent()){
-			Logs::WriteLine("File Queue Empty. Nothing to evaluate.");
-			CurrentIteration = false;
-		}
-		
-		while(CurrentIteration && !ContentVar->EndOfContent()){
-			FileInfoStruct* FileInfo = ContentVar->GetNextFileInfo();
-			FileHandle F(FileInfo);
-			F.Action();
-			//delete FileInfo;
-		}
-		
-		if(CurrentIteration) Logs::WriteLine("Current batch of files evaluated.");
-		
-		delete ContentVar;
-		Logs::GoToSleep();
-		Logs::CloseLogFile();
-		sleep(SleepInterval);
-		
-	}while(!RunOnce);
-		
+	CodeRunner::CheckPrerequisites();
+	CodeRunner::Run();
     return 0;
 }
