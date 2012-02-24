@@ -22,7 +22,6 @@ FileHandle::FileHandle(FileInfoStruct* FileInfo){
 
 int FileHandle::FetchFile(){
 	if(!CROptions::DownloadSourceFile) {
-		
 		return 0;
 	}
 	if(FTPON) {
@@ -219,17 +218,6 @@ void FileHandle::Execute(){
 			if(ptr!=NULL) sscanf(ptr, "%*s %d", &TestCaseExecutionMemory);
 		}
 		
-		/*
-		token = strtok(str, " \n");
-		strcpy(status, token);
-		if(strcmp(token, "AC")!=0) result=false;
-		if(strcmp(token, "RE")==0 || strcmp(token, "IE")==0 ){
-			token = strtok(NULL, "\n");
-			strcpy(detailstatus, token);
-		}
-		token = strtok(NULL, " \n"); sprintf(TestCaseExecutionTime, "%s", token);
-		token = strtok(NULL, " \n"); sprintf(TestCaseExecutionMemory, "%s", token);
-		*/
 		TimeUsed += TestCaseExecutionTime;
 		MemoryUsed = max(MemoryUsed, TestCaseExecutionMemory);
 		printf("time - %f \n", TimeUsed);

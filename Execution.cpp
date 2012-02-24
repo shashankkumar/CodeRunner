@@ -1,6 +1,5 @@
-#include "includes.h"
+#include "headers.h"
 #include "resources.h"
-#include "config.h"
 
 pid_t cpid;
 const int MicroSecSleepInterval = 71;

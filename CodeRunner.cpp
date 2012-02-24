@@ -17,7 +17,7 @@ void CodeRunner::CheckPrerequisites(){
 void CodeRunner::ChDir(const char* dir){
 	if(chdir(dir)==-1)	{
 		printf("IE ERROR Cannot change directory to %s\n", dir);
-		exit(1);
+		exit(EXIT_FAILURE);
 	}
 }
 

@@ -87,16 +87,20 @@ int CurlWrapper::GetFileFromHTTP(int FileId){
    	curl = curl_easy_init();
    	headerlist = curl_slist_append(headerlist, buf);
 	if (curl) {
-       	fp = fopen(SavedFileName,"wb");
-   		curl_easy_setopt(curl, CURLOPT_URL, CROptions::URLToGetSourceCode);
-        curl_easy_setopt(curl, CURLOPT_HTTPPOST, formpost);
-    	curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, ContentInFileHTTP);
-   	    curl_easy_setopt(curl, CURLOPT_WRITEDATA, fp);
-   	    res = curl_easy_perform(curl);
-   	    curl_easy_cleanup(curl);
-   	    curl_formfree(formpost);
+   		fp = fopen(SavedFileName,"wb");
+		if(fp==NULL) {
+			Logs::WriteLine("IE ERROR Unable to open file for saving downloaded source code. Please check that CodeRunner has the requisite permissions and restart the program.");
+			return -1;
+		}
+	   	curl_easy_setopt(curl, CURLOPT_URL, CROptions::URLToGetSourceCode);
+       		curl_easy_setopt(curl, CURLOPT_HTTPPOST, formpost);
+    		curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, ContentInFileHTTP);
+   		curl_easy_setopt(curl, CURLOPT_WRITEDATA, fp);
+	   	res = curl_easy_perform(curl);
+   		curl_easy_cleanup(curl);
+	   	curl_formfree(formpost);
 		/* free slist */ 
-    	curl_slist_free_all (headerlist);
+    		curl_slist_free_all (headerlist);
    		fclose(fp);
    		
    		if(CURLE_OK!=res){
