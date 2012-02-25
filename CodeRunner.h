@@ -11,6 +11,7 @@ class CodeRunner{
 	static void ChDir(const char* dir);
 	static void Run();
 	static void GoToSleep();
+	static void ErrorMessage(const char* msg);
 
  };
 #endif

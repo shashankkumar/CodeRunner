@@ -68,3 +68,8 @@ void CodeRunner::GoToSleep(){
 	Logs::WriteLine("============================================================================\n");
 	sleep(CROptions::SleepInterval);
 }
+
+void CodeRunner::ErrorMessage(const char* msg){
+	Logs::WriteLine(msg);
+	exit(EXIT_FAILURE);
+}

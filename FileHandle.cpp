@@ -26,11 +26,19 @@ int FileHandle::FetchFile(){
 	}
 	if(FTPON) {
 		int res = FileCurl.GetFileFromFTP(FileInfo->FileId);
-		if(res==-1)	return -1;
+		if(res==-1)	{
+			strcpy(status, "IE");
+			sprintf(detailstatus, "Failure to download source code.");
+			return -1;
+		}
 	}
 	else if(HTTPON){
 		int res = FileCurl.GetFileFromHTTP(FileInfo->FileId);
-		if(res==-1)	return -1;
+		if(res==-1){
+			strcpy(status, "IE");
+			sprintf(detailstatus, "Failure to download source code.");
+			return -1;
+		}
 	}
 	else {
 		strcpy(status, "IE");
@@ -293,7 +301,7 @@ void FileHandle::CleanUp(){
 
 void FileHandle::FileOperations(){
 
-	if(FetchFile() == -1) return;
+	if(FetchFile() == -1 || CheckMIME() == -1) return;
 	if(CheckMIME() == -1) return;
 	if(result==false) return;
 	if(MakeDir()==-1) return;
