@@ -146,7 +146,7 @@ int CurlWrapper::FetchContentFromWebPage(string *content){
 		curl_formadd( &formpost, &lastptr, CURLFORM_COPYNAME, "all", CURLFORM_COPYCONTENTS, "true", CURLFORM_END);
 		CROptions::GetAllFileIds = false;
 	}
-		
+	
 	curl = curl_easy_init();
 	/* initalize custom header list (stating that Expect: 100-continue is not wanted */ 
 	headerlist = curl_slist_append(headerlist, buf);

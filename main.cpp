@@ -114,8 +114,8 @@ int main(int argc, char* argv[])
 			if(!(CROptions::FileInfoFetchOptions->MemoryLimit_Predefined && CROptions::FileInfoFetchOptions->TimeLimit_Predefined && 
 			CROptions::FileInfoFetchOptions->ProblemId_Predefined && CROptions::FileInfoFetchOptions->Lang_Predefined)) UsageError = true;
 		}
+		else if(CROptions::FileInfoFetchOptions->ProblemId_Predefined || CROptions::FileInfoFetchOptions->Lang_Predefined) UsageError = true;
 	}
-	else if(CROptions::FileInfoFetchOptions->ProblemId_Predefined || CROptions::FileInfoFetchOptions->Lang_Predefined) UsageError = true;
 	
 	if(UsageError){
 		fprintf(stderr, "Usage: %s [-f fileid [-i -p problemcode -t timelimit -m memorylimit -l lang] | [-p problemcode] [-l language] ] [-s sleepinterval] [-a] [-b] [-n] [-c] [-r] [-d] [-v]\n", argv[0]); 
@@ -124,5 +124,5 @@ int main(int argc, char* argv[])
 	
 	CodeRunner::CheckPrerequisites();
 	CodeRunner::Run();
-    return 0;
+    return 0;;
 }
