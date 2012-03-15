@@ -180,28 +180,28 @@ int main(int args, char *argv[]){
 		}
 		*/
 		if(strcmp(lang,"java")==0){
-		
-		FILE *fpipe;
-		char command[100];
-		sprintf(command, "java Main < %s > %s", TestCaseFile, OutputFile);
-		char line[256];
-		
-		if ( !(fpipe = (FILE*)popen(command,"r")) ){  
-			perror("Problems with pipe");
-			//Logs::WriteLine("Problems with pipe");
-		}
-		else{
-			if ( fgets( line, sizeof line, fpipe)){
-				;
+			
+			FILE *fpipe;
+			char command[100];
+			sprintf(command, "java Main < %s > %s", TestCaseFile, OutputFile);
+			char line[256];
+			
+			if ( !(fpipe = (FILE*)popen(command,"r")) ){  
+				perror("Problems with pipe");
+				//Logs::WriteLine("Problems with pipe");
+			}
+			else{
+				if ( fgets( line, sizeof line, fpipe)){
+					;
+				}
+			}
+			pclose(fpipe);
+			exit(0);
+			if(execlp("/usr/bin/java", "/usr/bin/java", InputFile, InputFile, (char *) NULL) == -1){
+				fclose(stdout);
+				ToPipe("IE ERROR File not present or some other error.");
 			}
 		}
-		pclose(fpipe);
-		exit(0);
-		if(execlp("/usr/bin/java", "/usr/bin/java", InputFile, InputFile, (char *) NULL) == -1){
-			fclose(stdout);
-			ToPipe("IE ERROR File not present or some other error.");
-		}
-		
 
 		SetResourceLimitValues(TimeLimit);
 		if(strcmp(lang, "python")==0){
