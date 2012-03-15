@@ -59,7 +59,7 @@ int FileHandle::CheckMIME(){
 		Logs::WriteLine("Problems with pipe");
 		return -1;
 	}
-	else{
+	else {
 		if ( fgets( line, sizeof line, fpipe)){
 			printf("mime-type -> %s", line);
 			
@@ -93,7 +93,11 @@ int FileHandle::MakeDir(){
 			return -1;
 		}
 	}
-	sprintf(systemString, "cp %s.txt %s.%s", FileAddr, FullFileAddr, FileInfo->lang);
+	if(strcmp(FileInfo->lang, "python")==0) sprintf(systemString, "cp %s.txt %s.py", FileAddr, FullFileAddr);
+	else if(strcmp(FileInfo->lang, "pascal")==0) sprintf(systemString, "cp %s.txt %s.p", FileAddr, FullFileAddr);
+	else if(strcmp(FileInfo->lang, "php")==0) sprintf(systemString, "cp %s.txt %s.php", FileAddr, FullFileAddr);
+	else if(strcmp(FileInfo->lang, "perl")==0) sprintf(systemString, "cp %s.txt %s.pl", FileAddr, FullFileAddr);
+	else sprintf(systemString, "cp %s.txt %s.%s", FileAddr, FullFileAddr, FileInfo->lang);
 	if(system(systemString)==-1){
 		strcpy(status, "IE");
 		strcpy(detailstatus, "Error in copying dowloaded file.");
@@ -104,15 +108,17 @@ int FileHandle::MakeDir(){
 
 void FileHandle::Compile(){
 	pipeCompile();
+	/*
 	if(CompileOutput.length()!=0){
 		Logs::WriteLine("Unsuccessful"); 
 		result = false;
 		strcpy(status, "CE");
 		
-		if(strlen(CompileOutput.c_str())<=500) strcpy(detailstatus, CompileOutput.c_str());
-		printf("%d %d\n", (int)strlen(CompileOutput.c_str()), (int)strlen(detailstatus));
+		if(strlen(CompileOutput.c_str())<=10000) strcpy(detailstatus, CompileOutput.c_str());
 	}
 	else Logs::WriteLine("Successful\n");
+	*/
+	if(result) Logs::WriteLine("Successful\n");
 }
 
 void FileHandle::pipeCompile(){
@@ -126,9 +132,12 @@ void FileHandle::pipeCompile(){
 	else if(strcmp(FileInfo->lang, "python")==0)
 		sprintf(command, "py_compilefiles %s.py", FullFileAddr);
 	else if(strcmp(FileInfo->lang, "pascal")==0)
-		sprintf(command, "gpc %s.pas -o %s 2>&1", FullFileAddr, FullFileAddr); 
-	else if(strcmp(FileInfo->FileInfo->lang, "perl")==0)
-		spritnf(commandk, "stub");
+		sprintf(command, "gpc %s.p -o %s 2>&1", FullFileAddr, FullFileAddr); 
+	else if(strcmp(FileInfo->lang, "perl")==0)
+		sprintf(command, "perl -c %s.pl", FullFileAddr);
+	else if(strcmp(FileInfo->lang, "php")==0)
+		sprintf(command, "php -l %s.php", FullFileAddr);
+		
 		
 	Logs::Write("Compiling file ==>  ");
 	char line[256];
@@ -142,8 +151,13 @@ void FileHandle::pipeCompile(){
 			CompileOutput.append(line, strlen(line));
 		}
 	}
-	int closestatus = pclose(fpipe);
-	printf("compile status - %d\n", closestatus);
+	int compilestatus = pclose(fpipe);
+	if(compilestatus!=0){
+		strcpy(status, "CE");
+		if(strlen(CompileOutput.c_str())<=10000) strcpy(detailstatus, CompileOutput.c_str());
+		result = false;
+	}
+	printf("compile status - %d\n", compilestatus);
 }
 
 int FileHandle::pipeNoOfTestCases(){

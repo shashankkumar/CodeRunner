@@ -93,7 +93,6 @@ int main(int args, char *argv[]){
 	strcpy(lang, argv[6]);
 	SignalAction.sa_flags = SA_NOCLDSTOP | SA_NOCLDWAIT;
 	SignalAction.sa_handler = SignalHandler;
-	
 	if(sigaction(SIGALRM, &SignalAction, NULL)==-1){
 		ToPipe("IE ERROR Could not register handler for SIGALRM");
 		return 1;
@@ -180,18 +179,28 @@ int main(int args, char *argv[]){
 		}
 		SetResourceLimitValues(TimeLimit);
 		if(strcmp(lang, "python")==0){
-			if(execl("/usr/bin/perl", "/usr/bin/perl", "-Xmx4M", "-classpath", InputFile, (char *) NULL) == -1){
+			strcat(InputFile, ".pyc");
+			if(execl("/usr/bin/python", "/usr/bin/python", InputFile, (char *) NULL) == -1){
 				fclose(stdout);
 				ToPipe("IE ERROR File not present or some other error.");
 			}
 		}
-		if(strcmp(lang, "perl")==0){
-			if(execl("/usr/bin/perl", "/usr/bin/perl", "-classpath", InputFile, (char *) NULL) == -1){
+		else if(strcmp(lang, "perl")==0){
+			strcat(InputFile, ".pl");
+			if(execl("/usr/bin/perl", "/usr/bin/perl", InputFile, (char *) NULL) == -1){
 				fclose(stdout);
 				ToPipe("IE ERROR File not present or some other error.");
 			}
 		}
-		if(execl(InputFile,InputFile,(char *) NULL) == -1){
+		else if(strcmp(lang, "php")==0){
+			strcat(InputFile, ".php");
+			printf("%s", InputFile);
+			if(execl("/usr/bin/php", "/usr/bin/php", InputFile, (char *) NULL) == -1){
+				fclose(stdout);
+				ToPipe("IE ERROR File not present or some other error.");
+			}
+		}
+		else if(execl(InputFile, InputFile,(char *) NULL) == -1){
 			fclose(stdout);
 			ToPipe("IE ERROR File not present or some other error.");
 		}
