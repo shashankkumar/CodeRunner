@@ -156,6 +156,28 @@ int main(int args, char *argv[]){
 		char TestCaseFile[10], OutputFile[10];
 		sprintf(TestCaseFile, "%d.txt", TestCaseFileId);
 		sprintf(OutputFile, "%do.txt", TestCaseFileId);
+		if(strcmp(lang,"java")==0){
+			SetResourceLimitValuesJava(TimeLimit);
+			FILE *fpipe;
+			char command[100];
+			sprintf(command, "java Main < %s > %s", TestCaseFile, OutputFile);
+			printf("%s\n", command);
+			char line[256];
+			
+			if ( !(fpipe = (FILE*)popen(command,"r")) ){  
+				perror("Problems with pipe");
+				//Logs::WriteLine("Problems with pipe");
+			}
+			else{
+				if ( fgets( line, sizeof line, fpipe)){
+					printf("%s\n", line);
+				}
+			}
+			pclose(fpipe);
+			exit(0);
+			
+		}
+
 		if(freopen(TestCaseFile, "r", stdin)==NULL){
 			ToPipe("IE ERROR Could not open test case file\n");
 		}
@@ -179,30 +201,6 @@ int main(int args, char *argv[]){
 			}
 		}
 		*/
-		if(strcmp(lang,"java")==0){
-			
-			FILE *fpipe;
-			char command[100];
-			sprintf(command, "java Main < %s > %s", TestCaseFile, OutputFile);
-			char line[256];
-			
-			if ( !(fpipe = (FILE*)popen(command,"r")) ){  
-				perror("Problems with pipe");
-				//Logs::WriteLine("Problems with pipe");
-			}
-			else{
-				if ( fgets( line, sizeof line, fpipe)){
-					;
-				}
-			}
-			pclose(fpipe);
-			exit(0);
-			if(execlp("/usr/bin/java", "/usr/bin/java", InputFile, InputFile, (char *) NULL) == -1){
-				fclose(stdout);
-				ToPipe("IE ERROR File not present or some other error.");
-			}
-		}
-
 		SetResourceLimitValues(TimeLimit);
 		if(strcmp(lang, "python")==0){
 			strcat(InputFile, ".pyc");
@@ -230,7 +228,6 @@ int main(int args, char *argv[]){
 			fclose(stdout);
 			ToPipe("IE ERROR File not present or some other error.");
 		}
-		
 	}
 	else {                    /* Code executed by parent */
 		struct rusage resourceUsage;
@@ -240,7 +237,7 @@ int main(int args, char *argv[]){
 		do{
 			MicroSecSleep(MicroSecSleepInterval);
 			MemoryUsed = max(MemoryUsed, MemoryUsage(cpid));
-			if(MemoryUsed > MemoryLimit){
+			if(MemoryUsed > MemoryLimit && strcmp(lang, "java")!=0){
 				kill(cpid, SIGKILL);
 			}
 			w = wait4 (cpid, &status, WUNTRACED | WCONTINUED, &resourceUsage);
