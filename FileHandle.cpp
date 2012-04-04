@@ -154,10 +154,11 @@ void FileHandle::pipeCompile(){
 	int compilestatus = pclose(fpipe);
 	if(compilestatus!=0){
 		strcpy(status, "CE");
-		if(strlen(CompileOutput.c_str())<=10000) strcpy(detailstatus, CompileOutput.c_str());
+		if(strlen(CompileOutput.c_str())<10000) strcpy(detailstatus, CompileOutput.c_str());
 		result = false;
+		//printf(" Compile length %d \n", (int)strlen(detailstatus));
 	}
-	printf("compile status - %d\n", compilestatus);
+	//printf("compile status - %d\n", compilestatus);
 }
 
 int FileHandle::pipeNoOfTestCases(){
@@ -323,7 +324,6 @@ void FileHandle::CleanUp(){
 void FileHandle::FileOperations(){
 
 	if(FetchFile() == -1 || CheckMIME() == -1) return;
-	if(CheckMIME() == -1) return;
 	if(result==false) return;
 	if(MakeDir()==-1) return;
 
