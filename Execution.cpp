@@ -165,7 +165,7 @@ int main(int args, char *argv[]){
 			SetResourceLimitValuesJava(TimeLimit);
 			FILE *fpipe;
 			char command[100];
-			sprintf(command, "java Main < %s > %s", TestCaseFile, OutputFile);
+			sprintf(command, "java -Xmx2M Main < %s > %s", TestCaseFile, OutputFile);
 			//printf("%s\n", command);
 			char line[256];
 			
