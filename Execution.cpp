@@ -156,6 +156,33 @@ int main(int args, char *argv[]){
 		char TestCaseFile[10], OutputFile[10];
 		sprintf(TestCaseFile, "%d.txt", TestCaseFileId);
 		sprintf(OutputFile, "%do.txt", TestCaseFileId);
+		
+		if(alarm(TimeLimit)!=0){
+			ToPipe("IE ERROR Could not set alarm.");
+		}
+		
+		if(strcmp(lang,"java")==0){
+			SetResourceLimitValuesJava(TimeLimit);
+			FILE *fpipe;
+			char command[100];
+			sprintf(command, "java Main < %s > %s", TestCaseFile, OutputFile);
+			printf("%s\n", command);
+			char line[256];
+			
+			if ( !(fpipe = (FILE*)popen(command,"r")) ){  
+				perror("Problems with pipe");
+				//Logs::WriteLine("Problems with pipe");
+			}
+			else{
+				if ( fgets( line, sizeof line, fpipe)){
+					printf("%s\n", line);
+				}
+			}
+			pclose(fpipe);
+			exit(0);
+			
+		}
+		
 		if(freopen(TestCaseFile, "r", stdin)==NULL){
 			ToPipe("IE ERROR Could not open test case file\n");
 		}
@@ -167,9 +194,7 @@ int main(int args, char *argv[]){
 		if(freopen("/dev/null", "w", stderr)==NULL){
 			ToPipe("IE ERROR Could not redirect error stream to null\n");
 		}
-		if(alarm(TimeLimit)!=0){
-			ToPipe("IE ERROR Could not set alarm.");
-		}
+		/*
 		if(strcmp(lang,"java")==0){
 			SetResourceLimitValuesJava(TimeLimit);
 			if(execl("/usr/bin/java", "/usr/bin/java", "-Xmx4M", "-classpath", InputFile, (char *) NULL) == -1){
@@ -177,6 +202,7 @@ int main(int args, char *argv[]){
 				ToPipe("IE ERROR File not present or some other error.");
 			}
 		}
+		* */
 		SetResourceLimitValues(TimeLimit);
 		if(strcmp(lang, "python")==0){
 			strcat(InputFile, ".pyc");
@@ -214,7 +240,7 @@ int main(int args, char *argv[]){
 		do{
 			MicroSecSleep(MicroSecSleepInterval);
 			MemoryUsed = max(MemoryUsed, MemoryUsage(cpid));
-			if(MemoryUsed > MemoryLimit){
+			if(MemoryUsed > MemoryLimit && strcmp(lang,"java")!=0){
 				kill(cpid, SIGKILL);
 			}
 			w = wait4 (cpid, &status, WUNTRACED | WCONTINUED, &resourceUsage);
@@ -241,7 +267,7 @@ int main(int args, char *argv[]){
 		strcpy(detailstatus, "\0");
 		if(MemoryUsed > MemoryLimit){
 			printf("Memory Limit Exceeded.\n");
-			printf("%d %d\n", MemoryUsed, MemoryLimit);
+			printf("MemoryUsed - %d, MemoryLimit -  %d\n", MemoryUsed, MemoryLimit);
 		}
 		if( WIFEXITED(status) == true ){
 			if( WEXITSTATUS(status) !=0 ){
