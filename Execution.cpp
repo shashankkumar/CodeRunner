@@ -68,7 +68,7 @@ int MemoryUsage(pid_t cpid){
 		else
 			rss = data + stack;
 	}
-	printf("Memory Usage: data - %d, stack - %d, rss - %d\n", data, stack, rss);
+	//printf("Memory Usage: data - %d, stack - %d, rss - %d\n", data, stack, rss);
 	return data + stack;
 	/* return (data + stack); */
 }
@@ -166,7 +166,7 @@ int main(int args, char *argv[]){
 			FILE *fpipe;
 			char command[100];
 			sprintf(command, "java Main < %s > %s", TestCaseFile, OutputFile);
-			printf("%s\n", command);
+			//printf("%s\n", command);
 			char line[256];
 			
 			if ( !(fpipe = (FILE*)popen(command,"r")) ){  
