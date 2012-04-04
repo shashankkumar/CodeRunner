@@ -156,7 +156,7 @@ int main(int args, char *argv[]){
 		char TestCaseFile[10], OutputFile[10];
 		sprintf(TestCaseFile, "%d.txt", TestCaseFileId);
 		sprintf(OutputFile, "%do.txt", TestCaseFileId);
-		
+
 		if(alarm(TimeLimit)!=0){
 			ToPipe("IE ERROR Could not set alarm.");
 		}
@@ -182,7 +182,7 @@ int main(int args, char *argv[]){
 			exit(0);
 			
 		}
-		
+
 		if(freopen(TestCaseFile, "r", stdin)==NULL){
 			ToPipe("IE ERROR Could not open test case file\n");
 		}
@@ -202,7 +202,7 @@ int main(int args, char *argv[]){
 				ToPipe("IE ERROR File not present or some other error.");
 			}
 		}
-		* */
+		*/
 		SetResourceLimitValues(TimeLimit);
 		if(strcmp(lang, "python")==0){
 			strcat(InputFile, ".pyc");
@@ -230,7 +230,6 @@ int main(int args, char *argv[]){
 			fclose(stdout);
 			ToPipe("IE ERROR File not present or some other error.");
 		}
-		
 	}
 	else {                    /* Code executed by parent */
 		struct rusage resourceUsage;
@@ -240,7 +239,7 @@ int main(int args, char *argv[]){
 		do{
 			MicroSecSleep(MicroSecSleepInterval);
 			MemoryUsed = max(MemoryUsed, MemoryUsage(cpid));
-			if(MemoryUsed > MemoryLimit && strcmp(lang,"java")!=0){
+			if(MemoryUsed > MemoryLimit && strcmp(lang, "java")!=0){
 				kill(cpid, SIGKILL);
 			}
 			w = wait4 (cpid, &status, WUNTRACED | WCONTINUED, &resourceUsage);
