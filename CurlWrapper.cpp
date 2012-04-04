@@ -190,7 +190,7 @@ void CurlWrapper::SendResultsToWebpage(const char* fileid, const char* status, c
 	struct curl_slist *headerlist = NULL;
 	static const char buf[] = "Expect: ";
 	
-	curl_global_init(CURL_GLOBAL_ALL);
+	//curl_global_init(CURL_GLOBAL_ALL);
 
 	/* Fill in the POST fields */ 
 	curl_formadd( &formpost, &lastptr, CURLFORM_COPYNAME, "username", CURLFORM_COPYCONTENTS, USERNAME, CURLFORM_END);
@@ -198,7 +198,7 @@ void CurlWrapper::SendResultsToWebpage(const char* fileid, const char* status, c
 	curl_formadd( &formpost, &lastptr, CURLFORM_COPYNAME, "fileid", CURLFORM_COPYCONTENTS, fileid, CURLFORM_END);
 	curl_formadd( &formpost, &lastptr, CURLFORM_COPYNAME, "status", CURLFORM_COPYCONTENTS, status, CURLFORM_END);
 	//printf("%s\n", detailstatus);
-	curl_formadd( &formpost, &lastptr, CURLFORM_COPYNAME, "detailstatus", CURLFORM_COPYCONTENTS, detailstatus, CURLFORM_END);
+	curl_formadd( &formpost, &lastptr, CURLFORM_COPYNAME, "detailstatus", CURLFORM_PTRCONTENTS, detailstatus, CURLFORM_END);
 	curl_formadd( &formpost, &lastptr, CURLFORM_COPYNAME, "time", CURLFORM_COPYCONTENTS, time, CURLFORM_END);
 	curl_formadd( &formpost, &lastptr, CURLFORM_COPYNAME, "memory", CURLFORM_COPYCONTENTS, memory, CURLFORM_END);
 	if(CROptions::ForcePushResult) 
@@ -215,7 +215,7 @@ void CurlWrapper::SendResultsToWebpage(const char* fileid, const char* status, c
     	string buffer;
     	curl_easy_setopt(curl, CURLOPT_WRITEDATA, &buffer);
     	res = curl_easy_perform(curl);
-    	char tmp[1000];
+    	char tmp[10000];		// When size was 1000, it used to throw seg faults for large CE messages.
 		strcpy(tmp, buffer.c_str());
     	printf("%s\n", tmp);
     	
