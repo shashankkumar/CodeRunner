@@ -68,7 +68,7 @@ int MemoryUsage(pid_t cpid){
 		else
 			rss = data + stack;
 	}
-	printf("Memory Usage: data - %d, stack - %d, rss - %d\n", data, stack, rss);
+	//printf("Memory Usage: data - %d, stack - %d, rss - %d\n", data, stack, rss);
 	return data + stack;
 	/* return (data + stack); */
 }
@@ -156,12 +156,17 @@ int main(int args, char *argv[]){
 		char TestCaseFile[25], OutputFile[25];
 		sprintf(TestCaseFile, "%d.txt", TestCaseFileId);
 		sprintf(OutputFile, "%do.txt", TestCaseFileId);
+
+		if(alarm(TimeLimit)!=0){
+			ToPipe("IE ERROR Could not set alarm.");
+		}
+		
 		if(strcmp(lang,"java")==0){
 			SetResourceLimitValuesJava(TimeLimit);
 			FILE *fpipe;
 			char command[100];
-			sprintf(command, "java Main < %s > %s", TestCaseFile, OutputFile);
-			printf("%s\n", command);
+			sprintf(command, "java -Xmx2M Main < %s > %s", TestCaseFile, OutputFile);
+			//printf("%s\n", command);
 			char line[256];
 			
 			if ( !(fpipe = (FILE*)popen(command,"r")) ){  
@@ -188,9 +193,6 @@ int main(int args, char *argv[]){
 
 		if(freopen("/dev/null", "w", stderr)==NULL){
 			ToPipe("IE ERROR Could not redirect error stream to null\n");
-		}
-		if(alarm(TimeLimit)!=0){
-			ToPipe("IE ERROR Could not set alarm.");
 		}
 		/*
 		if(strcmp(lang,"java")==0){
@@ -264,7 +266,7 @@ int main(int args, char *argv[]){
 		strcpy(detailstatus, "\0");
 		if(MemoryUsed > MemoryLimit){
 			printf("Memory Limit Exceeded.\n");
-			printf("%d %d\n", MemoryUsed, MemoryLimit);
+			printf("MemoryUsed - %d, MemoryLimit -  %d\n", MemoryUsed, MemoryLimit);
 		}
 		if( WIFEXITED(status) == true ){
 			if( WEXITSTATUS(status) !=0 ){

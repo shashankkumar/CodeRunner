@@ -14,10 +14,8 @@ FileHandle::FileHandle(FileInfoStruct* FileInfo){
 	else strcpy(FileName, "test");
 	sprintf(FullFileAddr, "%s%s", FileDirAddr, FileName);
 	Logs::OpenLogFile();
-	sprintf(logs, "Beginning operations on File Id ==> %d\n", FileInfo->FileId);
-	Logs::WriteLine(logs, true);
 	sprintf(logs, "File Id ==> %d, Problem Id ==> %s, TimeLimit ==> %d, MemoryLimit ==> %d, Lang ==> %s", FileInfo->FileId, FileInfo->ProblemId, FileInfo->TimeLimit, FileInfo->MemoryLimit, FileInfo->lang);
-	Logs::WriteLine(logs);
+	Logs::WriteLine(logs, true);
 }
 
 int FileHandle::FetchFile(){
@@ -139,7 +137,7 @@ void FileHandle::pipeCompile(){
 		sprintf(command, "php -l %s.php", FullFileAddr);
 		
 		
-	Logs::Write("Compiling file ==>  ");
+	Logs::Write("\nCompiling file ==>  ");
 	char line[256];
 	
 	if ( !(fpipe = (FILE*)popen(command,"r")) ){  
@@ -154,10 +152,11 @@ void FileHandle::pipeCompile(){
 	int compilestatus = pclose(fpipe);
 	if(compilestatus!=0){
 		strcpy(status, "CE");
-		if(strlen(CompileOutput.c_str())<=10000) strcpy(detailstatus, CompileOutput.c_str());
+		if(strlen(CompileOutput.c_str())<10000) strcpy(detailstatus, CompileOutput.c_str());
 		result = false;
+		//printf(" Compile length %d \n", (int)strlen(detailstatus));
 	}
-	printf("compile status - %d\n", compilestatus);
+	//printf("compile status - %d\n", compilestatus);
 }
 
 int FileHandle::pipeNoOfTestCases(){
@@ -219,11 +218,11 @@ void FileHandle::Execute(){
 	
 	Logs::WriteLine("Beginning Execution... ");
 	
-	for( TestCaseId = 1; TestCaseId <= NoOfTestCases; TestCaseId++ ){
+	for( TestCaseId = 1; (result==true && TestCaseId<=NoOfTestCases); TestCaseId++ ){
 
 		PipeExecute();
-		strcpy(str, ExecutionStr.c_str());
-		printf("\n%s\n", str);
+		sprintf(str, "\nTest Case %d\n%s", TestCaseId, ExecutionStr.c_str());
+		Logs::Write(str);
 		char* ptr = strstr(str, "status");
 		if(ptr!=NULL){
 			sscanf(ptr, "%*s %s", status);
@@ -249,24 +248,31 @@ void FileHandle::Execute(){
 		
 		TimeUsed += TestCaseExecutionTime;
 		MemoryUsed = max(MemoryUsed, TestCaseExecutionMemory);
-		printf("time - %f \n", TimeUsed);
 		if( TimeUsed > (float) FileInfo->TimeLimit){
-			result = false;
-			sprintf(status, "TLE");
-			sprintf(detailstatus, "\0");
+			result = false; sprintf(status, "TLE");
 		}
 		
-		sprintf(logs, "%d ==> %s %s %f %d\n", TestCaseId, status, detailstatus, TestCaseExecutionTime, TestCaseExecutionMemory);
-		Logs::Write(logs);
+		if(result==false) break;
+		
+		MatchOutput();
 		if(result==false){
+			sprintf(logs, "Output Matching: WA");
+			Logs::WriteLine(logs);	
+			strcpy(status,"WA");
 			break;
 		}
+		else{
+			sprintf(logs, "Output Matching: AC");
+			Logs::WriteLine(logs);	
+		} 
 	}
 	
+	Logs::WriteLine("");
 	if(result==true) Logs::WriteLine("Execution ==> Successful");
 	else Logs::WriteLine("Execution ==> Failed");
 	
-	if(result==true) Logs::WriteLine("Matching Output... ");
+	/*
+	if(result==true) Logs::WriteLine("\nMatching Output... ");
 	for(TestCaseId=1; (result==true && TestCaseId<=NoOfTestCases); TestCaseId++){
 		MatchOutput();
 		if(result==false){
@@ -275,6 +281,9 @@ void FileHandle::Execute(){
 			strcpy(status,"WA");
 		}
 	}
+	if(result==true) Logs::WriteLine("All output successfully matched.");
+	Logs::WriteLine("");
+	*/
 }
 	
 void FileHandle::pipeMatch(){
@@ -309,7 +318,7 @@ void FileHandle::SendResults(){
 	sprintf(memoryused, "%d", MemoryUsed);
 	sprintf(fileid, "%d", FileInfo->FileId);
 	sprintf(logs, "FileId ==> %s Status==>%s DetailStatus==>%s TimeUsed==>%s MemoryUsed==>%s", fileid, status, detailstatus, timeused, memoryused); 
-	Logs::WriteLine(logs, true);
+	Logs::WriteLine(logs);
 	if(CROptions::SendResults) FileCurl.SendResultsToWebpage(fileid, status, detailstatus, timeused, memoryused);
 
 	Logs::WriteLine("\n================================================================================\n");
@@ -323,7 +332,6 @@ void FileHandle::CleanUp(){
 void FileHandle::FileOperations(){
 
 	if(FetchFile() == -1 || CheckMIME() == -1) return;
-	if(CheckMIME() == -1) return;
 	if(result==false) return;
 	if(MakeDir()==-1) return;
 

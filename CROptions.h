@@ -51,6 +51,7 @@ class CROptions{
 	static bool DownloadSourceFile;
 	static bool OneFileExecution;
 	static bool PrintOnScreen;
+	static bool Verbose;
 };
 
 
