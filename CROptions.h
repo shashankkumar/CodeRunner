@@ -11,7 +11,7 @@ struct FileInfoStruct{
 	int FileId;
 	int TimeLimit;
 	int MemoryLimit;
-	char ProblemId[11];
+	char ProblemId[25];
 	char lang[11];
 };
 

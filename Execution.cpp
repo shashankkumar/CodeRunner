@@ -81,7 +81,7 @@ int main(int args, char *argv[]){
 	}
 	
 	int TimeLimit, MemoryLimit, TestCaseFileId, FileId;
-	char InputFile[10], lang[10];
+	char InputFile[25], lang[10];
 	struct timeval start,finish;
     struct sigaction SignalAction;
 	pid_t w;
@@ -110,7 +110,7 @@ int main(int args, char *argv[]){
 		
 		pid_t ChildProcessId = getpid();
 		passwd* UserDetails = getpwnam("nobody");
-		char dir[10];
+		char dir[25];
 		sprintf(dir, "%s%d/", FILEPATH, FileId);
 		//ToPipe(dir);
 		if( chdir(dir) == -1){
@@ -153,7 +153,7 @@ int main(int args, char *argv[]){
 			return 1; 
 		}
 		
-		char TestCaseFile[10], OutputFile[10];
+		char TestCaseFile[25], OutputFile[25];
 		sprintf(TestCaseFile, "%d.txt", TestCaseFileId);
 		sprintf(OutputFile, "%do.txt", TestCaseFileId);
 		if(strcmp(lang,"java")==0){
