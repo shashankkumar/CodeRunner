@@ -18,4 +18,5 @@ bool CROptions::SendResults = true;
 bool CROptions::DownloadSourceFile = true;
 bool CROptions::OneFileExecution = false;
 bool CROptions::PrintOnScreen = true;
+bool CROptions::Verbose = false;
 CROptions::FileInfoFetchOptionsStruct *CROptions::FileInfoFetchOptions = new CROptions::FileInfoFetchOptionsStruct();

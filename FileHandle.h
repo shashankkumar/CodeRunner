@@ -8,7 +8,7 @@ class FileHandle{
 	int FileId, MemoryUsed, NoOfTestCases, TestCaseId, TimeLimit, MemoryLimit;
 	float TimeUsed;
 	char systemString[100];
-	char status[10], logs[10000], detailstatus[10000];
+	char status[10], logs[11000], detailstatus[10000];
 	char str[10000], *token, tmp[10];
 	char logString[100];
 	float TestCaseExecutionTime;

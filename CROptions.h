@@ -11,7 +11,7 @@ struct FileInfoStruct{
 	int FileId;
 	int TimeLimit;
 	int MemoryLimit;
-	char ProblemId[11];
+	char ProblemId[25];
 	char lang[11];
 };
 
@@ -51,6 +51,7 @@ class CROptions{
 	static bool DownloadSourceFile;
 	static bool OneFileExecution;
 	static bool PrintOnScreen;
+	static bool Verbose;
 };
 
 
