@@ -29,35 +29,19 @@ shashankkumar.me@gmail.com
 #include "headers.h"
 #include "CROptions.h"
 #include "CodeRunner.h"
-//#include "CodeRunner.h"
 
 int main(int argc, char* argv[])
 {
-	
 	CodeRunner::ChDir(CROptions::PATH);
 	
 	int opt;
 	bool DownloadSourceFile = true;
 	bool UsageError = false;
-
-	//FileInfoFetchOptions->Init();
-
-	while((opt = getopt(argc, argv, "ancdbf:r:p:l:s:w:")) != -1){
+	while((opt = getopt(argc, argv, "abcdf:l:m:np:qr:s:t:v")) != -1){
 		switch(opt){
-			// For pre-defining FileId
-			case 'f':
-				CROptions::FileInfoFetchOptions->FileId_Predefined = true;
-				CROptions::FileInfoFetchOptions->FileInfo.FileId = atoi(optarg);
-			break;
-			// For pre-defining ProblemId
-			case 'p':
-				CROptions::FileInfoFetchOptions->ProblemId_Predefined = true;
-				strcpy(CROptions::FileInfoFetchOptions->FileInfo.ProblemId, optarg);
-			break;
-			// For pre-defining Lang
-			case 'l':
-				CROptions::FileInfoFetchOptions->Lang_Predefined = true;
-				strcpy(CROptions::FileInfoFetchOptions->FileInfo.lang, optarg);
+			// For fetching all file-ids irrespective of evaluation status.
+			case 'a':
+				CROptions::GetAllFileIds = true;
 			break;
 			// For sending results and forcing insertion of those results.
 			case 'b':
@@ -67,60 +51,78 @@ int main(int argc, char* argv[])
 			case 'c':
 				CROptions::Clean = true;
 			break;
-			// For not sending results after evaluation.
-			case 'n':
-				CROptions::SendResults = false;
-			break;
-			// For specifying Sleep Interval after each epoch.
-			case 's':
-				CROptions::SleepInterval = atoi(optarg);
-			break;
-			// For setting CodeRunner to just run for one epoch.
-			case 'r':
-				CROptions::RunOnce = true;
-			break;
-			// For not downloading source codes.
+			// For not downloading source codes. In such a case, the source codes
+			// should already be present in the Files directory.
 			case 'd':
 				CROptions::DownloadSourceFile = false;
+			break;
+			// For pre-defining FileId
+			case 'f':
+				CROptions::FileInfoFetchOptions->FileId_Predefined = true;
+				CROptions::FileInfoFetchOptions->FileInfo.FileId = atoi(optarg);
 			break;
 			case 'i':
 				CROptions::OneFileExecution = true;
 			break;
-			// For specifying pre-defined time-limit.
-			case 't':
-				CROptions::FileInfoFetchOptions->TimeLimit_Predefined = true;
-				CROptions::FileInfoFetchOptions->FileInfo.TimeLimit = atoi(optarg);
+			// For pre-defining Language
+			case 'l':
+				CROptions::FileInfoFetchOptions->Lang_Predefined = true;
+				strcpy(CROptions::FileInfoFetchOptions->FileInfo.lang, optarg);
 			break;
 			// For specifying pre-defined memory limit.
 			case 'm':
 				CROptions::FileInfoFetchOptions->MemoryLimit_Predefined = true;
 				CROptions::FileInfoFetchOptions->FileInfo.MemoryLimit = atoi(optarg);
 			break;
+			// For not sending results after evaluation.
+			case 'n':
+				CROptions::SendResults = false;
+			break;
+			// For pre-defining ProblemId
+			case 'p':
+				CROptions::FileInfoFetchOptions->ProblemId_Predefined = true;
+				strcpy(CROptions::FileInfoFetchOptions->FileInfo.ProblemId, optarg);
+			break;
+			case 'q':
+				CROptions::PrintOnScreen = false;
+			break;
+			// For setting CodeRunner to just run for one epoch.
+			case 'r':
+				CROptions::RunOnce = true;
+			break;
+			// For specifying Sleep Interval after each epoch.
+			case 's':
+				CROptions::SleepInterval = atoi(optarg);
+			break;
+			// For specifying pre-defined time-limit.
+			case 't':
+				CROptions::FileInfoFetchOptions->TimeLimit_Predefined = true;
+				CROptions::FileInfoFetchOptions->FileInfo.TimeLimit = atoi(optarg);
+			break;
 			// For printing version related information.
 			case 'v':
+				;
 			break;
-			// For fetching all file-ids irrespective of evaluation status.
-			case 'a':
-				CROptions::GetAllFileIds = true;
-			break;
-			case 'w':
-			break;
+			// For no printing on screen. Running CodeRunner in "quiet" option.
 			default: /* '?' */
 				UsageError = true;
 		}
 	}
-	
+
 	if(CROptions::FileInfoFetchOptions->FileId_Predefined){
-		if(CROptions::OneFileExecution && (!CROptions::FileInfoFetchOptions->MemoryLimit_Predefined || !CROptions::FileInfoFetchOptions->TimeLimit_Predefined || 
-		!CROptions::FileInfoFetchOptions->ProblemId_Predefined || !CROptions::FileInfoFetchOptions->Lang_Predefined)) UsageError = true;
-		else if(!CROptions::OneFileExecution && (CROptions::FileInfoFetchOptions->ProblemId_Predefined || CROptions::FileInfoFetchOptions->Lang_Predefined)) UsageError = true;
+		if(CROptions::OneFileExecution){ 
+			if(!(CROptions::FileInfoFetchOptions->MemoryLimit_Predefined && CROptions::FileInfoFetchOptions->TimeLimit_Predefined && 
+			CROptions::FileInfoFetchOptions->ProblemId_Predefined && CROptions::FileInfoFetchOptions->Lang_Predefined)) UsageError = true;
+		}
+		else if(CROptions::FileInfoFetchOptions->ProblemId_Predefined || CROptions::FileInfoFetchOptions->Lang_Predefined) UsageError = true;
 	}
+	
 	if(UsageError){
-		fprintf(stderr, "Usage: %s [-f fileid [-i -p problemcode -t timelimit -m memorylimit -l lang] | [-p problemcode] [-l language] ] [-s sleepinterval] [-b] [-n] [-c] [-r] [-d] [-v]\n", argv[0]); 
+		fprintf(stderr, "Usage: %s [-f fileid [-i -p problemcode -t timelimit -m memorylimit -l lang] | [-p problemcode] [-l language] ] [-s sleepinterval] [-a] [-b] [-n] [-c] [-r] [-d] [-v]\n", argv[0]); 
 		exit(EXIT_FAILURE);
 	}
 	
 	CodeRunner::CheckPrerequisites();
 	CodeRunner::Run();
-    return 0;
+    return 0;;
 }

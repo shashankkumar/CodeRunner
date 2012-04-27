@@ -87,16 +87,20 @@ int CurlWrapper::GetFileFromHTTP(int FileId){
    	curl = curl_easy_init();
    	headerlist = curl_slist_append(headerlist, buf);
 	if (curl) {
-       	fp = fopen(SavedFileName,"wb");
-   		curl_easy_setopt(curl, CURLOPT_URL, CROptions::URLToGetSourceCode);
-        curl_easy_setopt(curl, CURLOPT_HTTPPOST, formpost);
-    	curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, ContentInFileHTTP);
-   	    curl_easy_setopt(curl, CURLOPT_WRITEDATA, fp);
-   	    res = curl_easy_perform(curl);
-   	    curl_easy_cleanup(curl);
-   	    curl_formfree(formpost);
+   		fp = fopen(SavedFileName,"wb");
+		if(fp==NULL) {
+			Logs::WriteLine("IE ERROR Unable to open file for saving downloaded source code. Please check that CodeRunner has the requisite permissions and restart the program.");
+			return -1;
+		}
+	   	curl_easy_setopt(curl, CURLOPT_URL, CROptions::URLToGetSourceCode);
+       		curl_easy_setopt(curl, CURLOPT_HTTPPOST, formpost);
+    		curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, ContentInFileHTTP);
+   		curl_easy_setopt(curl, CURLOPT_WRITEDATA, fp);
+	   	res = curl_easy_perform(curl);
+   		curl_easy_cleanup(curl);
+	   	curl_formfree(formpost);
 		/* free slist */ 
-    	curl_slist_free_all (headerlist);
+    		curl_slist_free_all (headerlist);
    		fclose(fp);
    		
    		if(CURLE_OK!=res){
@@ -142,7 +146,7 @@ int CurlWrapper::FetchContentFromWebPage(string *content){
 		curl_formadd( &formpost, &lastptr, CURLFORM_COPYNAME, "all", CURLFORM_COPYCONTENTS, "true", CURLFORM_END);
 		CROptions::GetAllFileIds = false;
 	}
-		
+	
 	curl = curl_easy_init();
 	/* initalize custom header list (stating that Expect: 100-continue is not wanted */ 
 	headerlist = curl_slist_append(headerlist, buf);
@@ -186,7 +190,7 @@ void CurlWrapper::SendResultsToWebpage(const char* fileid, const char* status, c
 	struct curl_slist *headerlist = NULL;
 	static const char buf[] = "Expect: ";
 	
-	curl_global_init(CURL_GLOBAL_ALL);
+	//curl_global_init(CURL_GLOBAL_ALL);
 
 	/* Fill in the POST fields */ 
 	curl_formadd( &formpost, &lastptr, CURLFORM_COPYNAME, "username", CURLFORM_COPYCONTENTS, USERNAME, CURLFORM_END);
@@ -194,7 +198,7 @@ void CurlWrapper::SendResultsToWebpage(const char* fileid, const char* status, c
 	curl_formadd( &formpost, &lastptr, CURLFORM_COPYNAME, "fileid", CURLFORM_COPYCONTENTS, fileid, CURLFORM_END);
 	curl_formadd( &formpost, &lastptr, CURLFORM_COPYNAME, "status", CURLFORM_COPYCONTENTS, status, CURLFORM_END);
 	//printf("%s\n", detailstatus);
-	curl_formadd( &formpost, &lastptr, CURLFORM_COPYNAME, "detailstatus", CURLFORM_COPYCONTENTS, detailstatus, CURLFORM_END);
+	curl_formadd( &formpost, &lastptr, CURLFORM_COPYNAME, "detailstatus", CURLFORM_PTRCONTENTS, detailstatus, CURLFORM_END);
 	curl_formadd( &formpost, &lastptr, CURLFORM_COPYNAME, "time", CURLFORM_COPYCONTENTS, time, CURLFORM_END);
 	curl_formadd( &formpost, &lastptr, CURLFORM_COPYNAME, "memory", CURLFORM_COPYCONTENTS, memory, CURLFORM_END);
 	if(CROptions::ForcePushResult) 
@@ -211,7 +215,7 @@ void CurlWrapper::SendResultsToWebpage(const char* fileid, const char* status, c
     	string buffer;
     	curl_easy_setopt(curl, CURLOPT_WRITEDATA, &buffer);
     	res = curl_easy_perform(curl);
-    	char tmp[1000];
+    	char tmp[10000];		// When size was 1000, it used to throw seg faults for large CE messages.
 		strcpy(tmp, buffer.c_str());
     	printf("%s\n", tmp);
     	

@@ -1,6 +1,5 @@
-#include "includes.h"
+#include "headers.h"
 #include "resources.h"
-#include "config.h"
 
 pid_t cpid;
 const int MicroSecSleepInterval = 71;
@@ -69,7 +68,7 @@ int MemoryUsage(pid_t cpid){
 		else
 			rss = data + stack;
 	}
-	printf("Memory Usage: data - %d, stack - %d, rss - %d\n", data, stack, rss);
+	//printf("Memory Usage: data - %d, stack - %d, rss - %d\n", data, stack, rss);
 	return data + stack;
 	/* return (data + stack); */
 }
@@ -82,7 +81,7 @@ int main(int args, char *argv[]){
 	}
 	
 	int TimeLimit, MemoryLimit, TestCaseFileId, FileId;
-	char InputFile[10], lang[10];
+	char InputFile[25], lang[10];
 	struct timeval start,finish;
     struct sigaction SignalAction;
 	pid_t w;
@@ -94,7 +93,6 @@ int main(int args, char *argv[]){
 	strcpy(lang, argv[6]);
 	SignalAction.sa_flags = SA_NOCLDSTOP | SA_NOCLDWAIT;
 	SignalAction.sa_handler = SignalHandler;
-	
 	if(sigaction(SIGALRM, &SignalAction, NULL)==-1){
 		ToPipe("IE ERROR Could not register handler for SIGALRM");
 		return 1;
@@ -112,7 +110,7 @@ int main(int args, char *argv[]){
 		
 		pid_t ChildProcessId = getpid();
 		passwd* UserDetails = getpwnam("nobody");
-		char dir[10];
+		char dir[25];
 		sprintf(dir, "%s%d/", FILEPATH, FileId);
 		//ToPipe(dir);
 		if( chdir(dir) == -1){
@@ -155,9 +153,36 @@ int main(int args, char *argv[]){
 			return 1; 
 		}
 		
-		char TestCaseFile[10], OutputFile[10];
+		char TestCaseFile[25], OutputFile[25];
 		sprintf(TestCaseFile, "%d.txt", TestCaseFileId);
 		sprintf(OutputFile, "%do.txt", TestCaseFileId);
+
+		if(alarm(TimeLimit)!=0){
+			ToPipe("IE ERROR Could not set alarm.");
+		}
+		
+		if(strcmp(lang,"java")==0){
+			SetResourceLimitValuesJava(TimeLimit);
+			FILE *fpipe;
+			char command[100];
+			sprintf(command, "java -Xmx2M Main < %s > %s", TestCaseFile, OutputFile);
+			//printf("%s\n", command);
+			char line[256];
+			
+			if ( !(fpipe = (FILE*)popen(command,"r")) ){  
+				perror("Problems with pipe");
+				//Logs::WriteLine("Problems with pipe");
+			}
+			else{
+				if ( fgets( line, sizeof line, fpipe)){
+					printf("%s\n", line);
+				}
+			}
+			pclose(fpipe);
+			exit(0);
+			
+		}
+
 		if(freopen(TestCaseFile, "r", stdin)==NULL){
 			ToPipe("IE ERROR Could not open test case file\n");
 		}
@@ -169,9 +194,7 @@ int main(int args, char *argv[]){
 		if(freopen("/dev/null", "w", stderr)==NULL){
 			ToPipe("IE ERROR Could not redirect error stream to null\n");
 		}
-		if(alarm(TimeLimit)!=0){
-			ToPipe("IE ERROR Could not set alarm.");
-		}
+		/*
 		if(strcmp(lang,"java")==0){
 			SetResourceLimitValuesJava(TimeLimit);
 			if(execl("/usr/bin/java", "/usr/bin/java", "-Xmx4M", "-classpath", InputFile, (char *) NULL) == -1){
@@ -179,24 +202,34 @@ int main(int args, char *argv[]){
 				ToPipe("IE ERROR File not present or some other error.");
 			}
 		}
+		*/
 		SetResourceLimitValues(TimeLimit);
 		if(strcmp(lang, "python")==0){
-			if(execl("/usr/bin/perl", "/usr/bin/perl", "-Xmx4M", "-classpath", InputFile, (char *) NULL) == -1){
+			strcat(InputFile, ".pyc");
+			if(execl("/usr/bin/python", "/usr/bin/python", InputFile, (char *) NULL) == -1){
 				fclose(stdout);
 				ToPipe("IE ERROR File not present or some other error.");
 			}
 		}
-		if(strcmp(lang, "perl")==0){
-			if(execl("/usr/bin/perl", "/usr/bin/perl", "-classpath", InputFile, (char *) NULL) == -1){
+		else if(strcmp(lang, "perl")==0){
+			strcat(InputFile, ".pl");
+			if(execl("/usr/bin/perl", "/usr/bin/perl", InputFile, (char *) NULL) == -1){
 				fclose(stdout);
 				ToPipe("IE ERROR File not present or some other error.");
 			}
 		}
-		if(execl(InputFile,InputFile,(char *) NULL) == -1){
+		else if(strcmp(lang, "php")==0){
+			strcat(InputFile, ".php");
+			printf("%s", InputFile);
+			if(execl("/usr/bin/php", "/usr/bin/php", InputFile, (char *) NULL) == -1){
+				fclose(stdout);
+				ToPipe("IE ERROR File not present or some other error.");
+			}
+		}
+		else if(execl(InputFile, InputFile,(char *) NULL) == -1){
 			fclose(stdout);
 			ToPipe("IE ERROR File not present or some other error.");
 		}
-		
 	}
 	else {                    /* Code executed by parent */
 		struct rusage resourceUsage;
@@ -206,7 +239,7 @@ int main(int args, char *argv[]){
 		do{
 			MicroSecSleep(MicroSecSleepInterval);
 			MemoryUsed = max(MemoryUsed, MemoryUsage(cpid));
-			if(MemoryUsed > MemoryLimit){
+			if(MemoryUsed > MemoryLimit && strcmp(lang, "java")!=0){
 				kill(cpid, SIGKILL);
 			}
 			w = wait4 (cpid, &status, WUNTRACED | WCONTINUED, &resourceUsage);
@@ -233,7 +266,7 @@ int main(int args, char *argv[]){
 		strcpy(detailstatus, "\0");
 		if(MemoryUsed > MemoryLimit){
 			printf("Memory Limit Exceeded.\n");
-			printf("%d %d\n", MemoryUsed, MemoryLimit);
+			printf("MemoryUsed - %d, MemoryLimit -  %d\n", MemoryUsed, MemoryLimit);
 		}
 		if( WIFEXITED(status) == true ){
 			if( WEXITSTATUS(status) !=0 ){

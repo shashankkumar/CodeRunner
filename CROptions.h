@@ -4,13 +4,14 @@
 #define CONFIG_H
 #include "config.h"
 #endif
+#include "headers.h"
 
 
 struct FileInfoStruct{
 	int FileId;
 	int TimeLimit;
 	int MemoryLimit;
-	char ProblemId[11];
+	char ProblemId[25];
 	char lang[11];
 };
 
@@ -24,6 +25,7 @@ class CROptions{
 		FileInfoFetchOptionsStruct(){
 			FileId_Predefined = ProblemId_Predefined = Lang_Predefined = false;
 			TimeLimit_Predefined = MemoryLimit_Predefined = false;
+			FileInfo.FileId = 0;
 		};
 	};
 	
@@ -48,6 +50,8 @@ class CROptions{
 	static bool SendOptions;
 	static bool DownloadSourceFile;
 	static bool OneFileExecution;
+	static bool PrintOnScreen;
+	static bool Verbose;
 };
 
 

@@ -1,7 +1,7 @@
 #ifndef LOGS_H
 #define LOGS_H
 #include "headers.h"
-
+#include "CROptions.h"
 class Logs{
   private:
   	static FILE * pLogFile;

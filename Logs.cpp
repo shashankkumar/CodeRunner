@@ -31,26 +31,26 @@ void Logs::SetAndPrintTime(){
 	int l = strlen(curtime);
 	//curtime[l-5]='\0';
 	fwrite(curtime, 1, sizeof(curtime), pLogFile);
-	printf("%s", curtime);
+	if(CROptions::PrintOnScreen) printf("%s", curtime);
 }
 
 void Logs::Write(const char* logs, bool PrintTime){
 	if(PrintTime) SetAndPrintTime();
 	fputs(logs, pLogFile);
-	printf("%s", logs);
+	if(CROptions::PrintOnScreen) printf("%s", logs);
 }
 
 void Logs::Write(char* logs, bool PrintTime){
 	if(PrintTime) SetAndPrintTime();
 	fputs(logs, pLogFile);
-	printf("%s", logs);
+	if(CROptions::PrintOnScreen) printf("%s", logs);
 }
 
 void Logs::WriteLine(const char* logs, bool PrintTime){
 	if(PrintTime) SetAndPrintTime();
 	fputs(logs, pLogFile);
 	fputs("\n", pLogFile);
-	printf("%s\n", logs);
+	if(CROptions::PrintOnScreen) printf("%s\n", logs);
 }
 
 void Logs::WriteLine(char* logs, bool PrintTime){
@@ -58,7 +58,7 @@ void Logs::WriteLine(char* logs, bool PrintTime){
 	//printf("\n%lu\n" , sizeof((*logs)));
 	fputs(logs, pLogFile);
 	fputs("\n", pLogFile);
-	printf("%s\n", logs);
+	if(CROptions::PrintOnScreen) printf("%s\n", logs);
 }
 
 void Logs::CodeRunnerStarted(){
