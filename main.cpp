@@ -35,7 +35,6 @@ int main(int argc, char* argv[])
 	CodeRunner::ChDir(CROptions::PATH);
 	
 	int opt;
-	bool DownloadSourceFile = true;
 	bool UsageError = false;
 	while((opt = getopt(argc, argv, "abcdf:l:m:np:qr:s:t:v")) != -1){
 		switch(opt){

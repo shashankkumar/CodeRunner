@@ -21,15 +21,12 @@ void Logs::CloseLogFile(){
 void Logs::SetTime(){
 	time( &rawtime );
 	strcpy(curtime, ctime(&rawtime));
-	int l = strlen(curtime);
-	//curtime[l-5]='\0';
 }
 
 void Logs::SetAndPrintTime(){
 	time( &rawtime );
 	strcpy(curtime, ctime(&rawtime));
-	int l = strlen(curtime);
-	//curtime[l-5]='\0';
+
 	fwrite(curtime, 1, sizeof(curtime), pLogFile);
 	if(CROptions::PrintOnScreen) printf("%s", curtime);
 }

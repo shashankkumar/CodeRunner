@@ -5,7 +5,7 @@ FileHandle::FileHandle(FileInfoStruct* FileInfo){
 	TimeUsed=0.0;
 	MemoryUsed=0;
 	result=true;
-	sprintf(detailstatus,"\0");
+	detailstatus[0] = '\0';
 	sprintf(FileAddr, "%s%d", FILEPATH, FileInfo->FileId);
 	sprintf(FileDirAddr, "%s%d/", FILEPATH, FileInfo->FileId);
 	if(strcmp(FileInfo->lang, "java")==0){
@@ -72,15 +72,15 @@ int FileHandle::CheckMIME(){
 				strcpy(status, "CE");
 				strcpy(detailstatus, "The source file is not a text file. Failed MIME check test.");
 			}
-			return 0;
 		}
 	}
 	pclose(fpipe);
+	return 0;
 }
 
 int FileHandle::MakeDir(){
 	int ErrNo;
-	char dirString[100];
+	
 	Logs::WriteLine("Creating directory.");
 	if( mkdir(FileDirAddr, S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH | S_IWOTH)==-1){
 		ErrNo=errno;
@@ -162,6 +162,7 @@ void FileHandle::pipeCompile(){
 int FileHandle::pipeNoOfTestCases(){
     FILE *fpipe;
     char line[256];
+    int TestCaseNo;
     sprintf(command, "ls %s%s/Input/ -l | egrep -c '^-'", TESTCASESPATH, FileInfo->ProblemId);
 	
 	if ( !(fpipe = (FILE*)popen(command,"r")) ){  
@@ -171,11 +172,12 @@ int FileHandle::pipeNoOfTestCases(){
 		return -1;
 	}
 	else{
-		while ( fgets( line, sizeof line, fpipe)){
-			return atoi(line);
+		if ( fgets( line, sizeof line, fpipe)){
+			TestCaseNo = atoi(line);
 		}
 	}
 	pclose(fpipe);
+	return TestCaseNo;
 }
 
 int FileHandle::PrepareToExecute(){
@@ -183,9 +185,14 @@ int FileHandle::PrepareToExecute(){
 	system(systemString);
 	
 	NoOfTestCases = pipeNoOfTestCases();
-	if(NoOfTestCases==0){
+	if(NoOfTestCases == 0){
 		strcpy(status, "IE");
 		strcpy(detailstatus, "No Test Case file specified.");
+		return -1;
+	}
+	else if(NoOfTestCases == -1){
+		strcpy(status, "IE");
+		strcpy(detailstatus, "Problem in determining number of test case files.");
 		return -1;
 	}
 	sprintf(systemString, "Number of Test Cases = %d",NoOfTestCases);
@@ -307,7 +314,7 @@ void FileHandle::MatchOutput(){
 	char FromFileStr[100], ToFileStr[100];
 	sprintf(FromFileStr, "%s%s/Output/%d.txt", TESTCASESPATH, FileInfo->ProblemId, TestCaseId);
 	sprintf(ToFileStr, "%s%do.txt", FileDirAddr, TestCaseId);
-	char cmd[1000];
+	
 	sprintf(command, "diff %s %s --ignore-all-space --ignore-blank-lines --ignore-tab-expansion --ignore-space-change --brief 2>&1", FromFileStr, ToFileStr);
 	//printf("%s\n", command);
 	pipeMatch();
