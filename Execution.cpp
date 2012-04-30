@@ -256,19 +256,17 @@ int main(int args, char *argv[]){
 			t_usec+=1000000;
 		}	
 		
-		timeval tv = resourceUsage.ru_utime;
-		float SysTime = (float)(  tv.tv_sec * 1000000 + (int) tv.tv_usec ) / 1000000 ;
 		float TimeUsed = (float)( t_sec * 1000000 + (int) t_usec ) / 1000000 ;
 		
 		bool sigkill = false, sigalrm = false;
 		
 		char executionstatus[4], detailstatus[100];
-		strcpy(detailstatus, "\0");
-		if(MemoryUsed > MemoryLimit){
-			printf("Memory Limit Exceeded.\n");
-			printf("MemoryUsed - %d, MemoryLimit -  %d\n", MemoryUsed, MemoryLimit);
+		detailstatus[0] = '\0';
+		
+		if(MemoryUsed > MemoryLimit && strcmp(lang, "java")!=0){
+			strcpy(executionstatus, "MLE");
 		}
-		if( WIFEXITED(status) == true ){
+		else if( WIFEXITED(status) == true ){
 			if( WEXITSTATUS(status) !=0 ){
 				strcpy(executionstatus, "RE");
 				strcpy(detailstatus, "NZEC");
@@ -306,7 +304,6 @@ int main(int args, char *argv[]){
 				}
 				else{
 					strcpy(detailstatus, "OTHER");
-					printf("%d\n", WTERMSIG(status));
 					printf("%d\n", WTERMSIG(status));
 				}
 			}
