@@ -2,6 +2,11 @@
 
 An online judge to conduct programming contests or run 24 7 programming site.
 
+## Demo
+[Insomnia'12](http://insomnia.cognizance.org.in)
+Not a full featured demo but you can see how CodeRunner was used in action!
+A more full feature demo will be launched later.
+
 ## Features
 * Download source code files via HTTP/FTP.
 * Compilation of source code files.
