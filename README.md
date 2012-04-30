@@ -12,6 +12,8 @@ A more full feature demo will be launched later.
 * Compilation of source code files.
 * Exection of files.
 * Matching output produced by executing files with the standard solution.
+* Status given - Compilation Error, Wrong Answer, Time Limit Exceeded, Runtime Error, Memory Limit Exceeded.
+* Gives time of execution, memory used, type of runtime error(in case of runtime error) and compilation error(in case of compilation error).
 
 ## Languages supported
 * C/C++
