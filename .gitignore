@@ -5,6 +5,5 @@ Files/*
 Logs/*
 main
 *config.h
-TestCases2/*
+coderunner
 Execution
-*_execution
