@@ -5,5 +5,7 @@ Files/*
 Logs/*
 main
 *config.h
+config/
+!sample.config.h
 coderunner
 Execution
