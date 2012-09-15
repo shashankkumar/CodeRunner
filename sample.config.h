@@ -8,11 +8,6 @@
  */
 
 /**
- * The PATH option should point to the folder in which CodeRunner is stored.
- */
-#define PATH "/home/shashank/git/CodeRunner/"
-
-/**
  * Specify the username and password to be used for communication over internet with the website.
  * The "username" and "password" fields will be supplied via POST request while querying for pending file ids, fetching source
  * code, and sending results.
@@ -25,8 +20,8 @@
  * If the preferred method is HTTP, then specify HTTPON as true.
  * otherwise specify FTPON as true.
  */
-#define FTPON false
 #define HTTPON true
+#define FTPON false
 
 /**
  * If the preferred method for source code download is FTP, then specify the FTP username
@@ -41,8 +36,8 @@
 #define FTPADDRESS "/Upload/"
 
 
-#define URLToGetFileIds "http://192.168.208.7/return_id.php"
-#define HTTPADDRESS "http://192.168.208.7/return_sourcecode.php"
+#define URL_TO_GET_FILE_IDS "http://address"
+#define URL_TO_GET_SOURCE_CODE "http://address"
 #define FILEPATH "./Files/"
 #define TESTCASESPATH "./TestCases/"
 
@@ -50,10 +45,18 @@
  * Specify the URL where results will be sent here.
  * Same username and password will be used as above.
  */
-#define URLToSendResults "http://192.168.208.203/push_result.php"
-#define LOGFILEPATH "./Logs/logs2.txt"
+#define URL_TO_SEND_RESULTS "http://192.168.208.203/push_result.php"
+
+#define LOGFILEPATH "./Logs/"
+#define LOGFILENAME "logs.txt"
 /**
  * Specify the interval for which CodeRunner sleeps between two epochs.
  * One epoch is downloading of pending file ids, their source files, their execution and finally sending their results.
  */
 #define SLEEPINTERVAL 30
+
+#define LANG_CPP true
+#define LANG_JAVA true
+#define LANG_PYTHON true
+#define LANG_PERL true
+ 
