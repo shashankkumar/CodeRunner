@@ -7,6 +7,7 @@ VAR = headers.h Logs.h CROptions.h
 DEPDIR = dep
 SRCDIR = src
 OBJDIR = bin
+CONFIG = config.h
 
 # Build a list of the object files to create, based on the .cpps we find
 OBJS = $(patsubst $(SRCDIR)/%.cpp,$(OBJDIR)/%.o,$(wildcard $(SRCDIR)/*.cpp))
@@ -16,15 +17,19 @@ DEPS = $(patsubst %.o,$(DEPDIR)/%.d,$(OTMP))
 
 all: init config main Execution
 
-init:
+init: $(DEPDIR) $(OBJDIR)
+$(DEPDIR):
 	mkdir -p $(DEPDIR)
+
+$(OBJDIR):
 	mkdir -p $(OBJDIR)
-    
+
+config: $(SRCDIR)/$(CONFIG)
+$(SRCDIR)/$(CONFIG): $(CONFIG)
+	sh $(SRCDIR)/config.sh $(SRCDIR) $(CONFIG)
+
 # Pull in dependency info for our objects
 -include $(DEPS)
-
-config : config.h
-	cp $^ $(SRCDIR)
 
 main : $(filter-out $(OBJDIR)/Execution.o, $(OBJS))
 	$(LINK.o) $^ -lcurl -o $@
@@ -51,4 +56,4 @@ $(OBJDIR)/%.o : $(SRCDIR)/%.cpp
 	rm -f $(DEPDIR)/$*.d.tmp
 	
 clean:
-	rm -rf $(OBJDIR) $(DEPDIR) main Execution
+	rm -rf $(OBJDIR) $(DEPDIR) $(SRCDIR)/$(CONFIG) main Execution
