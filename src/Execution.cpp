@@ -68,7 +68,8 @@ int MemoryUsage(pid_t cpid){
 		else
 			rss = data + stack;
 	}
-	//printf("Memory Usage: data - %d, stack - %d, rss - %d\n", data, stack, rss);
+	printf("The memory usage is about to be printed \n");
+	printf("Memory Usage: data - %d, stack - %d, rss - %d\n", data, stack, rss);
 	return data + stack;
 	/* return (data + stack); */
 }
@@ -165,7 +166,7 @@ int main(int args, char *argv[]){
 			SetResourceLimitValuesJava(TimeLimit);
 			FILE *fpipe;
 			char command[100];
-			sprintf(command, "java -Xmx2M Main < %s > %s", TestCaseFile, OutputFile);
+			sprintf(command, "java -Xms1024M Main < %s > %s", TestCaseFile, OutputFile);
 			//printf("%s\n", command);
 			char line[256];
 			
@@ -182,6 +183,7 @@ int main(int args, char *argv[]){
 			exit(0);
 			
 		}
+		
 
 		if(freopen(TestCaseFile, "r", stdin)==NULL){
 			ToPipe("IE ERROR Could not open test case file\n");
@@ -197,12 +199,14 @@ int main(int args, char *argv[]){
 		/*
 		if(strcmp(lang,"java")==0){
 			SetResourceLimitValuesJava(TimeLimit);
-			if(execl("/usr/bin/java", "/usr/bin/java", "-Xmx4M", "-classpath", InputFile, (char *) NULL) == -1){
+			if(execl("/usr/bin/java", "/usr/bin/java", "-Xms20M -Xmx500M", "-classpath", InputFile, (char *) NULL) == -1){
 				fclose(stdout);
 				ToPipe("IE ERROR File not present or some other error.");
 			}
 		}
 		*/
+		
+		//printf("execution about to begin");
 		SetResourceLimitValues(TimeLimit);
 		if(strcmp(lang, "python")==0){
 			strcat(InputFile, ".pyc");
