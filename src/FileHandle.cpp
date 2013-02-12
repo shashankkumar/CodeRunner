@@ -126,11 +126,11 @@ void FileHandle::pipeCompile(){
     else if(strcmp(FileInfo->lang, "c") == 0)
     	sprintf(command, "gcc -w -static %s.c -o %s 2>&1", FullFileAddr, FullFileAddr);
     else if(strcmp(FileInfo->lang, "java")==0)
-		sprintf(command, "gcj -C %s.java  2>&1", FullFileAddr);
+		sprintf(command, "javac %s.java", FullFileAddr);
 	else if(strcmp(FileInfo->lang, "python")==0)
-		sprintf(command, "py_compilefiles %s.py", FullFileAddr);
+		sprintf(command, "python -m py_compile %s.py", FullFileAddr);
 	else if(strcmp(FileInfo->lang, "pascal")==0)
-		sprintf(command, "gpc %s.p -o %s 2>&1", FullFileAddr, FullFileAddr); 
+		sprintf(command, "fpc %s.p", FullFileAddr); 
 	else if(strcmp(FileInfo->lang, "perl")==0)
 		sprintf(command, "perl -c %s.pl", FullFileAddr);
 	else if(strcmp(FileInfo->lang, "php")==0)
