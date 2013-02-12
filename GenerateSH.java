@@ -1,8 +1,4 @@
-/*
- Author: sunits789
- Task: Curious Power
- Lang: JAVA
- */
+
 import java.io.InputStreamReader;
 import java.io.IOException;
 import java.util.Arrays;
@@ -30,8 +26,8 @@ public class GenerateSH
 		Scanner in = new Scanner(inputStream);
 		PrintWriter out = new PrintWriter(outputStream);
 		//PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(outputStream)));
-		Generator solver = new Generator();
-		solver.solve(1, in, out);
+		Generator generator = new Generator();
+		generator.generate(1, in, out);
 		out.close();
 		long t2=System.currentTimeMillis();
 		System.out.println(t2-t1+"ms");
@@ -40,7 +36,7 @@ public class GenerateSH
 
 class Generator
 {
-	public void solve(int testNumber, Scanner in, PrintWriter out)throws IOException
+	public void generate(int testNumber, Scanner in, PrintWriter out)throws IOException
 	{
 		String s="";
 		String currentDir = System.getProperty("user.dir");
