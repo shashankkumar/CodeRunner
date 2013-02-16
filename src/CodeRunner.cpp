@@ -41,7 +41,7 @@ void CodeRunner::Run(){
 		}
 		
 		if(CurrentIteration && ContentVar->EndOfContent()){
-			Logs::WriteLine("File Queue Empty. Nothing to evaluate.");
+			//Logs::WriteLine("File Queue Empty. Nothing to evaluate.");
 			CurrentIteration = false;
 		}
 		
@@ -52,7 +52,7 @@ void CodeRunner::Run(){
 			//delete FileInfo;
 		}
 		
-		if(CurrentIteration) Logs::WriteLine("Current batch of files evaluated.");
+		if(CurrentIteration) ;//Logs::WriteLine("Current batch of files evaluated.");
 		
 		delete ContentVar;
 		CodeRunner::GoToSleep();
@@ -64,8 +64,8 @@ void CodeRunner::Run(){
 void CodeRunner::GoToSleep(){
 	char SleepText[50];;
 	sprintf(SleepText, "Going to sleep for %d seconds.\n", SLEEPINTERVAL);
-	Logs::WriteLine(SleepText);
-	Logs::WriteLine("============================================================================\n");
+	//Logs::WriteLine(SleepText);
+	//Logs::WriteLine("============================================================================\n");
 	sleep(CROptions::SleepInterval);
 }
 
