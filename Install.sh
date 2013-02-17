@@ -6,4 +6,5 @@ mkdir Files
 javac GenerateSH.java
 java GenerateSH
 make
+chmod 777 link.sh
 chmod 777 CodeRunner.sh
