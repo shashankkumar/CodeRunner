@@ -1,11 +1,5 @@
-/*
- Author: sunits789
- Task: Curious Power
- Lang: JAVA
- */
 import java.io.InputStreamReader;
 import java.io.IOException;
-import java.util.Arrays;
 import java.io.BufferedReader;
 import java.io.OutputStream;
 import java.io.PrintWriter;
@@ -15,37 +9,34 @@ import java.io.InputStream;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.FileReader;
-import java.util.Scanner;
 
 
 public class GenerateSH
 {
 	public static void main(String[] Args)throws IOException
 	{
-		long t1=System.currentTimeMillis();
-		//String inputStream = "Input/1.txt";
 		String outputStream = "link.sh";
+		String outputStream2 = "CodeRunner.sh";
 		InputStream inputStream = System.in;
-		//OutputStream outputStream = System.out;
-		Scanner in = new Scanner(inputStream);
 		PrintWriter out = new PrintWriter(outputStream);
-		//PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(outputStream)));
-		Generator solver = new Generator();
-		solver.solve(1, in, out);
+		PrintWriter out2 = new PrintWriter(outputStream2);
+		Generator generator = new Generator();
+		generator.generate(1, out, out2);
 		out.close();
-		long t2=System.currentTimeMillis();
-		System.out.println(t2-t1+"ms");
+		out2.close();
 	}
 }
 
 class Generator
 {
-	public void solve(int testNumber, Scanner in, PrintWriter out)throws IOException
+	public void generate(int testNumber, PrintWriter out, PrintWriter out2)throws IOException
 	{
 		String s="";
 		String currentDir = System.getProperty("user.dir");
         System.out.println("Current dir: " +currentDir);
-        s="echo \"CodeRunner Started\" >> Logs/Logs2.txt \n "+currentDir+"/main -q >> Logs.txt";
+        s="echo \"CodeRunner Started\" >> "+currentDir+"/Logs/Logs2.txt \n "+currentDir+"/main -q >> "+currentDir+"/Logs/Logs2.txt";
         out.println(s);
+        String s2="until "+currentDir+"/link.sh; do \n echo \" CodeRunner crashed with exit code $?.  Respawning.. \" >&2 \n sleep 1 \n done";
+        out2.println(s2);
 	}
 }
