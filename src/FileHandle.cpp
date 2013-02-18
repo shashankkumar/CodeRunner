@@ -253,7 +253,10 @@ void FileHandle::Execute(){
 			if(ptr!=NULL) sscanf(ptr, "%*s %d", &TestCaseExecutionMemory);
 		}
 		
-		TimeUsed += TestCaseExecutionTime;
+		//TimeUsed += TestCaseExecutionTime;
+		if(TestCaseExecutionTime>TimeUsed){
+			TimeUsed=TestCaseExecutionTime;
+		}
 		MemoryUsed = max(MemoryUsed, TestCaseExecutionMemory);
 		if( TimeUsed > (float) FileInfo->TimeLimit){
 			result = false; sprintf(status, "TLE");
