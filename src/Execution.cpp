@@ -161,7 +161,7 @@ int main(int args, char *argv[]){
 		if(alarm(TimeLimit)!=0){
 			ToPipe("IE ERROR Could not set alarm.");
 		}
-		
+		//printf("Execution aginst timelimit: %d", TimeLimit);
 		if(strcmp(lang,"java")==0){
 			SetResourceLimitValuesJava(TimeLimit);
 			FILE *fpipe;

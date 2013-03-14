@@ -55,6 +55,12 @@ FileInfoStruct* ContentParser::GetNextFileInfo(){
 	FileInfo->TimeLimit = read_int();
 	FileInfo->MemoryLimit = read_int();
 	read_char_str(FileInfo->lang);
+	if(strcmp(FileInfo->lang,"java")==0){
+		FileInfo->TimeLimit=2*FileInfo->TimeLimit;
+	}
+	if(strcmp(FileInfo->lang,"python")==0){
+		FileInfo->TimeLimit=5*FileInfo->TimeLimit;
+	}
 	//printf("%d %s %d %d %s\n", FileInfo.FileId, FileInfo.ProblemId, FileInfo.TimeLimit, FileInfo.MemoryLimit, FileInfo.lang);
 	return FileInfo;
 }
