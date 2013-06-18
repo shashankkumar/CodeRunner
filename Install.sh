@@ -5,8 +5,8 @@ rm Execution
 mkdir TestCases
 mkdir Logs
 mkdir Files
-javac GenerateSH.java
-java GenerateSH
+g++ GenerateSH.cpp -o GenerateSH.o
+./GenerateSH.o
 cp sample.config.h config.h
 make
 chmod 755 link.sh
