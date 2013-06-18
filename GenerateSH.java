@@ -34,7 +34,7 @@ class Generator
 		String s="";
 		String currentDir = System.getProperty("user.dir");
         System.out.println("Current dir: " +currentDir);
-        s="echo \"CodeRunner Started\" >> "+currentDir+"/Logs/Logs2.txt \n "+currentDir+"/main -q >> "+currentDir+"/Logs/Logs2.txt";
+        s="echo \"CodeRunner Started on $(date)\" >> "+currentDir+"/Logs/Logs2.txt \n "+currentDir+"/main -q >> "+currentDir+"/Logs/Logs2.txt";
         out.println(s);
         String s2="until "+currentDir+"/link.sh; do \n echo \" CodeRunner crashed with exit code $?.  Respawning.. \" >&2 \n sleep 1 \n done";
         out2.println(s2);
