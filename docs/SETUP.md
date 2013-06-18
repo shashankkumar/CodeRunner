@@ -20,5 +20,5 @@ Installation Steps
     * URLToSendResults is the web address where CodeRunner will send the results of executed files.
     * LOGFILEPATH is the log file location where CodeRunner will log the results of files execution.
     * SLEEPINTERVAL is the time interval for which CodeRunner goes to sleep after one epoch.
-3. Now run the `make` command on terminal. It should run without throwing any errors.
+3. Now run the `./Install.sh` command on terminal. It should run without throwing any errors.
 
