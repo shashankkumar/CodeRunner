@@ -12,6 +12,7 @@ CC = g++
 # CXXFLAGS are the flags to use when *compiling* c++ code
 CXXFLAGS = -Wall -O3
 
+
 # LFLAGS are the flags to use when *linking*
 LDFLAGS = -Wall -O3
 

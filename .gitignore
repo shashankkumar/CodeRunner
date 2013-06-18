@@ -9,3 +9,7 @@ config/
 !sample.config.h
 coderunner
 Execution
+*.class
+CodeRunner.sh
+link.sh
+
