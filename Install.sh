@@ -6,6 +6,7 @@ mkdir Logs
 mkdir Files
 javac GenerateSH.java
 java GenerateSH
+cp sample.config.h config.h
 make
 chmod 755 link.sh
 chmod 755 CodeRunner.sh
