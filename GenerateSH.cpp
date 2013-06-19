@@ -14,7 +14,7 @@ int main ()
     if(getcwd(cwd, sizeof(cwd))!=NULL)
     {
         currentDir=cwd;
-    cout<<currentDir;
+        //cout<<currentDir;
         file1.open ("CodeRunner.sh");
         file1 << "until "+currentDir+"/link.sh; do \n echo \" CodeRunner crashed with exit code $?.  Respawning.. \" >&2 \n sleep 1 \n done";
         file1.close();
