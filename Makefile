@@ -22,7 +22,7 @@ DEPDIR = dep
 SRCDIR = src
 OBJDIR = bin
 CONFIG = config.h
-SAMPLECONFIG = sample.config.h
+CONFIGDIR = Config
 
 # Build a list of the object files to create, based on the .cpps we find
 # $(patsubst pattern,replacement,text)
@@ -40,9 +40,8 @@ $(DEPDIR):
 $(OBJDIR):
 	mkdir -p $(OBJDIR)
 
-config: $(SRCDIR)/$(CONFIG)
-$(SRCDIR)/$(CONFIG): $(CONFIG)
-	sh $(SRCDIR)/config.sh $(SRCDIR) $(SAMPLECONFIG) $(CONFIG)
+config: $(CONFIGDIR)/$(CONFIG)
+	sh $(CONFIGDIR)/config.sh $(CONFIGDIR) $(CONFIG)
 
 # Pull in dependency info for our objects
 

@@ -1,9 +1,6 @@
 #ifndef CROPTIONS_H
 #define CROPTIONS_H
-#ifndef CONFIG_H
-#define CONFIG_H
-#include "config.h"
-#endif
+#include "../Config/config.h"
 #include "headers.h"
 
 
@@ -28,7 +25,7 @@ class CROptions{
 			FileInfo.FileId = 0;
 		};
 	};
-	
+
 	static CROptions::FileInfoFetchOptionsStruct* FileInfoFetchOptions;
 	static bool RunOnce;
 	static bool SleepInterval;
