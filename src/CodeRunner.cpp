@@ -1,6 +1,13 @@
 #include "CodeRunner.h"
 
-void CodeRunner::CheckPrerequisites(){
+
+
+/*----------------------------------Start  Class  Defination-----------------------------------------------------------*/
+
+
+
+void CodeRunner::CheckPrerequisites()
+{
 	ChDir(CROptions::PATH);
 	ChDir(CROptions::TestCasesPath);
 	ChDir(CROptions::PATH);
@@ -14,23 +21,30 @@ void CodeRunner::CheckPrerequisites(){
 	Logs::CloseLogFile();
 }
 
-void CodeRunner::ChDir(const char* dir){
-	if(chdir(dir)==-1)	{
-		printf("IE ERROR Cannot change directory to %s\n", dir);
+void CodeRunner::ChDir(const char* dir)
+{
+    /*If successful, chdir() changes the working directory and returns 0.
+     *If unsuccessful, chdir() does not change the working directory, returns -1, and sets errno
+     */
+
+	if(chdir(dir)==-1)
+	{
+		printf("ERROR Cannot change directory to %s\n", dir);
+		cout<<"errno for chdir is"<<errno<<endl;
 		exit(EXIT_FAILURE);
 	}
 }
 
 void CodeRunner::Run(){
 	CheckPrerequisites();
-	
+
 	if(CROptions::OneFileExecution){
 		FileInfoStruct* FileInfo = &(CROptions::FileInfoFetchOptions->FileInfo);
 		FileHandle F(FileInfo);
 		F.Action();
 		return;
 	}
-	
+
 	do{
 		Logs::OpenLogFile();
 		bool CurrentIteration = true;
@@ -39,25 +53,25 @@ void CodeRunner::Run(){
 		if(ContentVar->FetchFileInfoList()==-1){
 			CurrentIteration = false;
 		}
-		
+
 		if(CurrentIteration && ContentVar->EndOfContent()){
 			//Logs::WriteLine("File Queue Empty. Nothing to evaluate.");
 			CurrentIteration = false;
 		}
-		
+
 		while(CurrentIteration && !ContentVar->EndOfContent()){
 			FileInfoStruct* FileInfo = ContentVar->GetNextFileInfo();
 			FileHandle F(FileInfo);
 			F.Action();
 			//delete FileInfo;
 		}
-		
+
 		if(CurrentIteration) ;//Logs::WriteLine("Current batch of files evaluated.");
-		
+
 		delete ContentVar;
 		CodeRunner::GoToSleep();
 		Logs::CloseLogFile();
-		
+
 	}while(!CROptions::RunOnce);
 }
 
@@ -73,3 +87,7 @@ void CodeRunner::ErrorMessage(const char* msg){
 	Logs::WriteLine(msg);
 	exit(EXIT_FAILURE);
 }
+
+
+
+/*--------------------------------------End Class Defination---------------------------------------------------------*/

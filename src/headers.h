@@ -12,7 +12,8 @@
 #include <iostream>
 #include <string>
 #include <vector>
-
+#include <errno.h>
+	
 using namespace std;
 
 #include <fcntl.h>
