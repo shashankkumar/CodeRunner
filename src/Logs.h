@@ -1,13 +1,23 @@
 #ifndef LOGS_H
 #define LOGS_H
+
 #include "headers.h"
 #include "CROptions.h"
+
+
+
+/*-------------------------------------Class  Defination  Begins--------------------------------------------*/
+
+
+
 class Logs{
+
   private:
-  	static FILE * pLogFile;
-  	static time_t rawtime;
+  	static FILE * pLogFile; //File Object
+  	static time_t rawtime; //Time type : as returned by time function
   	static char curtime[100];
   	static char logfile[100];
+  
   public:
 	static void SetLogFileName(const char* logfilepath, const char* logfilename);
 	static void OpenLogFile();
@@ -21,5 +31,12 @@ class Logs{
 	static void SetAndPrintTime();
 	static void SetFileId(int FileId);
 	static void CodeRunnerStarted();
+
 };
+
+
+
+/*--------------------------------Class  Defination  Ends----------------------------------------------------------*/
+
+
 #endif

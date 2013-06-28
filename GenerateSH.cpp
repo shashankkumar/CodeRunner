@@ -1,3 +1,6 @@
+/*  *To generate link.sh and codevillage.sh files
+    **/
+
 #include <iostream>
 #include <fstream>
 #include <cstring>
