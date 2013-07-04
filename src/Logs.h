@@ -5,11 +5,6 @@
 #include "CROptions.h"
 
 
-
-/*-------------------------------------Class  Defination  Begins--------------------------------------------*/
-
-
-
 class Logs{
 
   private:
@@ -33,10 +28,5 @@ class Logs{
 	static void CodeRunnerStarted();
 
 };
-
-
-
-/*--------------------------------Class  Defination  Ends----------------------------------------------------------*/
-
 
 #endif

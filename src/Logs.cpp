@@ -1,11 +1,5 @@
 #include "Logs.h"
 
-
-
-/*-------------------------------------Class Defination Starts------------------------------------------------------*/
-
-
-
 FILE * Logs::pLogFile;
 time_t Logs::rawtime;
 char Logs::curtime[100];
@@ -14,7 +8,7 @@ char Logs::logfile[100];
 
 void Logs::SetLogFileName(const char* logfilepath, const char* logfilename)
 {
-    /**Store logfilepath and logfilename to logfile array
+    /*Store logfilepath and logfilename to logfile array
       *A terminating null character is automatically appended after the content.
       */
 	sprintf(logfile, "%s%s", logfilepath, logfilename);
@@ -40,7 +34,7 @@ void Logs::SetTime()
 {
 	time( &rawtime );//store time value to rawtime -- returns unix time stamp
 	strcpy(curtime, ctime(&rawtime));
-	/**copies the current time to curtime in following format
+	/*copies the current time to curtime in following format
 	  *Www Mmm dd hh:mm:ss yyyy
       *Www is the weekday, Mmm the month (in letters), dd the day of the month, hh:mm:ss the time, and yyyy the year.
       *The string is followed by a new-line character ('\n') and terminated with a null-character.
@@ -111,7 +105,3 @@ void Logs::LeaveLine()
 {
 	Logs::WriteLine("");
 }
-
-
-
-/*------------------------------Class  Defination  Ends----------------------------------------------------------*/

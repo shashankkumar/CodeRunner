@@ -4,7 +4,9 @@
 #include "ContentParser.h"
 #include "FileHandle.h"
 
-class CodeRunner{
+
+class CodeRunner
+{
   private:
   public:
 	static void CheckPrerequisites();
@@ -14,4 +16,6 @@ class CodeRunner{
 	static void ErrorMessage(const char* msg);
 
  };
+
+ 
 #endif

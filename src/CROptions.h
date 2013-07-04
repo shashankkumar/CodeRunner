@@ -4,27 +4,49 @@
 #include "headers.h"
 
 
-struct FileInfoStruct{
+/*---------------------------------------------Struct  Defination  Starts-----------------------------------------------------------------*/
+
+
+
+struct FileInfoStruct
+{
 	int FileId;
+	char ProblemId[25];
+	//Unique Id by which website and CodeRunner identifies a problem. For eg. PALIN, TEST etc.
 	int TimeLimit;
 	int MemoryLimit;
-	char ProblemId[25];
-	char lang[11];
+	char lang[11]; //acceptable values `cpp, c, java`
 };
 
 
-class CROptions{
+
+/*---------------------------------------------Struct  Defination  Ends----------------------------------------------------------------------*/
+
+
+
+class CROptions
+{
   public:
-	struct FileInfoFetchOptionsStruct{
-		bool FileId_Predefined, ProblemId_Predefined, Lang_Predefined;
-		bool TimeLimit_Predefined, MemoryLimit_Predefined;
+
+
+  	                                    /*---------------------Struct  Defination  Starts-------------------------*/
+	
+
+	struct FileInfoFetchOptionsStruct
+	{
+		bool FileId_Predefined, ProblemId_Predefined, Lang_Predefined,TimeLimit_Predefined, MemoryLimit_Predefined;
 		FileInfoStruct FileInfo;
-		FileInfoFetchOptionsStruct(){
-			FileId_Predefined = ProblemId_Predefined = Lang_Predefined = false;
-			TimeLimit_Predefined = MemoryLimit_Predefined = false;
+		FileInfoFetchOptionsStruct()
+		{
+			FileId_Predefined = ProblemId_Predefined = Lang_Predefined = TimeLimit_Predefined = MemoryLimit_Predefined = false;
 			FileInfo.FileId = 0;
 		};
 	};
+
+
+                                        	/*------------------Struct  Defination  Ends------------------------------*/ 
+
+
 
 	static CROptions::FileInfoFetchOptionsStruct* FileInfoFetchOptions;
 	static bool RunOnce;
@@ -50,7 +72,6 @@ class CROptions{
 	static bool PrintOnScreen;
 	static bool Verbose;
 };
-
 
 
 #endif

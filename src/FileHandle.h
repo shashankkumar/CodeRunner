@@ -3,7 +3,9 @@
 #include "headers.h"
 #include "CurlWrapper.h"
 
-class FileHandle{
+
+class FileHandle
+{
   private:
 	int FileId, MemoryUsed, NoOfTestCases, TestCaseId, TimeLimit, MemoryLimit;
 	float TimeUsed;

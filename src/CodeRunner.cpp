@@ -1,11 +1,6 @@
 #include "CodeRunner.h"
 
 
-
-/*----------------------------------Start  Class  Defination-----------------------------------------------------------*/
-
-
-
 void CodeRunner::CheckPrerequisites()
 {
 	ChDir(CROptions::PATH);
@@ -35,10 +30,12 @@ void CodeRunner::ChDir(const char* dir)
 	}
 }
 
-void CodeRunner::Run(){
+void CodeRunner::Run()
+{
 	CheckPrerequisites();
 
-	if(CROptions::OneFileExecution){
+	if(CROptions::OneFileExecution)
+	{
 		FileInfoStruct* FileInfo = &(CROptions::FileInfoFetchOptions->FileInfo);
 		FileHandle F(FileInfo);
 		F.Action();
@@ -87,7 +84,3 @@ void CodeRunner::ErrorMessage(const char* msg){
 	Logs::WriteLine(msg);
 	exit(EXIT_FAILURE);
 }
-
-
-
-/*--------------------------------------End Class Defination---------------------------------------------------------*/

@@ -1,4 +1,6 @@
 #include "CROptions.h"
+
+
 bool CROptions::RunOnce = false;
 bool CROptions::SleepInterval = SLEEPINTERVAL;
 const char* CROptions::PATH = ABSOLUTE_PATH;

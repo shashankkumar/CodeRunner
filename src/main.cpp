@@ -8,7 +8,7 @@ Copyright Shashank Kumar. All rights reserved.
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to
 deal in the Software without restriction, including without limitation the
-rights to use, copy and/or distribute copies of the Software, 
+rights to use, copy and/or distribute copies of the Software,
 and to permit persons to whom the Software is
 furnished to do so, subject to the following conditions:
 
@@ -21,11 +21,12 @@ FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
 AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
-IN THE SOFTWARE.  
+IN THE SOFTWARE.
 You may contact the author of CodeRunner by e-mail at:
 shashankkumar.me@gmail.com
 
 ****************************************************************************/
+
 #include "headers.h"
 #include "CROptions.h"
 #include "CodeRunner.h"
@@ -33,7 +34,7 @@ shashankkumar.me@gmail.com
 int main(int argc, char* argv[])
 {
 	CodeRunner::ChDir(CROptions::PATH);
-	
+
 	int opt;
 	bool UsageError = false;
 	while((opt = getopt(argc, argv, "abcdf:l:m:np:qr:s:t:v")) != -1){
@@ -109,18 +110,18 @@ int main(int argc, char* argv[])
 	}
 
 	if(CROptions::FileInfoFetchOptions->FileId_Predefined){
-		if(CROptions::OneFileExecution){ 
-			if(!(CROptions::FileInfoFetchOptions->MemoryLimit_Predefined && CROptions::FileInfoFetchOptions->TimeLimit_Predefined && 
+		if(CROptions::OneFileExecution){
+			if(!(CROptions::FileInfoFetchOptions->MemoryLimit_Predefined && CROptions::FileInfoFetchOptions->TimeLimit_Predefined &&
 			CROptions::FileInfoFetchOptions->ProblemId_Predefined && CROptions::FileInfoFetchOptions->Lang_Predefined)) UsageError = true;
 		}
 		else if(CROptions::FileInfoFetchOptions->ProblemId_Predefined || CROptions::FileInfoFetchOptions->Lang_Predefined) UsageError = true;
 	}
-	
+
 	if(UsageError){
-		fprintf(stderr, "Usage: %s [-f fileid [-i -p problemcode -t timelimit -m memorylimit -l lang] | [-p problemcode] [-l language] ] [-s sleepinterval] [-a] [-b] [-n] [-c] [-r] [-d] [-v]\n", argv[0]); 
+		fprintf(stderr, "Usage: %s [-f fileid [-i -p problemcode -t timelimit -m memorylimit -l lang] | [-p problemcode] [-l language] ] [-s sleepinterval] [-a] [-b] [-n] [-c] [-r] [-d] [-v]\n", argv[0]);
 		exit(EXIT_FAILURE);
 	}
-	
+
 	CodeRunner::CheckPrerequisites();
 	CodeRunner::Run();
     return 0;;
