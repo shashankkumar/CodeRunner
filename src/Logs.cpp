@@ -44,7 +44,7 @@ void Logs::SetTime()
 
 void Logs::SetAndPrintTime()
 {
-    Logs::SetTime()
+    Logs::SetTime();
     /*
 	time( &rawtime );
 	strcpy(curtime, ctime(&rawtime));
