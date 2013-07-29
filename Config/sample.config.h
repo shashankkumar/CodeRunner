@@ -37,8 +37,8 @@
 #define FTPADDRESS "/Upload/"
 
 
-#define URL_TO_GET_FILE_IDS "http://address"
-#define URL_TO_GET_SOURCE_CODE "http://address"
+#define URL_TO_GET_FILE_IDS "http://localhost/projects/CodeRunner/Local/id.php"
+#define URL_TO_GET_SOURCE_CODE "http://localhost/projects/CodeRunner/Local/sourcecode.php"
 #define FILEPATH "./Files/"
 #define TESTCASESPATH "./TestCases/"
 
@@ -46,7 +46,7 @@
  * Specify the URL where results will be sent here.
  * Same username and password will be used as above.
  */
-#define URL_TO_SEND_RESULTS "http://192.168.208.203/push_result.php"
+#define URL_TO_SEND_RESULTS "http://localhost:8089"
 
 #define LOGFILEPATH "./Logs/"
 #define LOGFILENAME "logs.txt"
