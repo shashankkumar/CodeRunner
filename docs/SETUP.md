@@ -3,7 +3,7 @@ This guide will take you through the process of installing and running CodeRunne
 
 Dependencies	
 ==============	
-CodeRunner uses Curl library for sending and receiving data over the network. The libcurl3, libcurl3-dev libraries should be installed before making build. On Ubuntu it can be installed by typing the command in the terminal- `sudo apt-get install libcurl3, libcurl3-dev`
+CodeRunner uses Curl library for sending and receiving data over the network. The libcurl3, libcurl3-dev libraries should be installed before making build. On Ubuntu it can be installed by typing the command in the terminal- `sudo apt-get install libcurl3 libcurl3-dev`
 Or otherwise, the packages can be downloaded from [here](curl.haxx.se) and installed on any linux flavour.
 
 
