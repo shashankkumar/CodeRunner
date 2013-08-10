@@ -191,11 +191,13 @@ int CurlWrapper::FetchContentFromWebPage(string *content)
 		/* free slist */
     	curl_slist_free_all (headerlist);
    		if(CURLE_OK!=res){
+            cout<<"Url to fetch ids is "<<CROptions::URLToGetFileIds<<endl;
    			sprintf(logs, "Failure to fetch File Ids. Curl Error code: %d", res);
    			Logs::WriteLine(logs, true);
    			return -1;
    		}
    		else{
+             cout<<"Url to fetch ids is "<<CROptions::URLToGetFileIds<<endl;
    			sprintf(logs, "File Ids fetched succesfully.");
    			Logs::WriteLine(logs, true);
 			Logs::WriteLine(buffer.c_str());
@@ -250,11 +252,13 @@ void CurlWrapper::SendResultsToWebpage(const char* fileid, const char* status, c
     	curl_slist_free_all (headerlist);
    		if(CURLE_OK!=res)
    		{
-   			sprintf(logs, "Could not send results. Curl Error code: %d\n", res);
+   		    cout<<"Url to send results is "<<CROptions::URLToSendResults<<endl;
+  			sprintf(logs, "Could not send results. Curl Error code: %d\n", res);
    			Logs::WriteLine(logs);
    		}
    		else
    		{
+            cout<<"Url to send results is "<<CROptions::URLToSendResults<<endl;
    			sprintf(logs, "Results sent succesfully.\n");
    			Logs::WriteLine(logs);
    		}
