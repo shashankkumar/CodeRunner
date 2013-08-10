@@ -8,6 +8,7 @@ mkdir Files
 g++ GenerateSH.cpp -o GenerateSH.o
 ./GenerateSH.o
 cp Config/sample.config.h Config/config.h
+sh Config/config.sh Config config.h
 make
 chmod 755 link.sh
 chmod 755 CodeRunner.sh

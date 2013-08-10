@@ -31,7 +31,7 @@ OBJS = $(patsubst $(SRCDIR)/%.cpp,$(OBJDIR)/%.o,$(wildcard $(SRCDIR)/*.cpp))
 # Build a list of dependency files
 DEPS = $(patsubst %.o,$(DEPDIR)/%.d,$(OTMP))
 
-all: init config main Execution
+all: init main Execution
 
 init: $(DEPDIR) $(OBJDIR)
 $(DEPDIR):
@@ -40,8 +40,8 @@ $(DEPDIR):
 $(OBJDIR):
 	mkdir -p $(OBJDIR)
 
-config: $(CONFIGDIR)/$(CONFIG)
-	sh $(CONFIGDIR)/config.sh $(CONFIGDIR) $(CONFIG)
+#config: $(CONFIGDIR)/$(CONFIG)
+#	sh $(CONFIGDIR)/config.sh $(CONFIGDIR) $(CONFIG)
 
 # Pull in dependency info for our objects
 
