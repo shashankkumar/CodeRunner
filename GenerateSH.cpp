@@ -21,7 +21,7 @@ int main ()
         file1 << "until "+currentDir+"/link.sh; do \n echo \" CodeRunner crashed with exit code $?.  Respawning.. \" >&2 \n sleep 1 \n done";
         file1.close();
         file2.open ("link.sh");
-        file2 << "  echo \"CodeRunner Started on $(date)\" >> "+currentDir+"/Logs/Logs2.txt \n"+currentDir+"/main -q >> "+currentDir+"/Logs/Logs2.txt";
+        file2 << "echo \"CodeRunner Started on $(date)\" >> "+currentDir+"/Logs/Logs2.txt \n"+currentDir+"/main -q >> "+currentDir+"/Logs/Logs2.txt";
         file2.close();
     }
     else

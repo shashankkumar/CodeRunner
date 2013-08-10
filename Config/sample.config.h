@@ -39,8 +39,8 @@
 
 #define URL_TO_GET_FILE_IDS "http://localhost/projects/CodeRunner/Local/id.php"
 #define URL_TO_GET_SOURCE_CODE "http://localhost/projects/CodeRunner/Local/sourcecode.php"
-#define FILEPATH "./Files/"
-#define TESTCASESPATH "./TestCases/"
+#define FILEPATH "./Local/Files/"
+#define TESTCASESPATH "./Local/TestCases/"
 
 /**
  * Specify the URL where results will be sent here.
