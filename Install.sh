@@ -5,6 +5,7 @@ rm Execution
 mkdir TestCases
 mkdir Logs
 mkdir Files
+mkdir Local/Files
 g++ GenerateSH.cpp -o GenerateSH.o
 ./GenerateSH.o
 cp Config/sample.config.h Config/config.h
