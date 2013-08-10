@@ -4,6 +4,6 @@ echo "#include <iostream>
 using namespace std;
 main(){
 	int a=25;
-	cout<<a<<endl;
+	cout<<\"7\"<<endl;
 }";
 }
