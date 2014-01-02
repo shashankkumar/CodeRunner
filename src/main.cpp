@@ -37,7 +37,10 @@ int main(int argc, char* argv[])
 
 	int opt;
 	bool UsageError = false;
-	while((opt = getopt(argc, argv, "abcdf:l:m:np:qr:s:t:v")) != -1){
+
+	//getopt = -1 means no more command line arguments to parse
+
+	while((opt = getopt(argc, argv, "abcdf:il:m:np:qr:s:t:v")) != -1){
 		switch(opt){
 			// For fetching all file-ids irrespective of evaluation status.
 			case 'a':
