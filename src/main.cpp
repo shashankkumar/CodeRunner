@@ -104,7 +104,8 @@ int main(int argc, char* argv[])
 			break;
 			// For printing version related information.
 			case 'v':
-				;
+				printf("Version: 3\n");
+				return 0;
 			break;
 			// For no printing on screen. Running CodeRunner in "quiet" option.
 			default: /* '?' */
@@ -127,5 +128,5 @@ int main(int argc, char* argv[])
 
 	CodeRunner::CheckPrerequisites();
 	CodeRunner::Run();
-    return 0;;
+    return 0;
 }
