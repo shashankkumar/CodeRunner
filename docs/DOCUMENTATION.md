@@ -58,3 +58,25 @@ Status code and their meaning
     MLE ==> Memory Limit Exceeded
     Currently this status code is not supported.
     If make did not give any compilation errors and you have set the options in config.h file correctly then, you are ready to run CodeRunner for the first time.
+
+Commandline options
+===
+    -a ==> Fetch all file-ids irrespective of evaluation status.
+    -b ==> For sending results and forcing insertion of those results.
+    -c ==> Clear files directory after execution of source code.
+    -d ==> Does not download source code. The source codes should already be present in the Files directory.
+    -f ==> For pre-defining FileId. It is used when we are evaluating a particular file only. It has to be followed by additional(required) 
+           parameter (ie the file id)
+    -i ==> Excectute only one file
+    -l ==> For pre-defining Language. It is used when we are evaluating a particular file only. It has to be followed by additional(required) 
+           parameter (ie the language of the source program) 
+    -m ==> For specifying pre-defined memory limit. It is used when we are evaluating a particular file only. It has to be followed by 
+           additional(required) parameter (ie the max memory consumption (in MB) the program is allowed)
+    -n ==> For not sending results after evaluation.
+    -p ==> For pre-defining ProblemId. It is used when we are evaluating a particular file only. It has to be followed by additional(required) 
+           parameter (ie the problem id)
+    -q ==> quiet mode ie do not print output on screen
+    -r ==> Run CodeRunner for just one epoch.
+    -s ==> Specifying Sleep Interval after each epoch. It has to be followed by additional(required) parameter (ie sleep-inteval in seconds)
+    -t ==> Specifying pre-defined time-limit. It is used when we are evaluating a particular file only. It has to be followed by additional(       required) parameter (ie the time limit in seconds)
+    -v ==> For printing version related information.

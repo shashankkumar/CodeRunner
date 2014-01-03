@@ -24,8 +24,7 @@ void CodeRunner::ChDir(const char* dir)
 
 	if(chdir(dir)==-1)
 	{
-		printf("ERROR Cannot change directory to %s\n", dir);
-		cout<<"errno for chdir is"<<errno<<endl;
+		printf("ERROR Cannot change directory to %s. %s (Errno : %d) \n ", dir,strerror(errno),errno);
 		exit(EXIT_FAILURE);
 	}
 }
