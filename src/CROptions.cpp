@@ -2,7 +2,7 @@
 
 
 bool CROptions::RunOnce = false;
-bool CROptions::SleepInterval = SLEEPINTERVAL;
+unsigned int CROptions::SleepInterval = SLEEPINTERVAL;
 const char* CROptions::PATH = ABSOLUTE_PATH;
 const char* CROptions::TestCasesPath = TESTCASESPATH;
 const char* CROptions::URLToGetFileIds = URL_TO_GET_FILE_IDS;

@@ -40,7 +40,7 @@ int main(int argc, char* argv[])
 
 	//getopt = -1 means no more command line arguments to parse
 
-	while((opt = getopt(argc, argv, "abcdf:il:m:np:qr:s:t:v")) != -1){
+	while((opt = getopt(argc, argv, "abcdf:il:m:np:qrs:t:v")) != -1){
 		switch(opt){
 			// For fetching all file-ids irrespective of evaluation status.
 			case 'a':

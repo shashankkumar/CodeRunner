@@ -27,7 +27,6 @@ Already being used in Codevillage (The coding arena of IIT Roorkee on intranet).
 ## TODOs
 * Matching output with 10^-4 precision error.
 * Matching output with 10^-6 precision error.
-* Language based config file.
 * Add more languages.
 * Document command line options.
 * Securing the uploads.

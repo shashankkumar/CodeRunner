@@ -50,7 +50,7 @@ class CROptions
 
 	static CROptions::FileInfoFetchOptionsStruct* FileInfoFetchOptions;
 	static bool RunOnce;
-	static bool SleepInterval;
+	static unsigned int SleepInterval;
 	static const char* PATH;
 	static const char* TestCasesPath;
 	static const char* URLToGetFileIds;
