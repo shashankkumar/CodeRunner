@@ -337,6 +337,8 @@ void FileHandle::SendResults(){
 void FileHandle::CleanUp(){
 	sprintf(systemString, "rm -rf %s", FileAddr);
 	system(systemString);
+	sprintf(systemString, "rm -f %s.txt", FileAddr);
+	system(systemString);
 }
 
 void FileHandle::FileOperations(){
@@ -368,6 +370,8 @@ bool FileHandle::getResult(){
 void FileHandle::Action(){
 	FileOperations();
 	SendResults();
+	if(CROptions::Clean)
+	CleanUp();
 }
 
 FileHandle::~FileHandle(){
