@@ -72,11 +72,12 @@ void CodeRunner::Run()
 }
 
 void CodeRunner::GoToSleep(){
-	char SleepText[50];;
-	sprintf(SleepText, "Going to sleep for %d seconds.\n", SLEEPINTERVAL);
+	char SleepText[50];
+	sprintf(SleepText, "Going to sleep for %d seconds.\n", CROptions::SleepInterval);
 	//Logs::WriteLine(SleepText);
 	//Logs::WriteLine("============================================================================\n");
 	sleep(CROptions::SleepInterval);
+	printf("%s\n",SleepText);
 }
 
 void CodeRunner::ErrorMessage(const char* msg){
