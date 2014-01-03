@@ -45,11 +45,11 @@ void Logs::SetTime()
 void Logs::SetAndPrintTime()
 {
     Logs::SetTime();
-    /*
-	time( &rawtime );
-	strcpy(curtime, ctime(&rawtime));
-    */
-	fwrite(curtime, 1, sizeof(curtime), pLogFile);
+    
+    
+//	fwrite(curtime, 1, sizeof(curtime), pLogFile);
+	fputs(curtime, pLogFile);
+
 	//Write an array of sizeof(curtime) number of elements each of size 1 byte from curtime array to current postion in pLogFile
 	if(CROptions::PrintOnScreen) printf("%s", curtime);
 }

@@ -50,7 +50,7 @@ int FileHandle::CheckMIME(){
 	FILE *fpipe;
     char line[256];
     sprintf(command, "file -b --mime-type %s.txt", FileAddr);
-	
+	//printf("%s\n",command );
 	if ( !(fpipe = (FILE*)popen(command,"r")) ){  
 	// If fpipe is NULL
 		perror("Problems with pipe");
@@ -230,6 +230,7 @@ void FileHandle::Execute(){
 		PipeExecute();
 		sprintf(str, "\nTest Case %d\n%s", TestCaseId, ExecutionStr.c_str());
 		Logs::Write(str);
+		
 		char* ptr = strstr(str, "status");
 		if(ptr!=NULL){
 			sscanf(ptr, "%*s %s", status);
@@ -327,14 +328,17 @@ void FileHandle::SendResults(){
 	sprintf(timeused, "%0.3f", TimeUsed);
 	sprintf(memoryused, "%d", MemoryUsed);
 	sprintf(fileid, "%d", FileInfo->FileId);
-	sprintf(logs, "FileId ==> %s Status==>%s DetailStatus==>%s TimeUsed==>%s MemoryUsed==>%s", fileid, status, detailstatus, timeused, memoryused); 
-	Logs::WriteLine(logs);
-	if(CROptions::SendResults) FileCurl.SendResultsToWebpage(fileid, status, detailstatus, timeused, memoryused);
+	sprintf(logs, "FileId ==> %s Status==>%s DetailStatus==>%s TimeUsed==>%s MemoryUsed==>%s Language==>%s", fileid, status, detailstatus, timeused, memoryused, FileInfo->lang); 
+	Logs::WriteLine(logs, true);
 
+
+	if(CROptions::SendResults) FileCurl.SendResultsToWebpage(fileid, status, detailstatus, timeused, memoryused);
 	Logs::WriteLine("\n================================================================================\n");
+	
 }
 	
 void FileHandle::CleanUp(){
+	//Delete directory as well source files
 	sprintf(systemString, "rm -rf %s", FileAddr);
 	system(systemString);
 	sprintf(systemString, "rm -f %s.txt", FileAddr);
@@ -370,10 +374,10 @@ bool FileHandle::getResult(){
 void FileHandle::Action(){
 	FileOperations();
 	SendResults();
-	if(CROptions::Clean)
-	CleanUp();
+	
 }
 
 FileHandle::~FileHandle(){
-	//if(Clean) CleanUp();
+	if(CROptions::Clean)
+		CleanUp();
 }
