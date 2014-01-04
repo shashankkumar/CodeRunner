@@ -11,7 +11,7 @@ Already being used in Codevillage (The coding arena of IIT Roorkee on intranet).
 ## Features
 * Download source code files via HTTP/FTP.
 * Compilation of source code files.
-* Exection of files.
+* Execution of files.
 * Matching output produced by executing files with the standard solution.
 * Status given - Compilation Error, Wrong Answer, Time Limit Exceeded, Runtime Error, Memory Limit Exceeded.
 * Gives time of execution, memory used, type of runtime error(in case of runtime error) and compilation error(in case of compilation error).
@@ -25,12 +25,7 @@ Already being used in Codevillage (The coding arena of IIT Roorkee on intranet).
 * Java
 
 ## TODOs
-* Matching output with 10^-4 precision error.
 * Matching output with 10^-6 precision error.
-* Add more languages.
-* Document command line options.
 * Securing the uploads.
-* Put up a downloadable version.
-* Write a complete documentation.
 * Add support for threads.
 * Add support to run on multiple servers concurrently.
