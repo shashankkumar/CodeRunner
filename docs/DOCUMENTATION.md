@@ -68,6 +68,7 @@ Commandline options
     -f ==> For pre-defining FileId. It is used when we are evaluating a particular file only. It has to be followed by additional(required) 
            parameter (ie the file id)
     -i ==> Excectute only one file
+    -h ==> Print all command line options with their description
     -l ==> For pre-defining Language. It is used when we are evaluating a particular file only. It has to be followed by additional(required) 
            parameter (ie the language of the source program) 
     -m ==> For specifying pre-defined memory limit. It is used when we are evaluating a particular file only. It has to be followed by 

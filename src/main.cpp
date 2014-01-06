@@ -40,7 +40,7 @@ int main(int argc, char* argv[])
 
 	//getopt = -1 means no more command line arguments to parse
 
-	while((opt = getopt(argc, argv, "abcdf:il:m:np:qrs:t:v")) != -1){
+	while((opt = getopt(argc, argv, "abcdf:hil:m:np:qrs:t:v")) != -1){
 		switch(opt){
 			// For fetching all file-ids irrespective of evaluation status.
 			case 'a':
@@ -63,6 +63,25 @@ int main(int argc, char* argv[])
 			case 'f':
 				CROptions::FileInfoFetchOptions->FileId_Predefined = true;
 				CROptions::FileInfoFetchOptions->FileInfo.FileId = atoi(optarg);
+			break;
+			case 'h':
+				printf("-a ==> Fetch all file-ids irrespective of evaluation status.\n");
+                printf("-b ==> For sending results and forcing insertion of those results.\n");
+                printf("-c ==> Clear files directory after execution of source code. \n");
+                printf("-d ==> Does not download source code. The source codes should already be present in the Files directory.\n");
+                printf("-f ==> For pre-defining FileId. It is used when we are evaluating a particular file only. It has to be followed by additional(required) parameter (ie the file id) \n");
+                printf("-h ==> Print all command line options with their description\n");
+                printf("-i ==> Excectute only one file\n");
+                printf("-l ==> For pre-defining Language. It is used when we are evaluating a particular file only. It has to be followed by additional(required) parameter (ie the language of the source program)\n");
+                printf("-m ==> For specifying pre-defined memory limit. It is used when we are evaluating a particular file only. It has to be followed by additional(required) parameter (ie the max memory consumption (in MB) the program is allowed)\n");
+                printf("-n ==> For not sending results after evaluation.\n");
+                printf("-p ==> For pre-defining ProblemId. It is used when we are evaluating a particular file only. It has to be followed by additional(required) parameter (ie the problem id) \n");
+                printf("-q ==> quiet mode ie do not print output on screen\n");
+                printf("-r ==> Run CodeRunner for just one epoch.\n");
+                printf("-s ==> Specifying Sleep Interval after each epoch. It has to be followed by additional(required) parameter (ie sleep-inteval in seconds) \n");
+                printf("-t ==> Specifying pre-defined time-limit. It is used when we are evaluating a particular file only. It has to be followed by additional (required) parameter (ie the time limit in seconds)\n");
+                printf("-v ==> For printing version related information.\n");
+                return 0;
 			break;
 			case 'i':
 				CROptions::OneFileExecution = true;
