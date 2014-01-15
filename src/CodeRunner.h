@@ -14,6 +14,7 @@ class CodeRunner
 	static void Run();
 	static void GoToSleep();
 	static void ErrorMessage(const char* msg);
+	static void UpdateStatus();
 
  };
 

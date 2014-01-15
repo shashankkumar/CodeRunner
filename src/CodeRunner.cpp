@@ -10,6 +10,7 @@ void CodeRunner::CheckPrerequisites()
 	ChDir(CROptions::PATH);
 	ChDir(CROptions::LogFilePath);
 	ChDir(CROptions::PATH);
+	CodeRunner::UpdateStatus();
 	Logs::SetLogFileName(CROptions::LogFilePath, CROptions::LogFileName);
 	Logs::OpenLogFile();
 	Logs::CodeRunnerStarted();
@@ -67,6 +68,7 @@ void CodeRunner::Run()
 		delete ContentVar;
 		CodeRunner::GoToSleep();
 		Logs::CloseLogFile();
+		CodeRunner::UpdateStatus();
 
 	}while(!CROptions::RunOnce);
 }
@@ -83,4 +85,13 @@ void CodeRunner::GoToSleep(){
 void CodeRunner::ErrorMessage(const char* msg){
 	Logs::WriteLine(msg);
 	exit(EXIT_FAILURE);
+}
+
+void CodeRunner::UpdateStatus(){
+	Logs::SetLogFileName(CROptions::LogFilePath, CROptions::LogStatusFileName);
+	Logs::OpenLogFile();
+	Logs::CodeRunnerStarted();
+	Logs::CloseLogFile();
+	Logs::SetLogFileName(CROptions::LogFilePath, CROptions::LogFileName);
+
 }

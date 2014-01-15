@@ -50,6 +50,8 @@
 
 #define LOGFILEPATH "./Logs/"
 #define LOGFILENAME "logs.txt"
+#define LOGSTATUSFILENAME "logs_status.txt"
+
 /**
  * Specify the interval for which CodeRunner sleeps between two epochs.
  * One epoch is downloading of pending file ids, their source files, their execution and finally sending their results.

@@ -10,6 +10,7 @@ const char* CROptions::FilesPath = FILEPATH;
 const char* CROptions::URLToSendResults = URL_TO_SEND_RESULTS;
 const char* CROptions::LogFilePath = LOGFILEPATH;
 const char* CROptions::LogFileName = LOGFILENAME;
+const char* CROptions::LogStatusFileName = LOGSTATUSFILENAME;
 const char* CROptions::URLToGetSourceCode = URL_TO_GET_SOURCE_CODE;
 const char* CROptions::username = USERNAME;
 const char* CROptions::password = PASSWORD;

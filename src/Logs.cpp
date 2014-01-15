@@ -93,6 +93,13 @@ void Logs::WriteLine(char* logs, bool PrintTime)
 }
 
 
+
+void Logs::LeaveLine()
+{
+	Logs::WriteLine("");
+}
+
+
 void Logs::CodeRunnerStarted()
 {
 	Logs::WriteLine("===================================================================================================\n");
@@ -100,8 +107,3 @@ void Logs::CodeRunnerStarted()
 	Logs::LeaveLine();
 }
 
-
-void Logs::LeaveLine()
-{
-	Logs::WriteLine("");
-}

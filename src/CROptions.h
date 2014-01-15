@@ -59,6 +59,7 @@ class CROptions
 	static const char* URLToGetSourceCode;
 	static const char* LogFilePath;
 	static const char* LogFileName;
+	static const char* LogStatusFileName;
 	static const char* httpAddress;
 	static const char* username;
 	static const char* password;
