@@ -16,7 +16,7 @@
 #define USERNAME "shashank"
 #define PASSWORD "shashank"
 
-/** 
+/**
  * HTTPON and FTPON are two methods by which source code can be downloaded from internet.
  * If the preferred method is HTTP, then specify HTTPON as true.
  * otherwise specify FTPON as true.
@@ -56,8 +56,10 @@
  */
 #define SLEEPINTERVAL 30
 
+#define LANG_C true
 #define LANG_CPP true
 #define LANG_JAVA true
 #define LANG_PYTHON true
 #define LANG_PERL true
- 
+#define LANG_PHP true
+#define LANG_PASCAL true

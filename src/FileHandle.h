@@ -26,6 +26,7 @@ class FileHandle
   public:
 	FileHandle(FileInfoStruct* FileInfo);
 	~FileHandle();
+	int CheckLANG();
 	int FetchFile();
 	int CheckMIME();
 	int MakeDir();
@@ -39,7 +40,6 @@ class FileHandle
 	void pipeMatch();
 	void SendResults();
 	void CleanUp();
-	
 	bool getResult();
 	void FileOperations();
 	void Action();

@@ -30,7 +30,7 @@ class CROptions
 
 
   	                                    /*---------------------Struct  Defination  Starts-------------------------*/
-	
+
 
 	struct FileInfoFetchOptionsStruct
 	{
@@ -44,7 +44,7 @@ class CROptions
 	};
 
 
-                                        	/*------------------Struct  Defination  Ends------------------------------*/ 
+                                        	/*------------------Struct  Defination  Ends------------------------------*/
 
 
 
@@ -62,6 +62,13 @@ class CROptions
 	static const char* httpAddress;
 	static const char* username;
 	static const char* password;
+	static bool lang_c;
+	static bool lang_cpp;
+	static bool lang_java;
+	static bool lang_php;
+	static bool lang_python;
+	static bool lang_perl;
+	static bool lang_pascal;
 	static bool ForcePushResult;
 	static bool GetAllFileIds;
 	static bool SendResults;
