@@ -4,13 +4,13 @@ This guide will take you through the process of installing and running CodeRunne
 Dependencies	
 ==============	
 CodeRunner uses Curl library for sending and receiving data over the network. The libcurl3, libcurl3-dev libraries should be installed before making build. On Ubuntu it can be installed by typing the command in the terminal- `sudo apt-get install libcurl3 libcurl3-dev`
-Or otherwise, the packages can be downloaded from [here](curl.haxx.se) and installed on any linux flavour.
+Or otherwise, the packages can be downloaded from [here](http://curl.haxx.se/) and installed on any linux flavour.
 
 
 Installation Steps	
 ==============
 1. Copy source code to the desired directory where you intend to run the CodeRunner.
-2. Run the `./Install.sh` command on terminal. It should run without throwing any errors.
+2. Run the `./Install.sh` command on terminal. It should rhttp://curl.haxx.se/ any errors.
 	*This script will add the required directories ans scripts to the CodeRunner with appropriate permissions.
 	*This will also add config.h in `Config` directory 
 3. In the config.h file these options as required.
