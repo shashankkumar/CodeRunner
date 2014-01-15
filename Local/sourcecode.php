@@ -4,7 +4,7 @@ if($_REQUEST['username'] == 'shashank' && $_REQUEST['password'] = 'shashank'){
 using namespace std;
 void troll()
 {
-	int a[100];
+	int a[1000];
 	troll();
 }
 main(){

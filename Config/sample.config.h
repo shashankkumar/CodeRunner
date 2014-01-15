@@ -54,7 +54,35 @@
  * Specify the interval for which CodeRunner sleeps between two epochs.
  * One epoch is downloading of pending file ids, their source files, their execution and finally sending their results.
  */
-#define SLEEPINTERVAL 30
+#define SLEEPINTERVAL 5
+
+#define FORCE_PUSH_RESULT false;
+// For sending results and forcing insertion of those results.
+
+#define GET_ALL_FILEIDS false;
+// For fetching all file-ids irrespective of evaluation status.
+
+#define CLEAN false;
+// For clearing Files directory after execution of source code.
+
+#define SEND_RESULTS true;
+// For sending results after evaluation.
+
+#define DOWNLOAD_SOURCE_FILE true;
+// For not downloading source codes. In such a case, the source codes should already be present in the Files directory.
+
+#define ONE_FILE_EXECUTION false;
+//For excecuting only one file
+
+#define PRINT_ON_SCREEN true;
+//For printing output on the screen
+
+#define VERBOSE false;
+
+
+/**
+ *Specify which langauges are enabled on CodeRunner currently
+ **/
 
 #define LANG_C true
 #define LANG_CPP true
@@ -62,4 +90,4 @@
 #define LANG_PYTHON true
 #define LANG_PERL true
 #define LANG_PHP true
-#define LANG_PASCAL true
+

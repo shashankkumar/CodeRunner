@@ -50,12 +50,6 @@ int FileHandle::CheckLANG(){
         strcpy(detailstatus, "You are not allowed to make submissions in PYTHON");
         return -1;
     }
-    if(strcmp(FileInfo->lang, "pascal")==0 && !CROptions::lang_pascal)
-    {
-        strcpy(status, "CE");
-        strcpy(detailstatus, "You are not allowed to make submissions in PASCAL");
-        return -1;
-    }
     if(strcmp(FileInfo->lang, "perl")==0 && !CROptions::lang_perl)
     {
         strcpy(status, "CE");

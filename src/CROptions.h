@@ -68,7 +68,6 @@ class CROptions
 	static bool lang_php;
 	static bool lang_python;
 	static bool lang_perl;
-	static bool lang_pascal;
 	static bool ForcePushResult;
 	static bool GetAllFileIds;
 	static bool SendResults;
