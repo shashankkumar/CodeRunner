@@ -31,7 +31,7 @@ void CodeRunner::ChDir(const char* dir)
 
 void CodeRunner::Run()
 {
-	CheckPrerequisites();
+	//CheckPrerequisites();
 
 	if(CROptions::OneFileExecution)
 	{
