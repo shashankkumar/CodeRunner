@@ -79,7 +79,7 @@ void CodeRunner::GoToSleep(){
 	//Logs::WriteLine(SleepText);
 	//Logs::WriteLine("============================================================================\n");
 	sleep(CROptions::SleepInterval);
-	printf("%s\n",SleepText);
+	//printf("%s\n",SleepText);
 }
 
 void CodeRunner::ErrorMessage(const char* msg){

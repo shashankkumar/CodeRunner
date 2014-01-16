@@ -102,8 +102,10 @@ void Logs::LeaveLine()
 
 void Logs::CodeRunnerStarted()
 {
-	Logs::WriteLine("===================================================================================================\n");
-	Logs::WriteLine("CodeRunner Started", true);
+	Logs::WriteLine("===CodeRunner Started===", true);
 	Logs::LeaveLine();
 }
+
+
+
 
