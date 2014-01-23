@@ -105,3 +105,13 @@ Shortcomings :
 
 *   VmData and heap size can be inaccurate as kernel may allocate more memory than asked for making execution effecient.
 
+Currently MemoryUsed = max(64, MemoryUsage(cpid)) ie the MemoryUsed is reported as maximum of 64 or actual Memory Usage by the program.
+
+
+Measuirng time take by a program
+===
+There are two cases : 
+
+*   Time Limit Not Exceeded : In this case, the total time taken by the program is stored in 'TimeUsed' variable in 'Execution.cpp'.
+*   Time Limit Exceeded : In this case, the program gets killed after `t` seconds as specified in time limit of the program and 'TLE' status is returned.
+
