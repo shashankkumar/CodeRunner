@@ -41,7 +41,7 @@ fileid, status, detailstatus, timeused, memoryused
 * The `status` variable will contain one of these codes: AC, CE, TLE, MLE, RE. 
 * For few of these codes, `detailstatus` variable will further contain certain info as explained below:
 * The `timeused` variable will contain the sum of execution time of the source file on all test cases of the problem.
-* The `memoryused` variable will contain the memory used by source file during execution. Currently it returns just `0`, however it is to be supported in the next version.
+* The `memoryused` variable contains the memory used by source file during execution.
 
 Status code and their meaning
 ====
@@ -56,7 +56,6 @@ Status code and their meaning
     The `detailstatus` variable will not contain anything in this case.
     The `timeused` variable will simply be storing `0`.
     MLE ==> Memory Limit Exceeded
-    Currently this status code is not supported.
     If make did not give any compilation errors and you have set the options in config.h file correctly then, you are ready to run CodeRunner for the first time.
 
 Commandline options
