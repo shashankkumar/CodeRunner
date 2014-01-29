@@ -4,8 +4,10 @@ FileHandle::FileHandle(FileInfoStruct* FileInfo){
 	this->FileInfo = FileInfo;
 	TimeUsed=0.0;
 	MemoryUsed=0;
+	NumberOfWrongCases = 0;
 	result=true;
 	detailstatus[0] = '\0';
+
 	sprintf(FileAddr, "%s%d", FILEPATH, FileInfo->FileId);
 	sprintf(FileDirAddr, "%s%d/", FILEPATH, FileInfo->FileId);
 	if(strcmp(FileInfo->lang, "java")==0){
@@ -342,17 +344,36 @@ void FileHandle::Execute(){
 void FileHandle::pipeMatch(){
     FILE *fpipe;
     char line[256];
+    char count[256];
 
+    if ( !(fpipe = (FILE*)popen(command_count,"r")) ){
+	// If fpipe is NULL
+		perror("Problems with pipe");
+		Logs::WriteLine("Problems with pipe");
+	}
+	else{
+		while ( fgets( count, sizeof count, fpipe)){
+		}
+		NumberOfWrongCases = atoi (count) ;
+		if(NumberOfWrongCases > 0)
+			NumberOfWrongCases--;
+		printf("Number of wrong testcases: %lld\n", NumberOfWrongCases);
+	}
+	
 	if ( !(fpipe = (FILE*)popen(command,"r")) ){
 	// If fpipe is NULL
 		perror("Problems with pipe");
 		Logs::WriteLine("Problems with pipe");
 	}
 	else{
+		//cout<<fpipe<<endl;
 		while ( fgets( line, sizeof line, fpipe)){
 			result = false;
 		}
+		//cout<<line<<endl;
 	}
+	
+
 	pclose(fpipe);
 }
 
@@ -362,6 +383,8 @@ void FileHandle::MatchOutput(){
 	sprintf(ToFileStr, "%s%do.txt", FileDirAddr, TestCaseId);
 
 	sprintf(command, "diff %s %s --ignore-all-space --ignore-blank-lines --ignore-tab-expansion --ignore-space-change --brief 2>&1", FromFileStr, ToFileStr);
+	sprintf(command_count, "diff -U 0 %s %s | grep ^+ | wc -l", FromFileStr, ToFileStr);
+
 	//printf("%s\n", command);
 	pipeMatch();
 }
@@ -370,11 +393,12 @@ void FileHandle::SendResults(){
 	sprintf(timeused, "%0.3f", TimeUsed);
 	sprintf(memoryused, "%d", MemoryUsed);
 	sprintf(fileid, "%d", FileInfo->FileId);
-	sprintf(logs, "FileId ==> %s Status==>%s DetailStatus==>%s TimeUsed==>%s MemoryUsed==>%s Language==>%s", fileid, status, detailstatus, timeused, memoryused, FileInfo->lang);
+	sprintf(numberofwrongtestcases, "%lld", NumberOfWrongCases);
+	sprintf(logs, "FileId ==> %s Status==>%s DetailStatus==>%s TimeUsed==>%s MemoryUsed==>%s Language==>%s NumberOfWrongCases==>%s", fileid, status, detailstatus, timeused, memoryused, FileInfo->lang, numberofwrongtestcases);
 	Logs::WriteLine(logs, true);
 
 
-	if(CROptions::SendResults) FileCurl.SendResultsToWebpage(fileid, status, detailstatus, timeused, memoryused);
+	if(CROptions::SendResults) FileCurl.SendResultsToWebpage(fileid, status, detailstatus, timeused, memoryused, numberofwrongtestcases);
 	Logs::WriteLine("\n================================================================================\n");
 
 }

@@ -207,7 +207,7 @@ int CurlWrapper::FetchContentFromWebPage(string *content)
   	return -1;		// Control should not reach here in normal circumstances
 }
 
-void CurlWrapper::SendResultsToWebpage(const char* fileid, const char* status, const char* detailstatus, const char* time, const char* memory)
+void CurlWrapper::SendResultsToWebpage(const char* fileid, const char* status, const char* detailstatus, const char* time, const char* memory, const char* numberofwrongtestcases)
 {
 
 	struct curl_httppost *formpost = NULL;
@@ -226,6 +226,7 @@ void CurlWrapper::SendResultsToWebpage(const char* fileid, const char* status, c
 	curl_formadd( &formpost, &lastptr, CURLFORM_COPYNAME, "detailstatus", CURLFORM_PTRCONTENTS, detailstatus, CURLFORM_END);
 	curl_formadd( &formpost, &lastptr, CURLFORM_COPYNAME, "time", CURLFORM_COPYCONTENTS, time, CURLFORM_END);
 	curl_formadd( &formpost, &lastptr, CURLFORM_COPYNAME, "memory", CURLFORM_COPYCONTENTS, memory, CURLFORM_END);
+	curl_formadd( &formpost, &lastptr, CURLFORM_COPYNAME, "numberofwrongtestcases", CURLFORM_COPYCONTENTS, numberofwrongtestcases, CURLFORM_END);
 	if(CROptions::ForcePushResult)
 		curl_formadd( &formpost, &lastptr, CURLFORM_COPYNAME, "force", CURLFORM_COPYCONTENTS, "true", CURLFORM_END);
 
