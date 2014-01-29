@@ -11,7 +11,7 @@
 struct FileInfoStruct
 {
 	int FileId;
-	char ProblemId[25];
+	char ProblemId[50];
 	//Unique Id by which website and CodeRunner identifies a problem. For eg. PALIN, TEST etc.
 	int TimeLimit;
 	int MemoryLimit;
