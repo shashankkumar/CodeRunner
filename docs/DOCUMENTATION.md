@@ -30,18 +30,19 @@ The list of file ids supplied at a time to be executed is called an `Epoch` from
 However it is recommended not to supply more than 5-10 file ids at a time.
 The <TimeLimit> is the number of seconds under which all the user solution should run for all the test cases.
 The <MemoryLimit> is the maximum memory in MB that a solution can consume while running.
-The <Language> is the language of the source code. Currently supported languages are C++, C and Java. The corresponding string that should be supplied in <Language> options are `cpp, c, java`. No other string should be specified in their place otherwise it may not function properly.
+The <Language> is the language of the source code. Currently supported languages are C++, C, Java, Python, PHP, Perl. The corresponding string that should be supplied in <Language> options are `cpp, c, java, python, php, perl`. No other string should be specified in their place otherwise it may not function properly.
 
 Results Specifications
 ==================
 The results of execution of a file is sent to the URL `URLToSendResults` specified in the config.h file. The results are sent in the form of POST variables.
 The variables are:
-fileid, status, detailstatus, timeused, memoryused
+fileid, status, detailstatus, timeused, memoryused, numberofwrongtestcases
 * The `fileid` variable will contain the File Id of the source code.
 * The `status` variable will contain one of these codes: AC, CE, TLE, MLE, RE. 
 * For few of these codes, `detailstatus` variable will further contain certain info as explained below:
 * The `timeused` variable will contain the sum of execution time of the source file on all test cases of the problem.
 * The `memoryused` variable contains the memory used by source file during execution.
+* The `numberofwrongtestcases` variable returns how many lines of output file were mismatched with respect to the input file. In case  of multiple input/output files, numberofwrongtestcases returns the number of mismatches in the first input file where input does not match with output. This option is added on trial basis. If the test cases are such that every line in output file corresponds to one test case then numberofwrongtestcases returns the number of testcases which failed in a given input file.
 
 Status code and their meaning
 ====
