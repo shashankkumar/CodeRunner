@@ -1,6 +1,30 @@
 Documentation for Developers
 ====================================
 
+Commands used for running the programs
+===
+
+For c++ :
+    g++ -w -static FullFileAddr.cpp -o FullFileAddr 2>&1
+
+For c :
+    gcc -w -static FullFileAddr.c -o FullFileAddr 2>&1
+    
+For Java :
+    javac FullFileAddr.java
+    
+For Python :
+    python -m py_compile FullFileAddr.py
+
+For Pascal : 
+    fpc FullFileAddr.p
+
+For Perl : 
+    perl -c FullFileAddr.pl
+
+For PHP :
+    php -l FullFileAddr.php
+
 
 Measuirng memory usage by a program
 ===
