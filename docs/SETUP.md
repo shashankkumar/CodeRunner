@@ -5,7 +5,15 @@ Dependencies
 ==============	
 CodeRunner uses Curl library for sending and receiving data over the network. The libcurl3, libcurl3-dev libraries should be installed before making build. On Ubuntu it can be installed by typing the command in the terminal- `sudo apt-get install libcurl3 libcurl3-dev`
 Or otherwise, the packages can be downloaded from [here](http://curl.haxx.se/) and installed on any linux flavour.
+Dependencies for different languages need to be installed as listed here. 
+    *C : `sudo apt-get install gcc`
+    *C++ : `sudo apt-get install g++`
+    *Java : `sudo apt-get install javac`
+    *Python : `sudo apt-get install python` 
+    *PHP : `sudo apt-get install php5`
+    *Pascal : `sudo apt-get install fp-compiler-2.4.4`  
 
+Note that python 2.7 comes pre-installed in ubuntu 
 
 Installation Steps	
 ==============

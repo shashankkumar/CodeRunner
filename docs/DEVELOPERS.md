@@ -1,17 +1,51 @@
 Documentation for Developers
 ====================================
 
-Commands used for compiling the programs
+Commands used for excecuting the programs in different languages
 ===
 
-For c++ :
-    `g++ -w -static FullFileAddr.cpp -o FullFileAddr 2>&1`
-
-For c :
-    `gcc -w -static FullFileAddr.c -o FullFileAddr 2>&1`
+For C++ :
     
+    Compilation: 
+        `g++ -w -static FullFileAddr.cpp -o FullFileAddr 2>&1`
+
+
+For C :
+
+    Compilation:
+        `gcc -w -static FullFileAddr.c -o FullFileAddr 2>&1`
+    
+
 For Java :
-    `javac FullFileAddr.java`
+
+    Compilation:
+        `javac FullFileAddr.java`
+
+
+For Python : 
+    
+    Syntax Check:
+        `python -m py_compile FullFileAddr.py`
+
+
+For Pascal : 
+
+    Syntax Check : 
+        `fpc FullFileAddr.p`
+
+
+For Perl : 
+
+    Syntax Check : 
+        `perl -c FullFileAddr.pl`
+
+
+For PHP :
+
+    Syntax Check : 
+        `php -l FullFileAddr.php`
+
+
     
 Measuirng memory usage by a program
 ===
