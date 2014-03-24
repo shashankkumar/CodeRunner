@@ -166,7 +166,7 @@ int main(int args, char *argv[]){
 			SetResourceLimitValuesJava(TimeLimit);
 			FILE *fpipe;
 			char command[100];
-			sprintf(command, "java -Xms1024M Main < %s > %s", TestCaseFile, OutputFile);
+			sprintf(command, "java -Djava.security.manager -Djava.security.policy==./policy.txt -Xms1024M Main < %s > %s", TestCaseFile, OutputFile);
 			//printf("%s\n", command);
 			char line[256];
 			
