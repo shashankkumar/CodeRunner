@@ -167,3 +167,14 @@ There are two cases :
 *   Time Limit Exceeded : In this case, the program gets killed after `t` seconds as specified in time limit of the program and `TLE` status is returned.
 
 Relevant resource limits are defined in `resources.h`
+
+
+Securing Java Submissions
+===
+To secure java submissions, we rely on enabling a Java security manager and specifying policy files. 
+
+`java -Djava.security.manager -Djava.security.policy==./policy.txt` This command replaces the default privileges with the privileges given in [policy.txt](https://github.com/shashankkumar/CodeRunner/blob/master/policy.txt). Current configuration blocks access to all networking and OS operations and does not need any change.
+
+Further details about it can be found [here](http://pic.dhe.ibm.com/infocenter/cicsts/v4r1/index.jsp?topic=%2Fcom.ibm.cics.ts.java.doc%2Ftopics%2Fdfhpj5u.html).
+
+Refer [this](http://stackoverflow.com/questions/11620354/running-java-security-manager-without-the-default-java-policy-file) for differentiating between use of '=' and '==' while running Java Security Manager. 
