@@ -169,9 +169,17 @@ There are two cases :
 Relevant resource limits are defined in `resources.h`
 
 
+
+Securing C/C++ Submissions
+===
+ 
+ `gcc -w -I ../../gcc -static` The additional -I flag make the compiler look into 'gcc' folder instead of the default locations. The 'gcc' folder contains a copy of files like 'unistd.h', 'syslimits.h', 'bits/', 'linux/', 'sys' etc. This way if the submission makes a request to these files or files in these folders, then it returns compilation error (CE). So we need to make a copy of all such files in a seperate folder called 'gcc' on the server running CodeRunner. Also 'gcc' folder should be in the same directory as CodeRunner.
+
+
+
 Securing Java Submissions
 ===
-To secure java submissions, we rely on enabling a Java security manager and specifying policy files. 
+To secure java submissions, we rely on enabling Java Security Manager and specifying policy files. 
 
 `java -Djava.security.manager -Djava.security.policy==./policy.txt` This command replaces the default privileges with the privileges given in [policy.txt](https://github.com/shashankkumar/CodeRunner/blob/master/policy.txt). Current configuration blocks access to all networking and OS operations and does not need any change.
 

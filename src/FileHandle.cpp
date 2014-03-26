@@ -166,9 +166,9 @@ void FileHandle::Compile(){
 void FileHandle::pipeCompile(){
 	FILE *fpipe;
     if(strcmp(FileInfo->lang, "cpp")==0)
-    	sprintf(command, "g++ -w -static %s.cpp -o %s 2>&1", FullFileAddr, FullFileAddr);
+    	sprintf(command, "g++ -w -I ../../gcc -static %s.cpp -o %s 2>&1", FullFileAddr, FullFileAddr);
     else if(strcmp(FileInfo->lang, "c") == 0)
-    	sprintf(command, "gcc -w -static %s.c -o %s 2>&1", FullFileAddr, FullFileAddr);
+    	sprintf(command, "gcc -w -I ../../gcc -static %s.c -o %s 2>&1", FullFileAddr, FullFileAddr);
     else if(strcmp(FileInfo->lang, "java")==0)
 		sprintf(command, "javac %s.java", FullFileAddr);
 	else if(strcmp(FileInfo->lang, "python")==0)
