@@ -11,7 +11,7 @@ Problem Specifications
 **Note:
 In case there is a large body of problems and more will be uploaded over time (like in a practice arena, or a 24\*7 judge) then the process of uploading Test Cases (creating directories, and input and output files) can be automated through the website.
 
-File List Specifiations
+File List Specifications
 ====
 CodeRunner fetches the information of pending files from the URL `URLToFetchFileIds` specified in the config.h file. The format of specifying file ids in the webpage is as following:
     <FileId> <ProblemId> <TimeLimit> <MemoryLimit> <Language>
@@ -78,6 +78,6 @@ Commandline options
            parameter (ie the problem id)
     -q ==> quiet mode ie do not print output on screen
     -r ==> Run CodeRunner for just one epoch.
-    -s ==> Specifying Sleep Interval after each epoch. It has to be followed by additional(required) parameter (ie sleep-inteval in seconds)
-    -t ==> Specifying pre-defined time-limit. It is used when we are evaluating a particular file only. It has to be followed by additional(       required) parameter (ie the time limit in seconds)
+    -s ==> Specifying Sleep Interval after each epoch. It has to be followed by additional(required) parameter (ie sleep-interval in seconds)
+    -t ==> Specifying pre-defined time-limit. It is used when we are evaluating a particular file only. It has to be followed by additional (required) parameter (ie the time limit in seconds)
     -v ==> For printing version related information.

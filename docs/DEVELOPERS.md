@@ -1,7 +1,7 @@
 Documentation for Developers
 ====================================
 
-Commands used for excecuting the programs in different languages
+Commands used for executing the programs in different languages
 ===
 
 For C++ :
@@ -47,12 +47,12 @@ For PHP :
 
 
     
-Measuirng memory usage by a program
+Measuring memory usage by a program
 ===
 
 CodeRunner uses [proc](http://serverfault.com/questions/301980/in-unix-linux-what-is-the-proc-directory-for-why-does-it-exists) to determine memory usage by programs. For almost every process running in the system, there is a directory created in /proc/. The directory name is the process id and it contains several useful files including a file called `status`.
 
-**/proc/[pid]/status** : This file contains information regarding memory usage such as virtual memory size (VmSize), size of data segment (VmData), stack size (VmStk), and size of text segment (VmExe). All these sizes are in KB ie KiloBytes.
+**/proc/[pid]/status** : This file contains information regarding memory usage such as virtual memory size (VmSize), size of data segment (VmData), stack size (VmStk), and size of text segment (VmExe). All these sizes are in KB ie Kilobytes.
 
 Sample Output for `cat /proc/3159/status` :
 
@@ -153,13 +153,12 @@ Implementation :
 
 Shortcomings : 
 
-*   VmData and heap size can be inaccurate as kernel may allocate more memory than asked for making execution effecient.
+*   VmData and heap size can be inaccurate as kernel may allocate more memory than asked for making execution efficient.
 
 Currently MemoryUsed = max(64, MemoryUsage(cpid)) ie the MemoryUsed is reported as maximum of 64 or actual Memory Usage by the program.
 
 
-
-Measuirng time take by a program
+Measuring time take by a program
 ===
 There are two cases : 
 
